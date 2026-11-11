@@ -1,0 +1,47 @@
+[
+  {
+    "id": "rev-1",
+    "productId": "sw-win11-pro",
+    "userName": "Amitabh Sengupta",
+    "city": "Mumbai",
+    "rating": 5,
+    "date": "2 days ago",
+    "comment": "Updated: 100% Genuine key activated instantly!"
+  },
+  {
+    "id": "rev-2",
+    "productId": "sw-win11-pro",
+    "userName": "Vikram Deshmukh",
+    "city": "Pune",
+    "rating": 5,
+    "date": "1 week ago",
+    "comment": "Engineer guided me remotely on AnyDesk to install fresh Windows 11. Very polite and professional service."
+  },
+  {
+    "id": "rev-3",
+    "productId": "sw-office-2021",
+    "userName": "Sneha Patil",
+    "city": "Thane",
+    "rating": 5,
+    "date": "3 days ago",
+    "comment": "Word and Excel activated smoothly using official Microsoft link. Huge savings compared to retail store price."
+  },
+  {
+    "id": "rev-4",
+    "productId": "sw-acrobat-pro",
+    "userName": "Advocate R. K. Nair",
+    "city": "Navi Mumbai",
+    "rating": 5,
+    "date": "5 days ago",
+    "comment": "As a lawyer I need to edit and sign PDF petitions daily. Working flawlessly with digital signature certificate."
+  },
+  {
+    "id": "rev-5",
+    "productId": "sw-quickheal-totalsec",
+    "userName": "Manish Verma",
+    "city": "Bangalore",
+    "rating": 5,
+    "date": "1 week ago",
+    "comment": "3-year license activated on Quick Heal registration server immediately. Laptop is running much faster now."
+  }
+]

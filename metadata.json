@@ -1,0 +1,6 @@
+{
+  "name": "Fixfly",
+  "description": "Fixfly Innovations - ISO Certified Doorstep Laptop, MacBook & PC Repairs across Mumbai, Thane & Navi Mumbai. 6 Months Warranty.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

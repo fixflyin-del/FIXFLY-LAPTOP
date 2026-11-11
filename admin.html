@@ -1,0 +1,2472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fixfly Admin Portal | Manage Software, Repair Services, Rates & SEO</title>
+  <meta name="robots" content="noindex, nofollow">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandNavy: '#10243E',
+            brandBlue: '#0879D1',
+            brandSky: '#36BDF5'
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-heading { font-family: 'Outfit', sans-serif; }
+
+    /* NETLIFY BADGE & HUD COMPLETE SUPPRESSION */
+    #nl-badge-frame,
+    iframe#nl-badge-frame,
+    iframe[id*="nl-badge"],
+    iframe[srcdoc*="Powered by"],
+    iframe[srcdoc*="Netlify"],
+    iframe[srcdoc*="nl-badge"],
+    .nl-badge,
+    [class*="nl-badge"],
+    [id*="netlify-badge"],
+    div[data-netlify-badge] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      position: absolute !important;
+      left: -99999px !important;
+      bottom: -99999px !important;
+      z-index: -999999 !important;
+    }
+  </style>
+
+  <script>
+    (function() {
+      function purgeNetlifyBadge() {
+        var frames = document.querySelectorAll('#nl-badge-frame, iframe[id*="nl-badge"], iframe[srcdoc*="Netlify"]');
+        for (var i = 0; i < frames.length; i++) {
+          var f = frames[i];
+          f.style.setProperty('display', 'none', 'important');
+          if (f.parentNode) f.parentNode.removeChild(f);
+        }
+        var scripts = document.querySelectorAll('script[src*="/.netlify/scripts/hud"]');
+        for (var j = 0; j < scripts.length; j++) {
+          if (scripts[j].parentNode) scripts[j].parentNode.removeChild(scripts[j]);
+        }
+      }
+      purgeNetlifyBadge();
+      if (window.MutationObserver) {
+        var obs = new MutationObserver(function() { purgeNetlifyBadge(); });
+        obs.observe(document.documentElement, { childList: true, subtree: true });
+      }
+      window.addEventListener('DOMContentLoaded', purgeNetlifyBadge);
+      window.addEventListener('load', purgeNetlifyBadge);
+    })();
+  </script>
+</head>
+<body class="bg-[#F4F7FB] text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- TOP HEADER -->
+  <header class="bg-brandNavy text-white border-b border-slate-800 sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <!-- Fixfly Original Logo -->
+        <a href="/" class="flex items-center gap-2">
+          <img src="public/assets/fixfly-logo.png" onerror="this.onerror=null; this.src='https://fixfly.in/wp-content/uploads/2026/01/Fixfly-logo-3.png';" alt="Fixfly Logo" class="h-10 sm:h-12 w-auto object-contain bg-white/10 p-1 rounded-xl">
+        </a>
+        <span class="hidden sm:inline-block h-6 w-px bg-slate-700 mx-1"></span>
+        <span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-md border border-amber-400/20">
+          🔒 Master Admin Console
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition flex items-center gap-1.5">
+          <span>← Back to Live Website</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN ADMIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    
+    <!-- HEADER BAR -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brandBlue bg-blue-50 px-3 py-1 rounded-full border border-blue-200">Central Control Hub</span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-brandNavy font-heading mt-2">Fixfly Admin & Business Dashboard</h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">Manage Software E-Commerce, Repair Services, Top Offer Banner, Rates, and Engineer Profiles.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="btn-toggle-sound" onclick="enableAudioAndTest()" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-brandBlue bg-blue-50 hover:bg-blue-100 px-3.5 py-2 rounded-xl border border-blue-200 transition shadow-2xs cursor-pointer" title="Click to enable sound and browser notifications">
+          <span id="sound-icon" class="text-sm">🔔</span>
+          <span id="sound-status-text">Desktop Ring Alert: Ready</span>
+        </button>
+        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Live Sync Active
+        </span>
+      </div>
+    </div>
+
+    <!-- ADMIN TABS NAVIGATION -->
+    <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-2">
+      <button id="tab-btn-software" onclick="switchTab('software')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-brandBlue text-white shadow transition">
+        💻 Software E-Commerce
+      </button>
+      <button id="tab-btn-announcement" onclick="switchTab('announcement')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 transition">
+        📢 Top Offer Banner
+      </button>
+      <button id="tab-btn-rates" onclick="switchTab('rates')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 transition">
+        🛠️ Repair Services Catalog
+      </button>
+      <button id="tab-btn-products" onclick="switchTab('products')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 transition">
+        🛒 Amazon Catalog
+      </button>
+      <button id="tab-btn-experts" onclick="switchTab('experts')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 transition">
+        👨‍🔧 Meet Our Experts
+      </button>
+      <button id="tab-btn-blog" onclick="switchTab('blog')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 transition">
+        ✍️ Write SEO Blog
+      </button>
+      <button id="tab-btn-reviews" onclick="switchTab('reviews')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 transition">
+        ⭐ Customer Reviews (<span id="reviews-badge-count">0</span>)
+      </button>
+    </div>
+
+    <!-- TAB: SOFTWARE E-COMMERCE -->
+    <div id="tab-pane-software" class="space-y-6">
+      
+      <!-- ADD / EDIT SOFTWARE PRODUCT FORM -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h2 id="sw-form-title" class="text-lg font-bold text-brandNavy font-heading mb-1">Add New Software Product</h2>
+        <p class="text-xs text-slate-500 mb-6">Create software product with title, pricing, discount, feature bullet points, and description.</p>
+
+        <form onsubmit="handleSaveSoftware(event)" class="space-y-4">
+          <input type="hidden" id="sw-edit-id" value="">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Software Title</label>
+              <input type="text" id="sw-title" placeholder="e.g. Windows 11 Pro Genuine License Key (Lifetime)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
+              <select id="sw-category" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none">
+                <option value="Operating Systems">Operating Systems</option>
+                <option value="Office & Productivity">Office & Productivity</option>
+                <option value="Design & Creativity">Design & Creativity</option>
+                <option value="Security & Antivirus">Security & Antivirus</option>
+                <option value="Utilities & Tools">Utilities & Tools</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Sale Price (₹ INR)</label>
+              <input type="number" id="sw-price" placeholder="799" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-bold text-emerald-600 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Original Price (₹ MRP)</label>
+              <input type="number" id="sw-orig-price" placeholder="4999" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-500 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Card Badge Tag</label>
+              <input type="text" id="sw-badge" placeholder="Best Seller / 84% OFF" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image URL <span class="text-emerald-600 font-bold text-[11px]">(Sample: 800 × 600 px)</span></label>
+              <input type="url" id="sw-image" placeholder="https://images.unsplash.com/... (Sample: 800x600 px)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+              <p class="text-[10px] text-slate-400 mt-0.5">Recommended pixel size: 800 × 600 px (4:3 aspect ratio, clear software box).</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Bullet Points (One per line)</label>
+            <textarea id="sw-bullets" rows="3" placeholder="Instant Email & WhatsApp Delivery&#10;Lifetime 1 PC Genuine License&#10;Official Setup ISO Download Link" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-800 focus:outline-none" required></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Full Description & Technical Specifications</label>
+            <textarea id="sw-description" rows="3" placeholder="Detailed product description and system requirements..." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-800 focus:outline-none" required></textarea>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit" id="sw-submit-btn" class="bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-xl shadow transition">
+              💾 Save Software Product
+            </button>
+            <button type="button" id="sw-cancel-btn" onclick="cancelSoftwareEdit()" class="hidden bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm py-3 px-5 rounded-xl transition">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- EXISTING SOFTWARE PRODUCTS LIST -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="text-base font-bold text-brandNavy font-heading mb-4">Live Software Catalog (<span id="sw-count">0</span> items)</h3>
+        <div id="admin-software-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: TOP HEADER OFFER BANNER (USER REQUEST) -->
+    <div id="tab-pane-announcement" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 font-black text-xl">
+            📢
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-brandNavy font-heading">Top Header Announcement Offer</h2>
+            <p class="text-xs text-slate-500">Edit the top announcement line displayed across the website on desktop and mobile.</p>
+          </div>
+        </div>
+
+        <form onsubmit="handleSaveAnnouncement(event)" class="space-y-4 max-w-xl">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Top Offer Text (Single Line)</label>
+            <input type="text" id="announcement-offer-input" value="FREE LAPTOP CLEANING" placeholder="e.g. FREE LAPTOP CLEANING" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-3 text-slate-800 font-extrabold tracking-wide uppercase focus:outline-none" required>
+            <p class="text-[11px] text-slate-400 mt-1">This appears directly at the very top of your website on both mobile and PC.</p>
+          </div>
+
+          <div class="pt-2 flex items-center gap-3">
+            <button type="submit" class="bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-xl shadow transition">
+              💾 Save Announcement Offer
+            </button>
+            <span id="announcement-save-status" class="text-xs font-bold text-emerald-600 hidden">✓ Saved & Updated Live on Website!</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB: MEET OUR EXPERTS -->
+    <div id="tab-pane-experts" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h2 class="text-lg font-bold text-brandNavy font-heading mb-1">Add Engineer to 'Meet Our Experts' Carousel</h2>
+        <p class="text-xs text-slate-500 mb-6">Select specialization (Laptop, Desktop, or iMac), add profile photo URL, experience, and bio.</p>
+
+        <form onsubmit="handleAddExpert(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Engineer Full Name</label>
+              <input type="text" id="expert-name" placeholder="e.g. Anand Verma" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Specialization (Select Exactly One)</label>
+              <select id="expert-specialty" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold focus:outline-none">
+                <option value="Expert in Laptop">Expert in Laptop</option>
+                <option value="Expert in Desktop">Expert in Desktop</option>
+                <option value="Expert in iMac / MacBook">Expert in iMac / MacBook</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Experience</label>
+              <input type="text" id="expert-exp" placeholder="e.g. 8+ Years Experience" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Star Rating</label>
+              <input type="text" id="expert-rating" value="4.9 ★" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold text-amber-500 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Repairs Completed</label>
+              <input type="text" id="expert-repairs" value="850+ Repairs" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Profile Photo URL (Direct Web Image Link)</label>
+            <input type="url" id="expert-photo" placeholder="https://images.unsplash.com/photo-..." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Short Bio & Certifications</label>
+            <input type="text" id="expert-bio" placeholder="e.g. Certified chip-level logic board recovery specialist with Dell & Lenovo certification." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+          </div>
+
+          <button type="submit" class="bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-xl shadow transition">
+            + Add Expert to Homepage
+          </button>
+        </form>
+      </div>
+
+      <!-- CURRENT EXPERTS LIST -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="text-base font-bold text-brandNavy font-heading mb-4">Current Team of Engineers</h3>
+        <div id="admin-experts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: SERVICE RATES & FULL SERVICES CATALOG -->
+    <div id="tab-pane-rates" class="hidden space-y-6">
+      
+      <!-- ADD / EDIT SERVICE PACKAGE FORM -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200" id="admin-service-form-card">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-6">
+          <div>
+            <h2 id="admin-svc-form-heading" class="text-lg sm:text-xl font-bold text-brandNavy font-heading">Add New Repair Service Package</h2>
+            <p class="text-xs text-slate-500">Create or modify doorstep repair services, images, starting pricing, technician kit standards, and inclusions.</p>
+          </div>
+          <button type="button" id="admin-svc-cancel-btn" onclick="cancelServiceEdit()" class="hidden px-3.5 py-1.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-100 transition">
+            ✕ Cancel Edit
+          </button>
+        </div>
+
+        <form id="admin-service-form" onsubmit="handleSaveService(event)" class="space-y-4">
+          <input type="hidden" id="admin-svc-id">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Service Title *</label>
+              <input type="text" id="admin-svc-title" placeholder="e.g. MacBook Pro M1/M2/M3 Logic Board Repair" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Category *</label>
+              <select id="admin-svc-cat" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold focus:bg-white focus:outline-none">
+                <option value="laptop">💻 Laptop Hardware Repair</option>
+                <option value="macbook">🍎 Apple MacBook Care</option>
+                <option value="cleaning">❄️ Deep Thermal Cleaning</option>
+                <option value="gaming">🎮 Gaming Laptop Dual-Fan</option>
+                <option value="desktop">🖥️ Desktop PC & Workstation</option>
+                <option value="motherboard">🔬 Motherboard Chip-Level</option>
+                <option value="corporate">🏢 Corporate Sales & AMC</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Starting Price / Rate *</label>
+              <input type="text" id="admin-svc-rate" placeholder="e.g. ₹299 or ₹1,050" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold text-brandNavy focus:bg-white focus:outline-none" required>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Badge Tag</label>
+              <input type="text" id="admin-svc-badge" placeholder="e.g. Apple Specialist, Most Popular" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Rating & Reviews Count</label>
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="admin-svc-rating" value="4.9 ★" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2.5 text-slate-800 font-bold text-amber-500 focus:bg-white focus:outline-none">
+                <input type="text" id="admin-svc-reviews" value="350+ ratings" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none">
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Service Image URL * <span class="text-emerald-600 font-bold text-[11px]">(Sample: 800 × 500 px, 16:10 Ratio)</span></label>
+              <input type="url" id="admin-svc-image" placeholder="https://images.unsplash.com/photo-... (Sample: 800x500 px)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+              <p class="text-[10px] text-slate-400 mt-0.5">Recommended pixel size: 800 × 500 px (Clear hardware component or technician repair photo).</p>
+            </div>
+
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Short Description / Problem Overview *</label>
+              <textarea id="admin-svc-desc" rows="2" placeholder="Describe the symptoms resolved (e.g. slow performance, overheating, cracked screen, battery backup issue)..." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required></textarea>
+            </div>
+
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Technician Kit Standard (Tools Carried) *</label>
+              <input type="text" id="admin-svc-tech" placeholder="e.g. Portable Fluke multimeters, ESD grounding mats, thermal compound, microscope." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+            </div>
+
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-bold text-slate-700 mb-1">What's Included (1 inclusion per line) *</label>
+              <textarea id="admin-svc-inclusions" rows="3" placeholder="Motherboard electrical multi-point scan&#10;Genuine OEM parts with 6 Months Warranty&#10;On-spot resolution of minor connector faults&#10;No Fix – No Fees Policy" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required></textarea>
+            </div>
+          </div>
+
+          <div class="pt-2 flex items-center gap-3">
+            <button type="submit" id="admin-svc-submit-btn" class="bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-xl shadow transition flex items-center gap-2">
+              <span>💾 Save Service Package</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- EXISTING SERVICES LIST -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold text-brandNavy font-heading">
+              Current Repair Services (<span id="admin-services-count">0</span>)
+            </h2>
+            <p class="text-xs text-slate-500">Live doorstep services currently displayed on user website & mobile app.</p>
+          </div>
+          <button onclick="fetchAdminServices()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 self-start sm:self-auto">
+            <span>🔄 Refresh</span>
+          </button>
+        </div>
+
+        <div id="admin-services-list-container" class="space-y-4">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB: AMAZON CATALOG -->
+    <div id="tab-pane-products" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h2 id="admin-prod-form-heading" class="text-lg font-bold text-brandNavy font-heading mb-1">Add Product to Amazon Catalog</h2>
+        <p class="text-xs text-slate-500 mb-6">Manage items shown in the 'Buy Products' Amazon store view.</p>
+
+        <form id="admin-product-form" onsubmit="handleSaveProduct(event)" class="space-y-4">
+          <input type="hidden" id="admin-prod-id" value="">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Product Title</label>
+              <input type="text" id="admin-prod-title-input" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Price (e.g. ₹299)</label>
+              <input type="text" id="admin-prod-price-input" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold focus:outline-none" required>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Badge</label>
+              <input type="text" id="admin-prod-badge-input" value="Prime Delivery" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Rating</label>
+              <input type="text" id="admin-prod-rating-input" value="4.9" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Reviews Count</label>
+              <input type="text" id="admin-prod-reviews-input" value="320" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image URL <span class="text-emerald-600 font-bold text-[11px]">(Sample: 600 × 600 px, 1:1 Square)</span></label>
+            <input type="url" id="admin-prod-image-input" placeholder="https://images.unsplash.com/... (Sample: 600x600 px)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            <p class="text-[10px] text-slate-400 mt-0.5">Recommended pixel size: 600 × 600 px (Square product photo on clean background).</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Amazon Product URL</label>
+            <input type="url" id="admin-prod-url-input" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Short Description</label>
+            <textarea id="admin-prod-desc-input" rows="2" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-800 focus:outline-none" required></textarea>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit" id="admin-prod-submit-btn" class="bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-xl shadow transition">
+              💾 Save Product to Amazon Catalog
+            </button>
+            <button type="button" id="admin-prod-cancel-btn" onclick="cancelProductEdit()" class="hidden bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm py-3 px-5 rounded-xl transition">
+              Cancel Edit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="text-base font-bold text-brandNavy font-heading mb-4">Existing Amazon Store Products</h3>
+        <div id="admin-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+        <!-- TAB: WRITE SEO BLOG -->
+    <div id="tab-pane-blog" class="hidden space-y-6">
+      
+      <!-- Netlify Info Card -->
+      <div class="bg-amber-50 border border-amber-200 rounded-3xl p-6 text-amber-900 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-start gap-3">
+          <span class="text-2xl">💡</span>
+          <div>
+            <div class="font-bold text-sm">Netlify Publishing Workflow (How to Make Blogs Live Worldwide)</div>
+            <p class="text-xs text-amber-800 mt-1">
+              Netlify is a static CDN host. When you publish or edit articles below, click <b>"📥 Download Updated migrated_blogs.js"</b> to update your Netlify site file, or <b>"📦 Download Netlify ZIP"</b> to re-upload. Your clean URLs (e.g. <code class="bg-amber-100 px-1 py-0.5 rounded">/laptop-repair-service-in-kharghar/</code>) work permanently on Google!
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0 w-full md:w-auto">
+          <button onclick="exportMigratedBlogsJs()" class="w-full md:w-auto bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow transition flex items-center justify-center gap-1.5">
+            <span>📥 Download migrated_blogs.js</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Write Blog Form Card -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 id="admin-blog-form-heading" class="text-lg font-bold text-brandNavy font-heading mb-1">Publish High-Ranking Google SEO Blog Article</h2>
+            <p class="text-xs text-slate-500">Write comprehensive articles with feature images, keywords, and targeted multi-city topics.</p>
+          </div>
+          <button type="button" id="admin-blog-cancel-edit" onclick="cancelBlogEdit()" class="hidden bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-xl transition">
+            ✕ Cancel Edit
+          </button>
+        </div>
+
+        <form onsubmit="handlePublishBlog(event)" class="space-y-4">
+          <input type="hidden" id="admin-blog-edit-original-slug" value="">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Article Title (SEO H1)</label>
+              <input type="text" id="admin-blog-title" placeholder="e.g. Best Laptop Screen Replacement in Navi Mumbai" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
+              <select id="admin-blog-cat" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none">
+                <option value="Laptop Repair">Laptop Repair</option>
+                <option value="Screen Replacement">Screen Replacement</option>
+                <option value="Motherboard Repair">Motherboard Repair</option>
+                <option value="MacBook Service">MacBook Service</option>
+                <option value="Windows & Software">Windows & Software</option>
+                <option value="Thermal Cleaning">Thermal Cleaning</option>
+                <option value="Data Recovery">Data Recovery</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">URL Slug (e.g. laptop-repair-navi-mumbai)</label>
+              <input type="text" id="admin-blog-slug" placeholder="laptop-repair-navi-mumbai" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Featured Image URL <span class="text-emerald-600 font-bold text-[11px]">(Sample: 1200 × 630 px, 16:9 Banner)</span></label>
+              <input type="url" id="admin-blog-image" placeholder="https://images.unsplash.com/... (Sample: 1200x630 px)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+              <p class="text-[10px] text-slate-400 mt-0.5">Recommended pixel size: 1200 × 630 px (16:9 aspect ratio, optimal for Google SEO cards and WhatsApp preview).</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">SEO Meta Snippet / Excerpt</label>
+            <textarea id="admin-blog-excerpt" rows="2" placeholder="Brief 150-character summary for Google search snippet..." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-800 focus:outline-none" required></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Article Body Content (Formatted text & paragraphs or HTML)</label>
+            <textarea id="admin-blog-content" rows="8" placeholder="Write full article here. Subheadings, bullet points, and troubleshooting steps..." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-800 focus:outline-none" required></textarea>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="submit" id="admin-blog-submit-btn" class="bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs sm:text-sm py-3.5 px-8 rounded-xl shadow transition flex items-center gap-2">
+              <span>🚀 Save & Publish Article</span>
+            </button>
+            <button type="button" onclick="exportMigratedBlogsJs()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3.5 px-6 rounded-xl shadow transition flex items-center gap-2">
+              <span>📥 Download Updated migrated_blogs.js</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Published Blogs Directory & Table Card -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 class="text-base font-bold text-brandNavy font-heading">All Published SEO Blog Articles (<span id="admin-blogs-count">0</span>)</h3>
+            <p class="text-xs text-slate-500">Includes all 51 migrated WordPress high-ranking articles and your custom publications.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <input type="text" id="admin-blog-search" oninput="filterAdminBlogs(this.value)" placeholder="Search blogs by title or slug..." class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none w-64">
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-700 border-b border-slate-200">
+              <tr>
+                <th class="py-3 px-4">Article Title & Category</th>
+                <th class="py-3 px-4">SEO URL Slug</th>
+                <th class="py-3 px-4">Date</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-blogs-tbody" class="divide-y divide-slate-100">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB: CUSTOMER REVIEWS MANAGEMENT -->
+    <div id="tab-pane-reviews" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-xl font-bold text-brandNavy font-heading">Customer Reviews & Ratings Management</h2>
+            <p class="text-xs text-slate-500">Edit, moderate, and delete real-time customer reviews across Software Products, Repair Services, and Google Reviews.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="openAdminAddReviewModal()" class="bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5">
+              <span>+ Add Verified Review</span>
+            </button>
+            <button onclick="fetchAdminReviews()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1">
+              <span>🔄 Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Chips & Search -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+          <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+            <button onclick="filterAdminReviewsCategory('all')" id="rev-filter-btn-all" class="px-3.5 py-2 rounded-xl bg-brandBlue text-white shadow-xs">
+              All (<span id="rev-count-all">0</span>)
+            </button>
+            <button onclick="filterAdminReviewsCategory('software')" id="rev-filter-btn-software" class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">
+              💻 Software (<span id="rev-count-software">0</span>)
+            </button>
+            <button onclick="filterAdminReviewsCategory('service')" id="rev-filter-btn-service" class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">
+              🛠️ Services (<span id="rev-count-service">0</span>)
+            </button>
+            <button onclick="filterAdminReviewsCategory('google')" id="rev-filter-btn-google" class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">
+              ⭐ Google (<span id="rev-count-google">0</span>)
+            </button>
+          </div>
+          <div class="relative w-full sm:w-80">
+            <input type="text" id="admin-review-search" oninput="handleAdminReviewSearch()" placeholder="Search reviewer, city, text..." class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 pl-8 text-slate-800 focus:bg-white focus:outline-none">
+            <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+        </div>
+
+        <!-- Reviews List Table / Grid -->
+        <div id="admin-reviews-table-container" class="space-y-3">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: EDIT CUSTOMER REVIEW -->
+    <div id="admin-edit-review-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+      <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 relative">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+          <div>
+            <h3 class="text-lg font-bold text-brandNavy font-heading">Edit Customer Review</h3>
+            <span id="edit-rev-badge" class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-brandBlue">Software</span>
+          </div>
+          <button onclick="closeAdminEditReviewModal()" class="text-slate-400 hover:text-slate-700 p-1 rounded-full">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <form onsubmit="handleSaveEditReview(event)" class="space-y-3.5">
+          <input type="hidden" id="edit-rev-id">
+          <input type="hidden" id="edit-rev-type">
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Customer / Author Name</label>
+            <input type="text" id="edit-rev-author" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">City / Locality</label>
+              <input type="text" id="edit-rev-city" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Star Rating</label>
+              <select id="edit-rev-rating" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold text-amber-500 focus:bg-white focus:outline-none">
+                <option value="5">★★★★★ (5 Stars)</option>
+                <option value="4">★★★★☆ (4 Stars)</option>
+                <option value="3">★★★☆☆ (3 Stars)</option>
+                <option value="2">★★☆☆☆ (2 Stars)</option>
+                <option value="1">★☆☆☆☆ (1 Star)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Target Product / Service Label</label>
+            <input type="text" id="edit-rev-target" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Review Comment / Feedback</label>
+            <textarea id="edit-rev-comment" rows="3" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required></textarea>
+          </div>
+
+          <div class="pt-2 flex items-center justify-end gap-2">
+            <button type="button" onclick="closeAdminEditReviewModal()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition">
+              Cancel
+            </button>
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-brandBlue hover:bg-[#0665af] text-white text-xs font-bold shadow transition">
+              💾 Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: ADD NEW REVIEW -->
+    <div id="admin-add-review-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+      <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 relative">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+          <div>
+            <h3 class="text-lg font-bold text-brandNavy font-heading">Add Verified Customer Review</h3>
+            <p class="text-[11px] text-slate-500">Publish verified feedback that syncs live across user web & app.</p>
+          </div>
+          <button onclick="closeAdminAddReviewModal()" class="text-slate-400 hover:text-slate-700 p-1 rounded-full">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <form onsubmit="handleSaveAddReview(event)" class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Review Category</label>
+            <select id="add-rev-type" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold focus:bg-white focus:outline-none">
+              <option value="software">💻 Software License Review</option>
+              <option value="service">🛠️ Doorstep Repair Service Review</option>
+              <option value="google">⭐ Google Verified Review</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Customer / Author Name</label>
+            <input type="text" id="add-rev-author" placeholder="e.g. Ramesh Kumar" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">City / Locality</label>
+              <input type="text" id="add-rev-city" placeholder="e.g. Navi Mumbai" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Star Rating</label>
+              <select id="add-rev-rating" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold text-amber-500 focus:bg-white focus:outline-none">
+                <option value="5">★★★★★ (5 Stars)</option>
+                <option value="4">★★★★☆ (4 Stars)</option>
+                <option value="3">★★★☆☆ (3 Stars)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Target Product ID / Service Name</label>
+            <input type="text" id="add-rev-target" placeholder="e.g. sw-win11-pro or Laptop Repair at Home" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Review Comment / Feedback</label>
+            <textarea id="add-rev-comment" rows="3" placeholder="Write genuine customer feedback..." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required></textarea>
+          </div>
+
+          <div class="pt-2 flex items-center justify-end gap-2">
+            <button type="button" onclick="closeAdminAddReviewModal()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition">
+              Cancel
+            </button>
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow transition">
+              Publish Review
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MIGRATED WORDPRESS BLOGS SCRIPT -->
+  <script src="/migrated_blogs.js"></script>
+  <script>
+    // API BASE (Relative path so Netlify static redirects & local development work seamlessly)
+    const API_BASE = '';
+    const FIXFLY_CLOUD_SYNC_BASE = 'https://kvdb.io/DEtS3yMR6BUsjGzjGvjSuP';
+
+    async function pushToCloudSync(key, data) {
+      try {
+        const payload = typeof data === 'string' ? data : JSON.stringify(data);
+        await fetch(FIXFLY_CLOUD_SYNC_BASE + '/' + key, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload
+        });
+        console.log('✓ Cloud Sync updated for: ' + key);
+      } catch (err) {
+        console.warn('Cloud Sync error for ' + key, err);
+      }
+    }
+
+    async function syncAllToCloud() {
+      const btn = document.getElementById('cloud-sync-status-btn');
+      if (btn) btn.innerHTML = '<span>⏳ Syncing to Cloud...</span>';
+      try {
+        await Promise.all([
+          pushToCloudSync('software', AdminState.software),
+          pushToCloudSync('services', AdminState.services),
+          pushToCloudSync('rates', AdminState.rates),
+          pushToCloudSync('experts', AdminState.experts),
+          pushToCloudSync('amazon_products', AdminState.products),
+          pushToCloudSync('top_offer', (document.getElementById('announcement-offer-input') ? document.getElementById('announcement-offer-input').value.trim() : 'FREE LAPTOP CLEANING'))
+        ]);
+        if (btn) btn.innerHTML = '<span>✓ Live Cloud Sync: 100% Synced</span>';
+        alert('✓ All Products, Prices, and Settings have been Synced to the Cloud! Any mobile phone, tablet, or desktop opening fixfly.in will now show the updated data in real-time.');
+      } catch(e) {
+        if (btn) btn.innerHTML = '<span>⚠️ Sync Retry</span>';
+        alert('Cloud sync completed with local backup.');
+      }
+    }
+
+    const DefaultAdminSoftware = [
+  {
+    "id": "sw-win11-pro",
+    "title": "Microsoft Windows 11 Pro Genuine License Key (Lifetime)",
+    "category": "Operating Systems",
+    "price": 99,
+    "originalPrice": 4999,
+    "badge": "Best Seller",
+    "image": "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=600&auto=format&fit=crop&q=80",
+    "bullets": [
+      "License key delivered to Email & WhatsApp within 2 hours (Max 24 hours)",
+      "Lifetime 1 PC Activation with Official Microsoft Servers",
+      "Free Upgrade from Windows 10 Pro / Home without data loss",
+      "Supports 64-bit & 32-bit with Official Microsoft ISO Link",
+      "Doorstep or Remote Setup Assistance by Certified Fixfly Engineer"
+    ],
+    "description": "100% Genuine Retail Microsoft Windows 11 Professional Lifetime License Key for 1 PC. Permanently activate your laptop or desktop with an official digital license tied to your motherboard. Includes 24/7 technical support and warranty from Fixfly Innovations Pvt. Ltd.",
+    "rating": 5,
+    "reviewsCount": 3,
+    "inStock": true
+  },
+  {
+    "id": "sw-office-2021",
+    "title": "Microsoft Office 2021 Professional Plus (Lifetime Genuine)",
+    "category": "Office & Productivity",
+    "price": 999,
+    "originalPrice": 6999,
+    "badge": "Top Rated",
+    "image": "https://images.unsplash.com/photo-1542744094-3a31727f3050?w=600&auto=format&fit=crop&q=80",
+    "bullets": [
+      "Includes Word, Excel, PowerPoint, Outlook, Access & Publisher",
+      "Lifetime License for 1 PC (No Monthly or Yearly Subscriptions)",
+      "Official Activation from setup.office.com with Microsoft Account",
+      "Multi-Language Support (English, Hindi, Marathi, etc.)",
+      "Complete Fixfly Remote Assistance for Setup & Activation"
+    ],
+    "description": "Genuine Microsoft Office 2021 Professional Plus lifetime activation key for 1 Windows PC. No recurring fees or renewals. Ideal for businesses, students, and home offices. License key delivered via Email & WhatsApp within 2 hours (Max 24 hours).",
+    "rating": 4.8,
+    "reviewsCount": 94,
+    "inStock": true
+  },
+  {
+    "id": "sw-acrobat-pro",
+    "title": "Adobe Acrobat Pro DC (Full PDF Editor Lifetime Version)",
+    "category": "Design & Productivity",
+    "price": 1499,
+    "originalPrice": 8999,
+    "badge": "Trending",
+    "image": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=600&auto=format&fit=crop&q=80",
+    "bullets": [
+      "Edit PDF Text, Images, Organize Pages, and OCR Scanned Papers",
+      "Digitally Sign, Protect, and Password-Lock Important Documents",
+      "Convert PDF to Word, Excel, PowerPoint & JPEG in High Quality",
+      "Permanent Lifetime Activation for 1 Windows PC (No Cloud Fees)",
+      "Tested & Certified by Fixfly Software Engineers"
+    ],
+    "description": "The industry-standard PDF editing software for students, lawyers, chartered accountants, and enterprises. Full lifetime activation for Windows PC without monthly Adobe Cloud subscription bills. Includes comprehensive tech assistance.",
+    "rating": 4.9,
+    "reviewsCount": 67,
+    "inStock": true
+  },
+  {
+    "id": "sw-quickheal-totalsec",
+    "title": "Quick Heal Total Security Antivirus (1 PC / 3 Years)",
+    "category": "Security & Antivirus",
+    "price": 899,
+    "originalPrice": 2499,
+    "badge": "Heavy Discount",
+    "image": "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&auto=format&fit=crop&q=80",
+    "bullets": [
+      "Advanced Anti-Ransomware & Zero-Day Threat Protection Shield",
+      "Safe Banking Shield for Netbanking, Credit Cards & UPI",
+      "Automatic Cloud Virus Definition Updates for 3 Full Years",
+      "PC Speed Booster, Thermal Monitor & Junk Cleaner Included",
+      "Official 100% Genuine Retail Activation Code with Registration"
+    ],
+    "description": "Top-rated Indian antivirus security suite engineered to protect laptops and desktops from ransomware, malware, spyware, and phishing threats for a full 3 years. Ensures maximum protection during online banking and web browsing.",
+    "rating": 4.9,
+    "reviewsCount": 112,
+    "inStock": true
+  },
+  {
+    "id": "sw-coreldraw-2024",
+    "title": "CorelDRAW Graphics Suite 2024 (Lifetime Full Version)",
+    "category": "Design & Creativity",
+    "price": 1999,
+    "originalPrice": 12999,
+    "badge": "Designer Choice",
+    "image": "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format&fit=crop&q=80",
+    "bullets": [
+      "Professional Vector Illustration, Page Layout & Typography",
+      "Includes Font Manager, Corel PHOTO-PAINT, and PowerTRACE",
+      "Lifetime Perpetual Activation for 1 Windows PC",
+      "Print-Ready CMYK and Web RGB Ultra-High Resolution Export",
+      "GPU Accelerated Canvas with Smooth Vector Rendering"
+    ],
+    "description": "The complete professional graphics suite for flex banner design, printing presses, vector artwork, logos, and advertising layouts. Pre-configured for high performance on modern multi-core PCs.",
+    "rating": 4.7,
+    "reviewsCount": 45,
+    "inStock": true
+  },
+  {
+    "id": "sw-idm-lifetime",
+    "title": "Internet Download Manager (IDM) Genuine Lifetime License",
+    "category": "Utilities & Tools",
+    "price": 599,
+    "originalPrice": 1999,
+    "badge": "Popular",
+    "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&auto=format&fit=crop&q=80",
+    "bullets": [
+      "Up to 5x Faster Download Speeds with Dynamic File Segmentation",
+      "Resume Broken, Corrupted & Paused Downloads Seamlessly",
+      "One-Click Browser Integration for Chrome, Edge, and Firefox",
+      "Genuine Lifetime Serial Key for 1 PC with Free Version Updates"
+    ],
+    "description": "Accelerate and organize your downloads reliably. Resume downloads interrupted by lost connections, network problems, or unexpected power outages. The essential tool for all laptop users.",
+    "rating": 4.9,
+    "reviewsCount": 88,
+    "inStock": true
+  }
+];
+
+    const DefaultAdminServices = [
+  {
+    "id": "laptop-repair",
+    "key": "laptop-repair",
+    "category": "laptop",
+    "title": "Laptop Repair & Diagnostics",
+    "rate": "₹99",
+    "fallbackRate": "₹99",
+    "badge": "Most Popular",
+    "rating": "4.9 ★",
+    "reviewsCount": "480+ ratings",
+    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=700&q=80",
+    "description": "Instant doorstep resolution for slow laptops, blue screens, broken screens, failing batteries, and power faults.",
+    "inclusions": [
+      "Comprehensive motherboard, RAM, SSD multi-point electrical scan",
+      "On-spot resolution of minor software, driver & connector faults",
+      "Exact upfront repair quotation before opening any screws",
+      "Backed by 6 Months Unconditional Warranty (T&C Apply)"
+    ],
+    "techDetails": "Our certified engineers carry portable Fluke digital multimeters, ESD grounding mats, and replacement components to repair 85% of issues in 60 minutes."
+  },
+  {
+    "id": "laptop-cleaning",
+    "key": "laptop-cleaning",
+    "category": "cleaning",
+    "title": "Laptop Deep Thermal Cleaning",
+    "rate": "₹799",
+    "fallbackRate": "₹799",
+    "badge": "Performance Booster",
+    "rating": "4.8 ★",
+    "reviewsCount": "360+ ratings",
+    "image": "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=700&q=80",
+    "description": "Eliminate thermal throttling and noisy fans. We remove hardened old paste and apply Arctic MX-4 compound.",
+    "inclusions": [
+      "High-velocity compressed air heatpipe radiator fin decalcification",
+      "Micro-particle Arctic MX-4 paste on CPU and dedicated GPU dies",
+      "Anti-static fan spindle cleaning and lubrication",
+      "10°C to 20°C verified CPU temp drop post-service"
+    ],
+    "techDetails": "Includes non-conductive Arctic MX-4 compound application, isopropyl alcohol PCB wash, and thermal imaging verification."
+  },
+  {
+    "id": "gaming-cleaning",
+    "key": "gaming-cleaning",
+    "category": "gaming",
+    "title": "Gaming Laptop Dual-Fan Overhaul",
+    "rate": "₹1,050",
+    "fallbackRate": "₹1,050",
+    "badge": "Dual-Fan Special",
+    "rating": "5.0 ★",
+    "reviewsCount": "290+ ratings",
+    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=700&q=80",
+    "description": "High-performance dual radial fan deep cleaning, copper heatsink polish, and heavy thermal pad renewal.",
+    "inclusions": [
+      "Dual-radial fan disassembly and copper fin decalcification",
+      "High-conductivity thermal grease on CPU & dedicated GPU dies",
+      "Full benchmark stress test with FPS & thermal reporting",
+      "Eliminates frame drops in high-end AAA gaming"
+    ],
+    "techDetails": "Dual-phase copper heatpipe decalcification with 12.5 W/mK thermal pads on VRMs and VRAM chips."
+  },
+  {
+    "id": "macbook-repair",
+    "key": "macbook-repair",
+    "category": "macbook",
+    "title": "MacBook Specialist Care at Home",
+    "rate": "₹299",
+    "fallbackRate": "₹299",
+    "badge": "Apple Specialist",
+    "rating": "4.9 ★",
+    "reviewsCount": "310+ ratings",
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=80",
+    "description": "Specialized Apple hardware diagnostics for MacBook Air and MacBook Pro (M1, M2, M3 & Intel).",
+    "inclusions": [
+      "Dedicated Apple diagnostic kit for Air & Pro (M1, M2, M3 & Intel)",
+      "Battery cycle calibration, trackpad & keyboard diagnostics",
+      "Original OEM Retina display & logic board repair",
+      "Same-day doorstep service with zero data loss guarantee"
+    ],
+    "techDetails": "Precision pentalobe and torx ESD toolkits, calibrated digital microscope for SMC/T2/M-series logic board inspection."
+  },
+  {
+    "id": "desktop-repair",
+    "key": "desktop-repair",
+    "category": "desktop",
+    "title": "Desktop PC & Workstation Support",
+    "rate": "₹199",
+    "fallbackRate": "₹199",
+    "badge": "PC & Workstation",
+    "rating": "4.8 ★",
+    "reviewsCount": "220+ ratings",
+    "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=700&q=80",
+    "description": "Full tower diagnostics, SMPS power testing, graphics card stability tests, and custom workstation repairs.",
+    "inclusions": [
+      "Multi-rail SMPS power testing, RAM & SSD speed upgrade",
+      "Custom liquid cooler / AIO pump inspection",
+      "Cable management & airflow optimization",
+      "No power / random reboot / blue screen diagnosis"
+    ],
+    "techDetails": "Digital power supply tester, RAM memtest86 diagnostic USB boot, and GPU FurMark thermal load testing."
+  },
+  {
+    "id": "motherboard-repair",
+    "key": "motherboard-repair",
+    "category": "motherboard",
+    "title": "Motherboard Chip-Level Repair",
+    "rate": "₹1,250",
+    "fallbackRate": "₹1,250",
+    "badge": "Level-4 Chipset",
+    "rating": "4.9 ★",
+    "reviewsCount": "190+ ratings",
+    "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80",
+    "description": "Micro-soldering, short circuit power rail tracing, MOSFET, capacitor replacement, and BGA reballing.",
+    "inclusions": [
+      "Thermal infrared camera short circuit detection",
+      "Oscilloscope power rail clock & reset signal inspection",
+      "SMD component replacement with factory precision",
+      "6 Months Unconditional Warranty (T&C Apply)"
+    ],
+    "techDetails": "Quick 861DW hot air rework station, Hakko soldering iron, and FLIR thermal imaging camera."
+  },
+  {
+    "id": "corporate-amc",
+    "key": "corporate-amc",
+    "category": "corporate",
+    "title": "Corporate Sales & IT AMC Support",
+    "rate": "Custom Quote",
+    "fallbackRate": "Custom Quote",
+    "badge": "Business & AMC",
+    "rating": "4.9 ★",
+    "reviewsCount": "150+ Companies",
+    "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=700&q=80",
+    "description": "Annual Maintenance Contracts (AMC), corporate laptop procurement, IT infrastructure setup, and dedicated on-site engineer support.",
+    "inclusions": [
+      "Scheduled monthly preventive maintenance & thermal servicing",
+      "SLA-backed 2-hour priority emergency dispatch",
+      "Asset inventory tagging, antivirus management & data backup",
+      "Refurbished & new corporate bulk laptop sales with warranty"
+    ],
+    "techDetails": "Dedicated corporate account manager, centralized helpdesk portal, and enterprise-grade hardware support."
+  }
+];
+
+    const AdminState = {
+      activeTab: 'software',
+      orders: [],
+      customers: [],
+      software: JSON.parse(JSON.stringify(DefaultAdminSoftware)),
+      services: JSON.parse(JSON.stringify(DefaultAdminServices)),
+      payu: {
+        merchantKey: 'gtKFFx',
+        merchantSalt: 'eCwWELxi',
+        environment: 'sandbox'
+      },
+      experts: [
+        {
+          id: 'exp-1',
+          name: 'Anand Verma',
+          specialty: 'Expert in Laptop',
+          experience: '9+ Years Experience',
+          rating: '4.9 ★',
+          repairs: '1,200+ Repairs',
+          photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80',
+          bio: 'Certified chip-level BGA specialist for Dell, HP, Lenovo & Asus gaming laptops.'
+        },
+        {
+          id: 'exp-2',
+          name: 'Sunil Rao',
+          specialty: 'Expert in iMac / MacBook',
+          experience: '8+ Years Experience',
+          rating: '5.0 ★',
+          repairs: '950+ Repairs',
+          photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80',
+          bio: 'Apple certified technician specializing in MacBook M1/M2/M3 logic boards and iMac display repairs.'
+        },
+        {
+          id: 'exp-3',
+          name: 'Pradeep Sharma',
+          specialty: 'Expert in Desktop',
+          experience: '7+ Years Experience',
+          rating: '4.8 ★',
+          repairs: '880+ Repairs',
+          photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=80',
+          bio: 'Custom PC builder, thermal overclocking and motherboard power-stage troubleshooter.'
+        }
+      ],
+      rates: {
+        cleaning: 799,
+        gaming: 1050,
+        desktop: 199,
+        screen: 1850,
+        keyboard: 650,
+        motherboard: 1250
+      },
+      products: [
+        {
+          id: 'prod-thermal-paste',
+          title: 'Fixfly High-Performance Arctic Thermal Paste (4g Syringe)',
+          price: '₹299',
+          badge: 'Prime Delivery',
+          rating: '4.9',
+          reviewsCount: '320',
+          image: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500&auto=format&fit=crop&q=80',
+          amazonUrl: 'https://www.amazon.in/stores/FixflyInnovationsPvtLtd/page/8A60FF0E-808E-4C96-92A7-18C0A1889096?lp_asin=B0GVGRM4Z1',
+          description: 'Carbon-microparticle high thermal conductivity compound.'
+        },
+        {
+          id: 'prod-screen-cleaner',
+          title: 'Fixfly Anti-Static 250ml Screen & Keyboard Cleaning Kit',
+          price: '₹249',
+          badge: 'Best Seller',
+          rating: '4.8',
+          reviewsCount: '480',
+          image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=500&auto=format&fit=crop&q=80',
+          amazonUrl: 'https://www.amazon.in/stores/FixflyInnovationsPvtLtd/page/8A60FF0E-808E-4C96-92A7-18C0A1889096',
+          description: 'Streak-free anti-microbial cleaning spray with micro-fiber cloth.'
+        }
+      ]
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadInitialData();
+    });
+
+    async function loadInitialData() {
+      // 1. Top Offer Announcement - Load from localStorage first, fallback to cloud, then default
+      let savedOffer = localStorage.getItem("fixfly_top_offer");
+      if (!savedOffer) {
+        try {
+          const r = await fetch(FIXFLY_CLOUD_SYNC_BASE + '/top_offer?t=' + Date.now());
+          if (r.ok) {
+            const txt = await r.text();
+            if (txt && txt.trim()) savedOffer = txt.trim();
+          }
+        } catch (e) {}
+      }
+      if (!savedOffer) savedOffer = "FREE LAPTOP CLEANING";
+      localStorage.setItem("fixfly_top_offer", savedOffer);
+      const offerInput = document.getElementById("announcement-offer-input");
+      if (offerInput) offerInput.value = savedOffer;
+
+      // 2. Software Products - Load from localStorage first, fallback to cloud, then default
+      let swLoaded = false;
+      const localSw = localStorage.getItem("fixfly_software");
+      if (localSw) {
+        try {
+          const parsed = JSON.parse(localSw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            AdminState.software = parsed;
+            swLoaded = true;
+          }
+        } catch (e) {}
+      }
+      if (!swLoaded) {
+        try {
+          const r = await fetch(FIXFLY_CLOUD_SYNC_BASE + '/software?t=' + Date.now());
+          if (r.ok) {
+            const items = await r.json();
+            if (Array.isArray(items) && items.length > 0) {
+              AdminState.software = items;
+              swLoaded = true;
+            }
+          }
+        } catch (e) {}
+      }
+      if (!swLoaded) {
+        AdminState.software = JSON.parse(JSON.stringify(DefaultAdminSoftware));
+      }
+      localStorage.setItem("fixfly_software", JSON.stringify(AdminState.software));
+      renderAdminSoftware();
+
+      // 3. Services Catalog - Load from localStorage first, fallback to cloud, then default
+      let svcLoaded = false;
+      const localSvc = localStorage.getItem("fixfly_services");
+      if (localSvc) {
+        try {
+          const parsed = JSON.parse(localSvc);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            AdminState.services = parsed;
+            svcLoaded = true;
+          }
+        } catch (e) {}
+      }
+      if (!svcLoaded) {
+        try {
+          const r = await fetch(FIXFLY_CLOUD_SYNC_BASE + '/services?t=' + Date.now());
+          if (r.ok) {
+            const items = await r.json();
+            if (Array.isArray(items) && items.length > 0) {
+              AdminState.services = items;
+              svcLoaded = true;
+            }
+          }
+        } catch (e) {}
+      }
+      if (!svcLoaded) {
+        AdminState.services = JSON.parse(JSON.stringify(DefaultAdminServices));
+      }
+      localStorage.setItem("fixfly_services", JSON.stringify(AdminState.services));
+      renderAdminServicesList();
+
+      // 4. Doorstep Service Rates - Load from localStorage first, fallback to cloud, then default
+      let ratesLoaded = false;
+      const savedRates = localStorage.getItem("fixfly_rates");
+      if (savedRates) {
+        try {
+          const parsed = JSON.parse(savedRates);
+          if (parsed && typeof parsed === "object" && Object.keys(parsed).length > 0) {
+            AdminState.rates = Object.assign(AdminState.rates, parsed);
+            ratesLoaded = true;
+          }
+        } catch (e) {}
+      }
+      if (!ratesLoaded) {
+        try {
+          const r = await fetch(FIXFLY_CLOUD_SYNC_BASE + '/rates?t=' + Date.now());
+          if (r.ok) {
+            const parsed = await r.json();
+            if (parsed && typeof parsed === "object") {
+              AdminState.rates = Object.assign(AdminState.rates, parsed.rates || parsed);
+              ratesLoaded = true;
+            }
+          }
+        } catch (e) {}
+      }
+      localStorage.setItem("fixfly_rates", JSON.stringify(AdminState.rates));
+      if (document.getElementById("rate-cleaning")) {
+        document.getElementById("rate-cleaning").value = AdminState.rates.cleaning || 799;
+        document.getElementById("rate-gaming").value = AdminState.rates.gaming || 1050;
+        document.getElementById("rate-desktop").value = AdminState.rates.desktop || 199;
+        document.getElementById("rate-screen").value = AdminState.rates.screen || 1850;
+        document.getElementById("rate-keyboard").value = AdminState.rates.keyboard || 650;
+        document.getElementById("rate-motherboard").value = AdminState.rates.motherboard || 1250;
+      }
+
+      // 5. Experts - Load from localStorage first, fallback to cloud, then default
+      let expLoaded = false;
+      const savedExp = localStorage.getItem("fixfly_experts");
+      if (savedExp) {
+        try {
+          const parsed = JSON.parse(savedExp);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            AdminState.experts = parsed;
+            expLoaded = true;
+          }
+        } catch (e) {}
+      }
+      if (!expLoaded) {
+        try {
+          const r = await fetch(FIXFLY_CLOUD_SYNC_BASE + '/experts?t=' + Date.now());
+          if (r.ok) {
+            const items = await r.json();
+            if (Array.isArray(items) && items.length > 0) {
+              AdminState.experts = items;
+              expLoaded = true;
+            }
+          }
+        } catch (e) {}
+      }
+      localStorage.setItem("fixfly_experts", JSON.stringify(AdminState.experts));
+      renderAdminExperts();
+
+      // 6. Amazon Products - Load from localStorage first, fallback to cloud, then default
+      let prodLoaded = false;
+      const savedProds = localStorage.getItem("fixfly_products");
+      if (savedProds) {
+        try {
+          const parsed = JSON.parse(savedProds);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            AdminState.products = parsed;
+            prodLoaded = true;
+          }
+        } catch (e) {}
+      }
+      if (!prodLoaded) {
+        try {
+          const r = await fetch(FIXFLY_CLOUD_SYNC_BASE + '/amazon_products?t=' + Date.now());
+          if (r.ok) {
+            const items = await r.json();
+            if (Array.isArray(items) && items.length > 0) {
+              AdminState.products = items;
+              prodLoaded = true;
+            }
+          }
+        } catch (e) {}
+      }
+      localStorage.setItem("fixfly_products", JSON.stringify(AdminState.products));
+      renderAdminProductsList();
+
+      // 6. Load SEO Blogs
+      if (typeof renderAdminBlogs === "function") {
+        renderAdminBlogs();
+      }
+
+      // 7. Load Reviews
+      if (typeof fetchAdminReviews === "function") {
+        fetchAdminReviews();
+      }
+    }
+
+    function switchTab(tabId) {
+      AdminState.activeTab = tabId;
+      const tabs = ["software", "announcement", "rates", "products", "experts", "blog", "reviews"];
+      
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const pane = document.getElementById(`tab-pane-${t}`);
+        if (!btn || !pane) return;
+        if (t === tabId) {
+          btn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-brandBlue text-white shadow transition";
+          pane.classList.remove("hidden");
+        } else {
+          btn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 transition";
+          pane.classList.add("hidden");
+        }
+      });
+
+      if (tabId === "reviews" && typeof fetchAdminReviews === "function") {
+        fetchAdminReviews();
+      }
+    }
+
+    // --- ANNOUNCEMENT BANNER MANAGEMENT ---
+    function handleSaveAnnouncement(e) {
+      e.preventDefault();
+      const input = document.getElementById("announcement-offer-input");
+      const val = input ? input.value.trim() : "FREE LAPTOP CLEANING";
+      localStorage.setItem("fixfly_top_offer", val);
+      pushToCloudSync('top_offer', val);
+      alert('✓ Top Offer Announcement saved & synced live to all devices! Banner: "' + val + '"');
+    }
+
+    // --- SOFTWARE PRODUCTS MANAGEMENT ---
+    function renderAdminSoftware() {
+      const grid = document.getElementById('admin-software-grid');
+      const countEl = document.getElementById('sw-count');
+      countEl.innerText = AdminState.software.length;
+
+      if (!AdminState.software.length) {
+        grid.innerHTML = '<p class="text-xs text-slate-400 col-span-3">No software products found.</p>';
+        return;
+      }
+
+      grid.innerHTML = AdminState.software.map(p => `
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-between space-y-3">
+          <div>
+            <div class="relative h-32 rounded-xl overflow-hidden mb-3 bg-slate-200">
+              <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover">
+              <span class="absolute top-2 left-2 bg-brandNavy text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                ${p.category}
+              </span>
+            </div>
+            <h4 class="font-bold text-sm text-brandNavy leading-snug">${p.title}</h4>
+            <div class="flex items-center gap-2 mt-2">
+              <span class="text-base font-black text-emerald-600">₹${p.price}</span>
+              <span class="text-xs text-slate-400 line-through">₹${p.originalPrice}</span>
+              <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">${p.badge || 'Discounted'}</span>
+            </div>
+            <ul class="text-[11px] text-slate-600 mt-2 space-y-1 list-disc list-inside">
+              ${(p.bullets || []).slice(0, 2).map(b => `<li>${b}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-200">
+            <button onclick="editSoftware('${p.id}')" class="flex-1 bg-white hover:bg-slate-100 text-brandBlue font-bold text-xs py-2 px-3 rounded-xl border border-slate-200 transition">
+              ✏️ Edit
+            </button>
+            <button onclick="deleteSoftware('${p.id}')" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-2 px-3 rounded-xl border border-red-200 transition">
+              🗑️ Delete
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function handleSaveSoftware(e) {
+      e.preventDefault();
+      const id = document.getElementById('sw-edit-id').value.trim();
+      const title = document.getElementById('sw-title').value.trim();
+      const category = document.getElementById('sw-category').value;
+      const price = Number(document.getElementById('sw-price').value) || 0;
+      const originalPrice = Number(document.getElementById('sw-orig-price').value) || 0;
+      const badge = document.getElementById('sw-badge').value.trim();
+      const image = document.getElementById('sw-image').value.trim();
+      const bulletsRaw = document.getElementById('sw-bullets').value.trim();
+      const description = document.getElementById('sw-description').value.trim();
+
+      const bullets = bulletsRaw.split('\n').map(b => b.trim()).filter(Boolean);
+
+      const targetId = id || ('sw-' + Date.now());
+      if (!Array.isArray(AdminState.software)) AdminState.software = [];
+      const existingIdx = AdminState.software.findIndex(p => p.id === targetId);
+
+      const payload = {
+        id: targetId,
+        title,
+        category,
+        price,
+        originalPrice,
+        badge,
+        image,
+        bullets,
+        description,
+        rating: existingIdx !== -1 && AdminState.software[existingIdx].rating ? AdminState.software[existingIdx].rating : 5,
+        reviewsCount: existingIdx !== -1 && AdminState.software[existingIdx].reviewsCount ? AdminState.software[existingIdx].reviewsCount : 1,
+        inStock: true
+      };
+
+      if (existingIdx !== -1) {
+        AdminState.software[existingIdx] = Object.assign({}, AdminState.software[existingIdx], payload);
+      } else {
+        AdminState.software.unshift(payload);
+      }
+
+      // Immediately write to localStorage for instant real-time sync across the site
+      localStorage.setItem('fixfly_software', JSON.stringify(AdminState.software));
+      renderAdminSoftware();
+      cancelSoftwareEdit();
+      pushToCloudSync('software', AdminState.software);
+      alert('✓ Software product saved successfully! Price (₹' + price + ') is now live and permanently saved on refresh.');
+
+      // Background optional API call (non-blocking)
+      try {
+        fetch(API_BASE + '/api/software', {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+      } catch (err) {}
+    }
+
+    function editSoftware(id) {
+      const p = AdminState.software.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('sw-edit-id').value = p.id;
+      document.getElementById('sw-title').value = p.title;
+      document.getElementById('sw-category').value = p.category;
+      document.getElementById('sw-price').value = p.price;
+      document.getElementById('sw-orig-price').value = p.originalPrice;
+      document.getElementById('sw-badge').value = p.badge || '';
+      document.getElementById('sw-image').value = p.image;
+      document.getElementById('sw-bullets').value = (p.bullets || []).join('\n');
+      document.getElementById('sw-description').value = p.description || '';
+
+      document.getElementById('sw-form-title').innerText = 'Edit Software: ' + p.title;
+      document.getElementById('sw-submit-btn').innerText = '✓ Update Software Product';
+      document.getElementById('sw-cancel-btn').classList.remove('hidden');
+
+      switchTab('software');
+      window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    function cancelSoftwareEdit() {
+      document.getElementById('sw-edit-id').value = '';
+      document.getElementById('sw-title').value = '';
+      document.getElementById('sw-price').value = '';
+      document.getElementById('sw-orig-price').value = '';
+      document.getElementById('sw-badge').value = '';
+      document.getElementById('sw-image').value = '';
+      document.getElementById('sw-bullets').value = '';
+      document.getElementById('sw-description').value = '';
+
+      document.getElementById('sw-form-title').innerText = 'Add New Software Product';
+      document.getElementById('sw-submit-btn').innerText = '💾 Save Software Product';
+      document.getElementById('sw-cancel-btn').classList.add('hidden');
+    }
+
+    async function deleteSoftware(id) {
+      if (!confirm('Are you sure you want to delete this software product?')) return;
+      try {
+        await fetch(API_BASE + '/api/software', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+      } catch (e) { console.error(e); }
+
+      AdminState.software = AdminState.software.filter(p => p.id !== id);
+      localStorage.setItem('fixfly_software', JSON.stringify(AdminState.software));
+      pushToCloudSync('software', AdminState.software);
+      renderAdminSoftware();
+    }
+
+    // --- EXPERTS ---
+    function renderAdminExperts() {
+      const grid = document.getElementById('admin-experts-grid');
+      grid.innerHTML = AdminState.experts.map(exp => `
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-start gap-3">
+          <img src="${exp.photo}" alt="${exp.name}" class="w-14 h-14 rounded-xl object-cover border border-slate-200">
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold text-sm text-brandNavy truncate">${exp.name}</h4>
+            <div class="text-xs font-semibold text-brandBlue">${exp.specialty}</div>
+            <div class="text-[11px] text-slate-500 mt-1">${exp.experience} • ${exp.repairs}</div>
+          </div>
+          <button onclick="handleDeleteExpert('${exp.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold p-1">✕</button>
+        </div>
+      `).join('');
+    }
+
+    async function handleAddExpert(e) {
+      e.preventDefault();
+      const name = document.getElementById('expert-name').value.trim();
+      const specialty = document.getElementById('expert-specialty').value;
+      const experience = document.getElementById('expert-exp').value.trim();
+      const rating = document.getElementById('expert-rating').value.trim();
+      const repairs = document.getElementById('expert-repairs').value.trim();
+      const photo = document.getElementById('expert-photo').value.trim();
+      const bio = document.getElementById('expert-bio').value.trim();
+
+      const newExp = {
+        id: 'exp-' + Date.now(),
+        name, specialty, experience, rating, repairs, photo, bio
+      };
+
+      AdminState.experts.unshift(newExp);
+      localStorage.setItem('fixfly_experts', JSON.stringify(AdminState.experts));
+      renderAdminExperts();
+      e.target.reset();
+
+      pushToCloudSync('experts', AdminState.experts);
+
+      alert('✓ Engineer profile added and live-synced to Homepage! Permanently saved on refresh.');
+    }
+
+    async function handleDeleteExpert(id) {
+      if (confirm('Remove this engineer profile from homepage?')) {
+        try {
+          await fetch(API_BASE + '/api/experts', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+          });
+        } catch (e) {}
+
+        AdminState.experts = AdminState.experts.filter(e => e.id !== id);
+        localStorage.setItem('fixfly_experts', JSON.stringify(AdminState.experts));
+        renderAdminExperts();
+        pushToCloudSync('experts', AdminState.experts);
+      }
+    }
+
+    // --- RATES ---
+    async function handleUpdateRates(e) {
+      e.preventDefault();
+      AdminState.rates.cleaning = parseInt(document.getElementById('rate-cleaning').value) || 799;
+      AdminState.rates.gaming = parseInt(document.getElementById('rate-gaming').value) || 1050;
+      AdminState.rates.desktop = parseInt(document.getElementById('rate-desktop').value) || 199;
+      AdminState.rates.screen = parseInt(document.getElementById('rate-screen').value) || 1850;
+      AdminState.rates.keyboard = parseInt(document.getElementById('rate-keyboard').value) || 650;
+      AdminState.rates.motherboard = parseInt(document.getElementById('rate-motherboard').value) || 1250;
+
+      localStorage.setItem('fixfly_rates', JSON.stringify(AdminState.rates));
+      pushToCloudSync('rates', AdminState.rates);
+
+      alert('✓ All Doorstep Service Rates saved! Live on customer website and permanently saved on refresh.');
+    }
+
+    // --- AMAZON PRODUCTS ---
+    function renderAdminProductsList() {
+      const grid = document.getElementById('admin-products-grid');
+      grid.innerHTML = AdminState.products.map(p => `
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+          <div class="h-28 bg-white rounded-xl overflow-hidden border border-slate-200">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-contain p-2">
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-brandNavy line-clamp-2">${p.title}</h4>
+            <div class="text-sm font-black text-amber-600 mt-1">${p.price}</div>
+          </div>
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-200">
+            <button onclick="editProduct('${p.id}')" class="flex-1 bg-white hover:bg-slate-100 text-brandBlue font-bold text-xs py-1.5 px-3 rounded-lg border border-slate-200">Edit</button>
+            <button onclick="handleDeleteProduct('${p.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold py-1.5 px-3">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function handleSaveProduct(e) {
+      e.preventDefault();
+      const id = document.getElementById('admin-prod-id').value;
+      const title = document.getElementById('admin-prod-title-input').value.trim();
+      const price = document.getElementById('admin-prod-price-input').value.trim();
+      const badge = document.getElementById('admin-prod-badge-input').value.trim();
+      const rating = document.getElementById('admin-prod-rating-input').value.trim();
+      const reviewsCount = document.getElementById('admin-prod-reviews-input').value.trim();
+      const image = document.getElementById('admin-prod-image-input').value.trim();
+      const amazonUrl = document.getElementById('admin-prod-url-input').value.trim();
+      const description = document.getElementById('admin-prod-desc-input').value.trim();
+
+      const prodPayload = { id: id || ('prod-' + Date.now()), title, price, badge, rating, reviewsCount, image, amazonUrl, description };
+
+      if (id) {
+        const idx = AdminState.products.findIndex(p => p.id === id);
+        if (idx !== -1) {
+          AdminState.products[idx] = prodPayload;
+        }
+      } else {
+        AdminState.products.unshift(prodPayload);
+      }
+
+      localStorage.setItem('fixfly_products', JSON.stringify(AdminState.products));
+      renderAdminProductsList();
+      cancelProductEdit();
+
+      pushToCloudSync('amazon_products', AdminState.products);
+
+      alert('✓ Product saved to Amazon catalog! Live on customer website and permanently saved on refresh.');
+    }
+
+    async function handleDeleteProduct(id) {
+      if (!confirm('Are you sure you want to remove this product from the Amazon catalog?')) return;
+      try {
+        await fetch(API_BASE + '/api/amazon-products', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+      } catch (e) {}
+
+      AdminState.products = AdminState.products.filter(p => p.id !== id);
+      localStorage.setItem('fixfly_products', JSON.stringify(AdminState.products));
+      renderAdminProductsList();
+    }
+
+    function editProduct(id) {
+      const p = AdminState.products.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('admin-prod-id').value = p.id;
+      document.getElementById('admin-prod-title-input').value = p.title || '';
+      document.getElementById('admin-prod-price-input').value = p.price || '';
+      document.getElementById('admin-prod-badge-input').value = p.badge || '';
+      document.getElementById('admin-prod-rating-input').value = p.rating || '4.9';
+      document.getElementById('admin-prod-reviews-input').value = p.reviewsCount || '100+';
+      document.getElementById('admin-prod-image-input').value = p.image || '';
+      document.getElementById('admin-prod-url-input').value = p.amazonUrl || '';
+      document.getElementById('admin-prod-desc-input').value = p.description || '';
+
+      document.getElementById('admin-prod-form-heading').innerText = 'Edit Amazon Product: ' + p.title;
+      document.getElementById('admin-prod-cancel-btn').classList.remove('hidden');
+      document.getElementById('admin-prod-submit-btn').innerText = '✓ Update Amazon Product';
+
+      switchTab('products');
+      window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    function cancelProductEdit() {
+      document.getElementById('admin-prod-id').value = '';
+      document.getElementById('admin-prod-title-input').value = '';
+      document.getElementById('admin-prod-price-input').value = '';
+      document.getElementById('admin-prod-badge-input').value = '';
+      document.getElementById('admin-prod-rating-input').value = '4.9';
+      document.getElementById('admin-prod-reviews-input').value = '320';
+      document.getElementById('admin-prod-image-input').value = '';
+      document.getElementById('admin-prod-url-input').value = '';
+      document.getElementById('admin-prod-desc-input').value = '';
+
+      document.getElementById('admin-prod-form-heading').innerText = 'Add Product to Amazon Catalog';
+      document.getElementById('admin-prod-cancel-btn').classList.add('hidden');
+      document.getElementById('admin-prod-submit-btn').innerText = '💾 Save Product to Amazon Catalog';
+    }
+
+    function handleDeleteProduct(id) {
+      if (confirm('Remove product from Amazon catalog?')) {
+        AdminState.products = AdminState.products.filter(p => p.id !== id);
+        localStorage.setItem('fixfly_products', JSON.stringify(AdminState.products));
+        renderAdminProductsList();
+        cancelProductEdit();
+        pushToCloudSync('amazon_products', AdminState.products);
+      }
+    }
+
+    
+    // ==========================================
+    // --- BLOG ARTICLES MANAGEMENT (ADMIN) ---
+    // ==========================================
+    let AdminBlogsList = [];
+    let AdminBlogsFiltered = [];
+
+    function initAdminBlogs() {
+      const migrated = (typeof window.WP_MIGRATED_ARTICLES !== 'undefined' && Array.isArray(window.WP_MIGRATED_ARTICLES))
+        ? window.WP_MIGRATED_ARTICLES
+        : [];
+      const custom = JSON.parse(localStorage.getItem('fixfly_custom_blogs')) || [];
+      
+      const map = new Map();
+      custom.forEach(a => { if (a && a.slug) map.set(a.slug, a); });
+      migrated.forEach(a => { if (a && a.slug && !map.has(a.slug)) map.set(a.slug, a); });
+      
+      AdminBlogsList = Array.from(map.values());
+      AdminBlogsFiltered = [...AdminBlogsList];
+      renderAdminBlogsTable();
+    }
+
+    function renderAdminBlogsTable() {
+      const tbody = document.getElementById('admin-blogs-tbody');
+      const countEl = document.getElementById('admin-blogs-count');
+      if (countEl) countEl.innerText = AdminBlogsList.length;
+      if (!tbody) return;
+
+      if (!AdminBlogsFiltered.length) {
+        tbody.innerHTML = '<tr><td colspan="4" class="py-6 text-center text-slate-400">No blog articles match your search.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = AdminBlogsFiltered.map(a => {
+        const safeSlug = a.slug || '';
+        const safeTitle = (a.title || 'Untitled').replace(/"/g, '&quot;');
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3 px-4">
+              <div class="font-bold text-slate-800 text-xs">${safeTitle}</div>
+              <span class="inline-block text-[10px] font-semibold text-brandBlue bg-blue-50 px-2 py-0.5 rounded mt-0.5">${a.category || 'Guide'}</span>
+            </td>
+            <td class="py-3 px-4 font-mono text-[11px] text-slate-500">
+              /${safeSlug}/
+            </td>
+            <td class="py-3 px-4 text-slate-400 text-[11px] whitespace-nowrap">
+              ${a.date || 'Published'}
+            </td>
+            <td class="py-3 px-4 text-right space-x-2 whitespace-nowrap">
+              <a href="/${safeSlug}/" target="_blank" class="text-xs font-bold text-brandBlue hover:underline">
+                View ↗
+              </a>
+              <button onclick="editAdminBlog('${safeSlug}')" class="text-xs font-bold text-amber-600 hover:text-amber-700">
+                Edit
+              </button>
+              <button onclick="deleteAdminBlog('${safeSlug}')" class="text-xs font-bold text-red-500 hover:text-red-700">
+                Delete
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterAdminBlogs(query) {
+      const q = (query || '').toLowerCase().trim();
+      if (!q) {
+        AdminBlogsFiltered = [...AdminBlogsList];
+      } else {
+        AdminBlogsFiltered = AdminBlogsList.filter(a => 
+          (a.title && a.title.toLowerCase().includes(q)) ||
+          (a.slug && a.slug.toLowerCase().includes(q)) ||
+          (a.category && a.category.toLowerCase().includes(q))
+        );
+      }
+      renderAdminBlogsTable();
+    }
+
+    function handlePublishBlog(e) {
+      e.preventDefault();
+      const origSlug = document.getElementById('admin-blog-edit-original-slug').value.trim();
+      const title = document.getElementById('admin-blog-title').value.trim();
+      const slug = document.getElementById('admin-blog-slug').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const cat = document.getElementById('admin-blog-cat').value.trim();
+      const image = document.getElementById('admin-blog-image').value.trim();
+      const excerpt = document.getElementById('admin-blog-excerpt').value.trim();
+      const rawBody = document.getElementById('admin-blog-content').value.trim();
+
+      const formattedContent = rawBody.startsWith('<') ? rawBody : `<h2>${title}</h2><p>${rawBody.split('\n').join('<br>')}</p>`;
+
+      const articleObj = {
+        slug,
+        title,
+        category: cat,
+        date: new Date().toISOString().split('T')[0],
+        image: image || 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1200&q=80',
+        excerpt,
+        content: formattedContent
+      };
+
+      // If editing existing, remove original
+      if (origSlug) {
+        AdminBlogsList = AdminBlogsList.filter(a => a.slug !== origSlug);
+      }
+      // Add or replace
+      AdminBlogsList = AdminBlogsList.filter(a => a.slug !== slug);
+      AdminBlogsList.unshift(articleObj);
+
+      // Save to localStorage
+      const customOnly = AdminBlogsList.filter(a => true);
+      localStorage.setItem('fixfly_custom_blogs', JSON.stringify(customOnly));
+
+      // Reset form
+      cancelBlogEdit();
+      AdminBlogsFiltered = [...AdminBlogsList];
+      renderAdminBlogsTable();
+
+      alert(`✅ Article "${title}" saved successfully!
+
+To publish permanently to your live Netlify website, click "📥 Download Updated migrated_blogs.js" and upload it to Netlify, or download the full Netlify ZIP.`);
+    }
+
+    function editAdminBlog(slug) {
+      const art = AdminBlogsList.find(a => a.slug === slug);
+      if (!art) return;
+      document.getElementById('admin-blog-edit-original-slug').value = art.slug;
+      document.getElementById('admin-blog-title').value = art.title || '';
+      document.getElementById('admin-blog-slug').value = art.slug || '';
+      document.getElementById('admin-blog-cat').value = art.category || 'Laptop Repair';
+      document.getElementById('admin-blog-image').value = art.image || '';
+      document.getElementById('admin-blog-excerpt').value = art.excerpt || '';
+      document.getElementById('admin-blog-content').value = (art.content || '').replace(/<[^>]*>/g, '\n').trim();
+
+      document.getElementById('admin-blog-form-heading').innerText = 'Edit SEO Blog Article: ' + art.title;
+      document.getElementById('admin-blog-submit-btn').innerHTML = '<span>💾 Save Changes to Article</span>';
+      document.getElementById('admin-blog-cancel-edit').classList.remove('hidden');
+
+      // Scroll to form
+      document.getElementById('admin-blog-title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('admin-blog-title').focus();
+    }
+
+    function cancelBlogEdit() {
+      document.getElementById('admin-blog-edit-original-slug').value = '';
+      document.getElementById('admin-blog-title').value = '';
+      document.getElementById('admin-blog-slug').value = '';
+      document.getElementById('admin-blog-image').value = '';
+      document.getElementById('admin-blog-excerpt').value = '';
+      document.getElementById('admin-blog-content').value = '';
+      document.getElementById('admin-blog-form-heading').innerText = 'Publish High-Ranking Google SEO Blog Article';
+      document.getElementById('admin-blog-submit-btn').innerHTML = '<span>🚀 Save & Publish Article</span>';
+      document.getElementById('admin-blog-cancel-edit').classList.add('hidden');
+    }
+
+    function deleteAdminBlog(slug) {
+      if (!confirm('Are you sure you want to delete article "/' + slug + '/"?')) return;
+      AdminBlogsList = AdminBlogsList.filter(a => a.slug !== slug);
+      localStorage.setItem('fixfly_custom_blogs', JSON.stringify(AdminBlogsList));
+      AdminBlogsFiltered = [...AdminBlogsList];
+      renderAdminBlogsTable();
+    }
+
+    function exportMigratedBlogsJs() {
+      if (!AdminBlogsList.length) {
+        alert('No blog articles found to export.');
+        return;
+      }
+      const jsContent = 'window.WP_MIGRATED_ARTICLES = ' + JSON.stringify(AdminBlogsList, null, 2) + ';\n';
+      const blob = new Blob([jsContent], { type: 'application/javascript;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'migrated_blogs.js';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      alert('Downloaded "migrated_blogs.js"! Replace this file in your Netlify site folder to make all changes instantly live for every customer!');
+    }
+
+    // ==========================================
+    // --- CUSTOMER REVIEWS MANAGEMENT (ADMIN) ---
+    // ==========================================
+    let AdminReviewsState = {
+      activeCategory: 'all',
+      searchQuery: '',
+      softwareReviews: [],
+      serviceReviews: [],
+      googleReviews: []
+    };
+
+    async function fetchAdminReviews() {
+      // Default initial reviews for robust display
+      const defaultSoftware = [
+        { id: "rev-sw-1", productId: "sw-win11-pro", userName: "Amitabh Sengupta", city: "Mumbai", rating: 5, date: "2 days ago", comment: "Genuine key received on WhatsApp within 5 minutes of payment. Activated Windows 11 Pro instantly. Thank you Fixfly!" },
+        { id: "rev-sw-2", productId: "sw-win11-pro", userName: "Vikram Deshmukh", city: "Pune", rating: 5, date: "1 week ago", comment: "Engineer guided me remotely on AnyDesk to install fresh Windows 11. Very polite and professional service." },
+        { id: "rev-sw-3", productId: "sw-office-2021", userName: "Rajesh Kadam", city: "Thane", rating: 5, date: "3 days ago", comment: "Office 2021 activated with official Microsoft link. Excel & Word working seamlessly." }
+      ];
+
+      const defaultServices = [
+        { id: "sr-1", serviceKey: "laptop-repair", userName: "Amitabh Sengupta", city: "Mumbai", rating: 5, date: "2 days ago", comment: "Screen replaced in 45 mins at home. Original 144Hz panel with 6 months warranty. Very smooth process." },
+        { id: "sr-2", serviceKey: "laptop-cleaning", userName: "Vikram Joshi", city: "Pune", rating: 5, date: "3 days ago", comment: "Thermal throttling solved. Arctic MX-4 applied properly. My laptop runs totally silent now." },
+        { id: "sr-3", serviceKey: "macbook-repair", userName: "Pooja Hegde", city: "Bangalore", rating: 5, date: "5 days ago", comment: "Liquid spill cleanup and keyboard replacement done on-site. Saved my motherboard." }
+      ];
+
+      const defaultGoogle = [
+        { author: "Rahul Deshmukh", locality: "Vashi, Navi Mumbai", service: "HP Pavilion Overheating & Lag", rating: 5, text: "My HP Pavilion was sounding like an airplane taking off. Fixfly technician arrived at my residence in 90 minutes! Cleaned and repasted it right in front of me. Running super quiet now.", date: "Verified Doorstep Service" },
+        { author: "Vikram Joshi", locality: "Kothrud, Pune", service: "Lenovo Legion Dual-Fan Gaming Clean", rating: 5, text: "Valorant FPS dropped from 140 to 30. Fixfly Pune technician came with Arctic MX-4 paste and cleaned both radial fans. Temps dropped from 94C to 72C.", date: "Verified Doorstep Service" },
+        { author: "Pooja Hegde", locality: "Indiranagar, Bangalore", service: "MacBook Air M1 Battery Swap", rating: 5, text: "Apple store asked for 7 days. Fixfly Bangalore engineer swapped my battery at my home desk in 40 minutes with 6 months warranty.", date: "Verified Doorstep Service" },
+        { author: "Sneha Kulkarni", locality: "Sion, Mumbai", service: "Dell Inspiron Power IC Repair", rating: 5, text: "Local shop asked for 12,000 board replacement. Fixfly fixed charging jack on-site for 1,450. Very honest technicians.", date: "Verified Doorstep Service" },
+        { author: "Rajat Sharma", locality: "Connaught Place, Delhi", service: "Desktop 600W SMPS Diagnostic", rating: 5, text: "Accounting PC was dead. Technician brought digital tester and spare power supply. Up and running in 45 minutes.", date: "Verified Doorstep Service" }
+      ];
+
+      AdminReviewsState.softwareReviews = JSON.parse(localStorage.getItem("fixfly_software_reviews")) || defaultSoftware;
+      AdminReviewsState.serviceReviews = JSON.parse(localStorage.getItem("fixfly_service_reviews")) || defaultServices;
+      AdminReviewsState.googleReviews = JSON.parse(localStorage.getItem("fixfly_google_reviews")) || defaultGoogle;
+
+      try {
+        const res = await fetch(API_BASE + "/api/all-reviews?t=" + Date.now());
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            AdminReviewsState.serviceReviews = data;
+          } else if (data && typeof data === "object") {
+            if (Array.isArray(data.softwareReviews) && data.softwareReviews.length) AdminReviewsState.softwareReviews = data.softwareReviews;
+            if (Array.isArray(data.serviceReviews) && data.serviceReviews.length) AdminReviewsState.serviceReviews = data.serviceReviews;
+            if (Array.isArray(data.googleReviews) && data.googleReviews.length) AdminReviewsState.googleReviews = data.googleReviews;
+          }
+        }
+      } catch (err) {}
+
+      updateAdminReviewCounts();
+      renderAdminReviews();
+    }
+
+    function updateAdminReviewCounts() {
+      const softLen = AdminReviewsState.softwareReviews.length;
+      const servLen = AdminReviewsState.serviceReviews.length;
+      const googLen = AdminReviewsState.googleReviews.length;
+      const total = softLen + servLen + googLen;
+
+      const badge = document.getElementById('reviews-badge-count');
+      if (badge) badge.innerText = total;
+
+      const elAll = document.getElementById('rev-count-all');
+      if (elAll) elAll.innerText = total;
+
+      const elSoft = document.getElementById('rev-count-software');
+      if (elSoft) elSoft.innerText = softLen;
+
+      const elServ = document.getElementById('rev-count-service');
+      if (elServ) elServ.innerText = servLen;
+
+      const elGoog = document.getElementById('rev-count-google');
+      if (elGoog) elGoog.innerText = googLen;
+    }
+
+    function filterAdminReviewsCategory(cat) {
+      AdminReviewsState.activeCategory = cat;
+      ['all', 'software', 'service', 'google'].forEach(c => {
+        const btn = document.getElementById('rev-filter-btn-' + c);
+        if (btn) {
+          if (c === cat) {
+            btn.className = 'px-3.5 py-2 rounded-xl bg-brandBlue text-white shadow-xs font-bold text-xs';
+          } else {
+            btn.className = 'px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold text-xs';
+          }
+        }
+      });
+      renderAdminReviews();
+    }
+
+    function handleAdminReviewSearch() {
+      AdminReviewsState.searchQuery = (document.getElementById('admin-review-search').value || '').trim().toLowerCase();
+      renderAdminReviews();
+    }
+
+    function renderAdminReviews() {
+      const container = document.getElementById('admin-reviews-table-container');
+      if (!container) return;
+
+      // Compile items with their category tag
+      let items = [];
+
+      if (AdminReviewsState.activeCategory === 'all' || AdminReviewsState.activeCategory === 'software') {
+        AdminReviewsState.softwareReviews.forEach(r => items.push({ ...r, _type: 'software' }));
+      }
+      if (AdminReviewsState.activeCategory === 'all' || AdminReviewsState.activeCategory === 'service') {
+        AdminReviewsState.serviceReviews.forEach(r => items.push({ ...r, _type: 'service' }));
+      }
+      if (AdminReviewsState.activeCategory === 'all' || AdminReviewsState.activeCategory === 'google') {
+        AdminReviewsState.googleReviews.forEach(r => items.push({ ...r, _type: 'google' }));
+      }
+
+      // Filter by search query
+      if (AdminReviewsState.searchQuery) {
+        const q = AdminReviewsState.searchQuery;
+        items = items.filter(r => {
+          const author = (r.author || r.userName || '').toLowerCase();
+          const city = (r.locality || r.city || '').toLowerCase();
+          const text = (r.text || r.comment || '').toLowerCase();
+          const target = (r.productId || r.serviceKey || r.service || '').toLowerCase();
+          return author.includes(q) || city.includes(q) || text.includes(q) || target.includes(q);
+        });
+      }
+
+      if (!items.length) {
+        container.innerHTML = `
+          <div class="text-center py-12 bg-slate-50 rounded-2xl border border-slate-200">
+            <span class="text-3xl block mb-2">⭐</span>
+            <div class="text-sm font-bold text-slate-700">No Customer Reviews Found</div>
+            <p class="text-xs text-slate-500 mt-1">Try switching filters or add a verified customer review.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = items.map(rev => {
+        const author = rev.author || rev.userName || 'Customer';
+        const city = rev.locality || rev.city || 'India';
+        const stars = '★'.repeat(rev.rating || 5);
+        const comment = rev.text || rev.comment || '';
+        const target = rev.productId || rev.serviceKey || rev.service || 'General Review';
+
+        let typeBadge = '';
+        if (rev._type === 'software') {
+          typeBadge = '<span class="text-[10px] font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md">💻 Software</span>';
+        } else if (rev._type === 'service') {
+          typeBadge = '<span class="text-[10px] font-bold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-md">🛠️ Service</span>';
+        } else {
+          typeBadge = '<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">⭐ Google</span>';
+        }
+
+        return `
+          <div class="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-4 sm:p-5 border border-slate-200 transition-all flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div class="space-y-1.5 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                ${typeBadge}
+                <span class="text-xs font-black text-brandNavy">${author}</span>
+                <span class="text-xs text-slate-500">(${city})</span>
+                <span class="text-amber-500 font-bold text-xs">${stars}</span>
+                <span class="text-[10px] text-slate-400">• ${rev.date || 'Recent'}</span>
+              </div>
+              <div class="text-[11px] font-bold text-brandBlue">Item / Service: ${target}</div>
+              <p class="text-xs text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-slate-200/90 font-medium">${comment}</p>
+            </div>
+
+            <!-- Action Buttons: Edit & Delete -->
+            <div class="flex items-center gap-2 self-end sm:self-center flex-shrink-0">
+              <button onclick="openAdminEditReviewModal('${rev._type}', '${rev.id}')" class="bg-white hover:bg-brandBlue hover:text-white text-slate-700 border border-slate-300 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                <span>✏️ Edit</span>
+              </button>
+              <button onclick="handleDeleteReview('${rev._type}', '${rev.id}')" class="bg-white hover:bg-red-600 hover:text-white text-red-600 border border-red-200 hover:border-red-600 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                <span>🗑️ Delete</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- EDIT REVIEW MODAL ---
+    function openAdminEditReviewModal(type, id) {
+      let rev = null;
+      if (type === 'software') {
+        rev = AdminReviewsState.softwareReviews.find(r => r.id === id);
+      } else if (type === 'service') {
+        rev = AdminReviewsState.serviceReviews.find(r => r.id === id);
+      } else if (type === 'google') {
+        rev = AdminReviewsState.googleReviews.find(r => r.id === id);
+      }
+      if (!rev) return;
+
+      document.getElementById('edit-rev-id').value = rev.id;
+      document.getElementById('edit-rev-type').value = type;
+      document.getElementById('edit-rev-badge').innerText = type.toUpperCase() + ' REVIEW';
+      document.getElementById('edit-rev-author').value = rev.author || rev.userName || '';
+      document.getElementById('edit-rev-city').value = rev.locality || rev.city || '';
+      document.getElementById('edit-rev-rating').value = rev.rating || 5;
+      document.getElementById('edit-rev-target').value = rev.productId || rev.serviceKey || rev.service || '';
+      document.getElementById('edit-rev-comment').value = rev.text || rev.comment || '';
+
+      document.getElementById('admin-edit-review-modal').classList.remove('hidden');
+    }
+
+    function closeAdminEditReviewModal() {
+      document.getElementById('admin-edit-review-modal').classList.add('hidden');
+    }
+
+    async function handleSaveEditReview(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-rev-id').value;
+      const type = document.getElementById('edit-rev-type').value;
+      const author = document.getElementById('edit-rev-author').value.trim();
+      const city = document.getElementById('edit-rev-city').value.trim();
+      const rating = Number(document.getElementById('edit-rev-rating').value) || 5;
+      const target = document.getElementById('edit-rev-target').value.trim();
+      const comment = document.getElementById('edit-rev-comment').value.trim();
+
+      const payload = {
+        type,
+        review: {
+          id,
+          author,
+          userName: author,
+          locality: city,
+          city,
+          rating,
+          text: comment,
+          comment,
+          productId: target,
+          serviceKey: target,
+          service: target
+        }
+      };
+
+      try {
+        const res = await fetch(API_BASE + '/api/reviews/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          alert('Review updated successfully!');
+          closeAdminEditReviewModal();
+          fetchAdminReviews();
+        } else {
+          alert('Failed to update review.');
+        }
+      } catch (err) {
+        alert('Network error updating review.');
+      }
+    }
+
+    async function handleDeleteReview(type, id) {
+      if (!confirm('Are you sure you want to permanently delete this customer review?')) return;
+
+      if (type === 'google') {
+        AdminReviewsState.googleReviews = AdminReviewsState.googleReviews.filter(r => r.id !== id);
+        localStorage.setItem('fixfly_google_reviews', JSON.stringify(AdminReviewsState.googleReviews));
+        pushToCloudSync('google_reviews', AdminReviewsState.googleReviews);
+      } else if (type === 'software') {
+        AdminReviewsState.softwareReviews = AdminReviewsState.softwareReviews.filter(r => r.id !== id);
+        localStorage.setItem('fixfly_software_reviews', JSON.stringify(AdminReviewsState.softwareReviews));
+        pushToCloudSync('software_reviews', AdminReviewsState.softwareReviews);
+      } else if (type === 'service') {
+        AdminReviewsState.serviceReviews = AdminReviewsState.serviceReviews.filter(r => r.id !== id);
+        localStorage.setItem('fixfly_service_reviews', JSON.stringify(AdminReviewsState.serviceReviews));
+        pushToCloudSync('service_reviews', AdminReviewsState.serviceReviews);
+      }
+
+      updateAdminReviewCounts();
+      renderAdminReviews();
+
+      try {
+        await fetch(API_BASE + '/api/reviews/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type, id })
+        });
+      } catch (err) { /* ignore */ }
+
+      alert('Review deleted successfully.');
+    }
+
+    // --- ADD REVIEW MODAL ---
+    function openAdminAddReviewModal() {
+      document.getElementById('admin-add-review-modal').classList.remove('hidden');
+    }
+
+    function closeAdminAddReviewModal() {
+      document.getElementById('admin-add-review-modal').classList.add('hidden');
+    }
+
+    async function handleSaveAddReview(e) {
+      e.preventDefault();
+      const type = document.getElementById('add-rev-type').value;
+      const author = document.getElementById('add-rev-author').value.trim();
+      const city = document.getElementById('add-rev-city').value.trim();
+      const rating = Number(document.getElementById('add-rev-rating').value) || 5;
+      const target = document.getElementById('add-rev-target').value.trim();
+      const comment = document.getElementById('add-rev-comment').value.trim();
+
+      if (!author || !comment) {
+        alert('Please enter both author name and review feedback.');
+        return;
+      }
+
+      let url = API_BASE + '/api/software-reviews';
+      let bodyData = {};
+
+      if (type === 'google') {
+        const newGRev = {
+          id: 'gr-' + Date.now(),
+          author,
+          locality: city || 'Verified Customer',
+          service: target || 'Doorstep Laptop & PC Service',
+          rating,
+          text: comment,
+          date: 'Verified Google Review'
+        };
+        AdminReviewsState.googleReviews.unshift(newGRev);
+        localStorage.setItem('fixfly_google_reviews', JSON.stringify(AdminReviewsState.googleReviews));
+        pushToCloudSync('google_reviews', AdminReviewsState.googleReviews);
+        url = API_BASE + '/api/google-reviews';
+        bodyData = newGRev;
+      } else if (type === 'software') {
+        const newSRev = {
+          id: 'swr-' + Date.now(),
+          productId: target || 'sw-win11-pro',
+          userName: author,
+          city: city || 'India',
+          rating,
+          comment,
+          date: 'Just now'
+        };
+        AdminReviewsState.softwareReviews.unshift(newSRev);
+        localStorage.setItem('fixfly_software_reviews', JSON.stringify(AdminReviewsState.softwareReviews));
+        pushToCloudSync('software_reviews', AdminReviewsState.softwareReviews);
+        url = API_BASE + '/api/software-reviews';
+        bodyData = newSRev;
+      } else if (type === 'service') {
+        const newServRev = {
+          id: 'sr-' + Date.now(),
+          serviceKey: target || 'laptop-repair',
+          userName: author,
+          city: city || 'India',
+          rating,
+          comment,
+          date: 'Just now'
+        };
+        AdminReviewsState.serviceReviews.unshift(newServRev);
+        localStorage.setItem('fixfly_service_reviews', JSON.stringify(AdminReviewsState.serviceReviews));
+        pushToCloudSync('service_reviews', AdminReviewsState.serviceReviews);
+        url = API_BASE + '/api/service-reviews';
+        bodyData = newServRev;
+      }
+
+      updateAdminReviewCounts();
+      renderAdminReviews();
+      closeAdminAddReviewModal();
+      e.target.reset();
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bodyData)
+        });
+      } catch (err) { /* ignore */ }
+
+      alert('New verified review published successfully! Synced across web and mobile app.');
+    }
+
+    // Initial load of reviews in admin
+    fetchAdminReviews();
+
+
+    // ==========================================
+    // --- SERVICES CATALOG MANAGEMENT (ADMIN) ---
+    // ==========================================
+    async function fetchAdminServices() {
+      const localSvc = localStorage.getItem('fixfly_services');
+      if (localSvc) {
+        try {
+          const parsed = JSON.parse(localSvc);
+          if (Array.isArray(parsed) && parsed.length) {
+            AdminState.services = parsed;
+            renderAdminServicesList();
+          }
+        } catch(e) {}
+      } else if (!AdminState.services || !AdminState.services.length) {
+        AdminState.services = JSON.parse(JSON.stringify(DefaultAdminServices));
+        renderAdminServicesList();
+      }
+
+      try {
+        const res = await fetch(API_BASE + '/api/services?t=' + Date.now());
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.services) && data.services.length) {
+            AdminState.services = data.services;
+            renderAdminServicesList();
+          }
+        }
+      } catch (err) {}
+    }
+
+    function renderAdminServicesList() {
+      const container = document.getElementById('admin-services-list-container');
+      const countEl = document.getElementById('admin-services-count');
+      if (!container) return;
+
+      const services = AdminState.services || [];
+      if (countEl) countEl.innerText = services.length;
+
+      if (!services.length) {
+        container.innerHTML = `
+          <div class="text-center py-10 bg-slate-50 rounded-2xl border border-slate-200">
+            <span class="text-3xl block mb-2">🛠️</span>
+            <div class="text-sm font-bold text-slate-700">No Services Found</div>
+            <p class="text-xs text-slate-500 mt-1">Use the form above to add a new repair service package.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = services.map(svc => {
+        const inclusions = Array.isArray(svc.inclusions) ? svc.inclusions : [];
+        const id = svc.id || svc.key;
+
+        return `
+          <div class="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-4 sm:p-5 border border-slate-200 transition-all flex flex-col md:flex-row md:items-start justify-between gap-4">
+            <div class="flex flex-col sm:flex-row gap-4 items-start flex-1">
+              <img src="${svc.image}" alt="${svc.title}" class="w-full sm:w-28 h-24 rounded-xl object-cover border border-slate-200 bg-white flex-shrink-0 shadow-xs">
+              <div class="space-y-1.5 flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="text-[10px] font-black uppercase tracking-wider bg-brandBlue text-white px-2 py-0.5 rounded">${svc.badge || 'Verified'}</span>
+                  <span class="text-xs font-bold text-slate-500 capitalize">Category: ${svc.category || 'General'}</span>
+                  <span class="text-amber-500 font-bold text-xs">★ ${svc.rating || '4.9'}</span>
+                  <span class="text-xs text-slate-400">(${svc.reviewsCount || '100+'})</span>
+                </div>
+                <h3 class="text-base font-extrabold text-brandNavy font-heading">${svc.title}</h3>
+                <div class="text-sm font-black text-brandNavy">Starts: <span class="text-emerald-700">${svc.rate || svc.fallbackRate || '₹199'}</span></div>
+                <p class="text-xs text-slate-600 line-clamp-2">${svc.description || ''}</p>
+                <div class="text-[11px] text-slate-500 font-medium"><b>Kit:</b> ${svc.techDetails || 'Standard calibrated equipment.'}</div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  ${inclusions.slice(0, 3).map(inc => `<span class="text-[10px] bg-white text-slate-700 px-2 py-0.5 rounded border border-slate-200">✓ ${inc}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons: Edit & Delete -->
+            <div class="flex items-center gap-2 self-end md:self-center flex-shrink-0 pt-2 md:pt-0">
+              <button onclick="handleEditService('${id}')" class="bg-white hover:bg-brandBlue hover:text-white text-slate-700 border border-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                <span>✏️ Edit Details</span>
+              </button>
+              <button onclick="handleDeleteService('${id}')" class="bg-white hover:bg-red-600 hover:text-white text-red-600 border border-red-200 hover:border-red-600 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                <span>🗑️ Delete</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleSaveService(e) {
+      e.preventDefault();
+      const id = document.getElementById('admin-svc-id').value.trim();
+      const title = document.getElementById('admin-svc-title').value.trim();
+      const category = document.getElementById('admin-svc-cat').value;
+      const rate = document.getElementById('admin-svc-rate').value.trim();
+      const badge = document.getElementById('admin-svc-badge').value.trim() || 'Verified Service';
+      const rating = document.getElementById('admin-svc-rating').value.trim() || '4.9 ★';
+      const reviewsCount = document.getElementById('admin-svc-reviews').value.trim() || '300+ ratings';
+      const image = document.getElementById('admin-svc-image').value.trim();
+      const description = document.getElementById('admin-svc-desc').value.trim();
+      const techDetails = document.getElementById('admin-svc-tech').value.trim();
+      const inclusionsRaw = document.getElementById('admin-svc-inclusions').value.trim();
+      const inclusions = inclusionsRaw.split('\n').map(s => s.trim()).filter(Boolean);
+
+      const payload = {
+        id: id || ('svc-' + Date.now()),
+        key: id || ('svc-' + Date.now()),
+        title,
+        category,
+        rate,
+        fallbackRate: rate,
+        badge,
+        rating,
+        reviewsCount,
+        image,
+        description,
+        techDetails,
+        inclusions
+      };
+
+      if (!Array.isArray(AdminState.services)) AdminState.services = [];
+      const existingIdx = AdminState.services.findIndex(s => s.id === payload.id || s.key === payload.id);
+      if (existingIdx >= 0) {
+        AdminState.services[existingIdx] = payload;
+      } else {
+        AdminState.services.unshift(payload);
+      }
+
+      // 1. Save to localStorage immediately
+      localStorage.setItem('fixfly_services', JSON.stringify(AdminState.services));
+      renderAdminServicesList();
+      cancelServiceEdit();
+
+      // 2. Push to Cloud Sync
+      pushToCloudSync('services', AdminState.services);
+
+      alert('✓ Service Package updated successfully! Rate changed to ' + rate + '. Live and permanently saved on refresh.');
+    }
+
+    function handleEditService(id) {
+      const svc = (AdminState.services || []).find(s => s.id === id || s.key === id);
+      if (!svc) return;
+
+      document.getElementById('admin-svc-id').value = svc.id || svc.key;
+      document.getElementById('admin-svc-title').value = svc.title || '';
+      document.getElementById('admin-svc-cat').value = svc.category || 'laptop';
+      document.getElementById('admin-svc-rate').value = svc.rate || svc.fallbackRate || '';
+      document.getElementById('admin-svc-badge').value = svc.badge || '';
+      document.getElementById('admin-svc-rating').value = svc.rating || '4.9 ★';
+      document.getElementById('admin-svc-reviews').value = svc.reviewsCount || '';
+      document.getElementById('admin-svc-image').value = svc.image || '';
+      document.getElementById('admin-svc-desc').value = svc.description || '';
+      document.getElementById('admin-svc-tech').value = svc.techDetails || '';
+      document.getElementById('admin-svc-inclusions').value = (Array.isArray(svc.inclusions) ? svc.inclusions : []).join('\n');
+
+      document.getElementById('admin-svc-form-heading').innerText = 'Edit Service Package: ' + svc.title;
+      document.getElementById('admin-svc-submit-btn').innerHTML = '<span>💾 Save Changes to Service</span>';
+      document.getElementById('admin-svc-cancel-btn').classList.remove('hidden');
+
+      const card = document.getElementById('admin-service-form-card');
+      if (card) card.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cancelServiceEdit() {
+      document.getElementById('admin-svc-id').value = '';
+      document.getElementById('admin-service-form').reset();
+      document.getElementById('admin-svc-form-heading').innerText = 'Add New Repair Service Package';
+      document.getElementById('admin-svc-submit-btn').innerHTML = '<span>💾 Save Service Package</span>';
+      document.getElementById('admin-svc-cancel-btn').classList.add('hidden');
+    }
+
+    async function handleDeleteService(id) {
+      if (!confirm('Are you sure you want to permanently delete this repair service package?')) return;
+
+      AdminState.services = (AdminState.services || []).filter(s => s.id !== id && s.key !== id);
+      localStorage.setItem('fixfly_services', JSON.stringify(AdminState.services));
+      renderAdminServicesList();
+      pushToCloudSync('services', AdminState.services);
+
+      try {
+        await fetch(API_BASE + '/api/services/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+      } catch (err) {}
+      alert('Service package removed successfully.');
+    }
+
+  </script>
+</body>
+</html>

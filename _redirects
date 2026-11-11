@@ -1,0 +1,20 @@
+# Fixfly Innovations Netlify Proxy & Routing Rules
+
+# 1. Static API mock endpoints (allows Netlify static deployment to serve data without server errors)
+/api/services           /data/services.json           200
+/api/software           /data/software_products.json  200
+/api/rates              /data/rates.json              200
+/api/experts            /data/experts.json            200
+/api/amazon-products    /data/amazon_products.json    200
+/api/all-reviews        /data/service_reviews.json    200
+/api/orders             /data/orders.json             200
+
+# 2. Direct route for Admin Portal
+/admin                  /admin.html                   200
+/admin/*                /admin.html                   200
+
+# 3. Direct route for Zip Download
+/download-zip           /fixfly-netlify-ready.zip     200
+
+# 4. Client-side SPA routing fallback for all 51+ blog articles and pages
+/*                      /index.html                   200

@@ -1,0 +1,8 @@
+# Example key.properties for Android Release signing
+# DO NOT commit your actual key.properties file to GitHub/version control.
+# Copy this file to 'key.properties' and fill in your actual passwords.
+
+storeFile=fixfly-upload-key.jks
+storePassword=YOUR_SECURE_KEYSTORE_PASSWORD
+keyAlias=fixfly-upload
+keyPassword=YOUR_SECURE_KEY_PASSWORD

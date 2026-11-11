@@ -1,0 +1,142 @@
+[
+  {
+    "id": "laptop-repair",
+    "key": "laptop-repair",
+    "category": "laptop",
+    "title": "Laptop Repair & Diagnostics",
+    "rate": "₹99",
+    "fallbackRate": "₹99",
+    "badge": "Most Popular",
+    "rating": "4.9 ★",
+    "reviewsCount": "480+ ratings",
+    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=700&q=80",
+    "description": "Instant doorstep resolution for slow laptops, blue screens, broken screens, failing batteries, and power faults.",
+    "inclusions": [
+      "Comprehensive motherboard, RAM, SSD multi-point electrical scan",
+      "On-spot resolution of minor software, driver & connector faults",
+      "Exact upfront repair quotation before opening any screws",
+      "Backed by 6 Months Unconditional Warranty (T&C Apply)"
+    ],
+    "techDetails": "Our certified engineers carry portable Fluke digital multimeters, ESD grounding mats, and replacement components to repair 85% of issues in 60 minutes."
+  },
+  {
+    "id": "laptop-cleaning",
+    "key": "laptop-cleaning",
+    "category": "cleaning",
+    "title": "Laptop Deep Thermal Cleaning",
+    "rate": "₹799",
+    "fallbackRate": "₹799",
+    "badge": "Performance Booster",
+    "rating": "4.8 ★",
+    "reviewsCount": "360+ ratings",
+    "image": "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=700&q=80",
+    "description": "Eliminate thermal throttling and noisy fans. We remove hardened old paste and apply Arctic MX-4 compound.",
+    "inclusions": [
+      "High-velocity compressed air heatpipe radiator fin decalcification",
+      "Micro-particle Arctic MX-4 paste on CPU and dedicated GPU dies",
+      "Anti-static fan spindle cleaning and lubrication",
+      "10°C to 20°C verified CPU temp drop post-service"
+    ],
+    "techDetails": "Includes non-conductive Arctic MX-4 compound application, isopropyl alcohol PCB wash, and thermal imaging verification."
+  },
+  {
+    "id": "gaming-cleaning",
+    "key": "gaming-cleaning",
+    "category": "gaming",
+    "title": "Gaming Laptop Dual-Fan Overhaul",
+    "rate": "₹1,050",
+    "fallbackRate": "₹1,050",
+    "badge": "Dual-Fan Special",
+    "rating": "5.0 ★",
+    "reviewsCount": "290+ ratings",
+    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=700&q=80",
+    "description": "High-performance dual radial fan deep cleaning, copper heatsink polish, and heavy thermal pad renewal.",
+    "inclusions": [
+      "Dual-radial fan disassembly and copper fin decalcification",
+      "High-conductivity thermal grease on CPU & dedicated GPU dies",
+      "Full benchmark stress test with FPS & thermal reporting",
+      "Eliminates frame drops in high-end AAA gaming"
+    ],
+    "techDetails": "Dual-phase copper heatpipe decalcification with 12.5 W/mK thermal pads on VRMs and VRAM chips."
+  },
+  {
+    "id": "macbook-repair",
+    "key": "macbook-repair",
+    "category": "macbook",
+    "title": "MacBook Specialist Care at Home",
+    "rate": "₹299",
+    "fallbackRate": "₹299",
+    "badge": "Apple Specialist",
+    "rating": "4.9 ★",
+    "reviewsCount": "310+ ratings",
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=80",
+    "description": "Specialized Apple hardware diagnostics for MacBook Air and MacBook Pro (M1, M2, M3 & Intel).",
+    "inclusions": [
+      "Dedicated Apple diagnostic kit for Air & Pro (M1, M2, M3 & Intel)",
+      "Battery cycle calibration, trackpad & keyboard diagnostics",
+      "Original OEM Retina display & logic board repair",
+      "Same-day doorstep service with zero data loss guarantee"
+    ],
+    "techDetails": "Precision pentalobe and torx ESD toolkits, calibrated digital microscope for SMC/T2/M-series logic board inspection."
+  },
+  {
+    "id": "desktop-repair",
+    "key": "desktop-repair",
+    "category": "desktop",
+    "title": "Desktop PC & Workstation Support",
+    "rate": "₹199",
+    "fallbackRate": "₹199",
+    "badge": "PC & Workstation",
+    "rating": "4.8 ★",
+    "reviewsCount": "220+ ratings",
+    "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=700&q=80",
+    "description": "Full tower diagnostics, SMPS power testing, graphics card stability tests, and custom workstation repairs.",
+    "inclusions": [
+      "Multi-rail SMPS power testing, RAM & SSD speed upgrade",
+      "Custom liquid cooler / AIO pump inspection",
+      "Cable management & airflow optimization",
+      "No power / random reboot / blue screen diagnosis"
+    ],
+    "techDetails": "Digital power supply tester, RAM memtest86 diagnostic USB boot, and GPU FurMark thermal load testing."
+  },
+  {
+    "id": "motherboard-repair",
+    "key": "motherboard-repair",
+    "category": "motherboard",
+    "title": "Motherboard Chip-Level Repair",
+    "rate": "₹1,250",
+    "fallbackRate": "₹1,250",
+    "badge": "Level-4 Chipset",
+    "rating": "4.9 ★",
+    "reviewsCount": "190+ ratings",
+    "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80",
+    "description": "Micro-soldering, short circuit power rail tracing, MOSFET, capacitor replacement, and BGA reballing.",
+    "inclusions": [
+      "Thermal infrared camera short circuit detection",
+      "Oscilloscope power rail clock & reset signal inspection",
+      "SMD component replacement with factory precision",
+      "6 Months Unconditional Warranty (T&C Apply)"
+    ],
+    "techDetails": "Quick 861DW hot air rework station, Hakko soldering iron, and FLIR thermal imaging camera."
+  },
+  {
+    "id": "corporate-amc",
+    "key": "corporate-amc",
+    "category": "corporate",
+    "title": "Corporate Sales & IT AMC Support",
+    "rate": "Custom Quote",
+    "fallbackRate": "Custom Quote",
+    "badge": "Business & AMC",
+    "rating": "4.9 ★",
+    "reviewsCount": "150+ Companies",
+    "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=700&q=80",
+    "description": "Annual Maintenance Contracts (AMC), corporate laptop procurement, IT infrastructure setup, and dedicated on-site engineer support.",
+    "inclusions": [
+      "Scheduled monthly preventive maintenance & thermal servicing",
+      "SLA-backed 2-hour priority emergency dispatch",
+      "Asset inventory tagging, antivirus management & data backup",
+      "Refurbished & new corporate bulk laptop sales with warranty"
+    ],
+    "techDetails": "Dedicated corporate account manager, centralized helpdesk portal, and enterprise-grade hardware support."
+  }
+]

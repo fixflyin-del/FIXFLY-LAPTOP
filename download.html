@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Fixfly Release Packages (.AAB & Upload Certificate)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4 sm:p-6">
+
+  <div class="max-w-xl w-full bg-slate-800/95 backdrop-blur border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl text-center space-y-6">
+    
+    <!-- Icon -->
+    <div class="w-20 h-20 mx-auto bg-gradient-to-tr from-blue-600 via-indigo-500 to-emerald-400 rounded-3xl flex items-center justify-center shadow-lg shadow-blue-500/20 text-3xl">
+      🔑
+    </div>
+
+    <!-- Title & Badge -->
+    <div class="space-y-2">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Production Release & Upload Certificate
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Fixfly Google Play Packages</h1>
+      <p class="text-sm text-slate-400 max-w-md mx-auto">
+        Signed production AAB with new upload keystore and Google Play upload certificate.
+      </p>
+    </div>
+
+    <!-- Details Box -->
+    <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 text-left space-y-2.5 text-xs text-slate-300">
+      <div class="flex items-center justify-between text-slate-400">
+        <span>Package ID:</span>
+        <span class="font-mono font-bold text-white">com.flixfy.user</span>
+      </div>
+      <div class="flex items-center justify-between text-slate-400">
+        <span>Release Version:</span>
+        <span class="font-mono font-bold text-emerald-400">v1.0.8 (VersionCode: 13)</span>
+      </div>
+      <div class="flex items-center justify-between text-slate-400">
+        <span>Key Alias:</span>
+        <span class="font-mono font-bold text-cyan-400">fixfly-upload</span>
+      </div>
+      <div class="flex flex-col gap-1 text-slate-400 pt-1 border-t border-slate-800">
+        <span>Upload Key SHA-1:</span>
+        <span class="font-mono font-bold text-amber-400 text-[11px] break-all select-all">E8:B7:59:3F:29:72:03:50:2E:8B:2F:49:51:42:64:64:95:7B:59:D6</span>
+      </div>
+      <div class="flex items-center justify-between text-slate-400 pt-1 border-t border-slate-800">
+        <span>Multi-Device Sync:</span>
+        <span class="font-mono font-bold text-emerald-400">Active (Live connected to fixfly.in)</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="space-y-3 pt-2">
+      <!-- 1. Google Play Store Signed Release AAB Bundle -->
+      <a href="/fixfly-app.aab" download="fixfly-app.aab" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 hover:from-blue-700 to-indigo-600 text-white font-extrabold text-base shadow-lg shadow-blue-500/25 hover:scale-[1.01] active:scale-[0.99] transition flex items-center justify-center gap-3 cursor-pointer">
+        <svg class="w-6 h-6 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        <span>Download Signed Release AAB (19.0 MB)</span>
+      </a>
+
+      <!-- 2. Google Play Upload Certificate (.pem) -->
+      <a href="/upload_certificate.pem" download="upload_certificate.pem" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 hover:from-amber-600 to-yellow-500 text-slate-950 font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+        <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+        </svg>
+        <span>Download upload_certificate.pem (For Play Console)</span>
+      </a>
+
+      <!-- 3. Direct Android Phone APK -->
+      <a href="/fixfly-app.apk" download="fixfly-app.apk" class="w-full py-2.5 px-4 rounded-xl bg-slate-700/80 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs border border-slate-600/50 transition flex items-center justify-center gap-2 cursor-pointer">
+        <span>Download Android Test APK (fixfly-app.apk)</span>
+      </a>
+
+      <!-- 4. Web Netlify Ready ZIP -->
+      <a href="/fixfly-netlify-ready.zip" download="fixfly-netlify-ready.zip" class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold text-xs border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer">
+        <span>Download Web Deployment ZIP for Netlify (3.1 MB)</span>
+      </a>
+
+      <div id="status-msg" class="text-xs text-slate-400">
+        Click any button above to download instantly to your PC or mobile.
+      </div>
+    </div>
+
+    <!-- Navigation links -->
+    <div class="pt-4 border-t border-slate-700/60 flex items-center justify-center gap-4 text-xs font-bold text-slate-400">
+      <a href="/" class="hover:text-white transition">← Live Website</a>
+      <span>•</span>
+      <a href="/admin.html" class="hover:text-white transition">Admin Dashboard →</a>
+    </div>
+
+  </div>
+
+</body>
+</html>

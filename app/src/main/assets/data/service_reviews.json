@@ -1,0 +1,47 @@
+[
+  {
+    "id": "sr-1",
+    "serviceKey": "laptop-repair",
+    "userName": "Amitabh Sengupta",
+    "city": "Mumbai",
+    "rating": 5,
+    "date": "2 days ago",
+    "comment": "Screen replaced in 45 mins at home. Original 144Hz panel with 6 months warranty. Very smooth process."
+  },
+  {
+    "id": "sr-2",
+    "serviceKey": "laptop-cleaning",
+    "userName": "Vikram Joshi",
+    "city": "Pune",
+    "rating": 5,
+    "date": "3 days ago",
+    "comment": "Thermal throttling solved. Arctic MX-4 applied properly. My laptop runs totally silent now."
+  },
+  {
+    "id": "sr-3",
+    "serviceKey": "macbook-repair",
+    "userName": "Pooja Hegde",
+    "city": "Bangalore",
+    "rating": 5,
+    "date": "1 week ago",
+    "comment": "MacBook Air trackpad & battery replaced on-site. Engineer was polite and verified everything."
+  },
+  {
+    "id": "sr-4",
+    "serviceKey": "desktop-repair",
+    "userName": "Rajat Sharma",
+    "city": "Delhi",
+    "rating": 5,
+    "date": "4 days ago",
+    "comment": "Diagnosed motherboard RAM slot issue quickly. Saved my office work day."
+  },
+  {
+    "id": "sr-5",
+    "serviceKey": "gaming-laptop-cleaning",
+    "userName": "Farhan Shaikh",
+    "city": "Navi Mumbai",
+    "rating": 5,
+    "date": "5 days ago",
+    "comment": "Dual fan Asus TUF laptop runs completely cool now. Worth every rupee."
+  }
+]
