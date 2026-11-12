@@ -13,7 +13,8 @@
 /admin                  /admin.html                   200
 /admin/*                /admin.html                   200
 
-# 3. Direct route for Zip Download
+# 3. Direct route for Zip Download & Downloads Page
+/download               /download.html                200
 /download-zip           /fixfly-netlify-ready.zip     200
 
 # 4. Client-side SPA routing fallback for all 51+ blog articles and pages

@@ -1,0 +1,57 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/api/services"
+  to = "/data/services.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/software"
+  to = "/data/software_products.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/rates"
+  to = "/data/rates.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/experts"
+  to = "/data/experts.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/amazon-products"
+  to = "/data/amazon_products.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/all-reviews"
+  to = "/data/service_reviews.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/orders"
+  to = "/data/orders.json"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/download"
+  to = "/download.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

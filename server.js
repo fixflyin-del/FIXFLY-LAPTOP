@@ -31,12 +31,33 @@ const server = http.createServer((req, res) => {
   if (urlPath === '/download-apk' || urlPath === '/apk') urlPath = '/fixfly-app.apk';
   if (urlPath === '/download-pem' || urlPath === '/pem' || urlPath === '/certificate') urlPath = '/upload_certificate.pem';
 
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    });
+    res.end();
+    return;
+  }
+
+  if (req.method === 'POST') {
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    });
+    res.end(JSON.stringify({ success: true }));
+    return;
+  }
+
   // API redirects
   if (urlPath === '/api/services') urlPath = '/data/services.json';
   if (urlPath === '/api/software') urlPath = '/data/software_products.json';
   if (urlPath === '/api/rates') urlPath = '/data/rates.json';
   if (urlPath === '/api/experts') urlPath = '/data/experts.json';
   if (urlPath === '/api/amazon-products') urlPath = '/data/amazon_products.json';
+  if (urlPath === '/api/google-reviews') urlPath = '/data/google_reviews.json';
+  if (urlPath === '/api/software-reviews') urlPath = '/data/software_reviews.json';
   if (urlPath === '/api/all-reviews' || urlPath === '/api/service-reviews') urlPath = '/data/service_reviews.json';
   if (urlPath === '/api/orders') urlPath = '/data/orders.json';
 
