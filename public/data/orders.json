@@ -1,0 +1,116 @@
+[
+  {
+    "orderId": "FIX-ORD-31724",
+    "createdAt": "2026-11-04T15:21:36.914Z",
+    "customer": {
+      "name": "Ayat Arman",
+      "phone": "9931354354",
+      "email": "ayatarmanok@gmail.com",
+      "address": "Bandra West",
+      "city": "Mumbai",
+      "pincode": "400050"
+    },
+    "items": [
+      {
+        "id": "sw-win11-pro",
+        "title": "Microsoft Windows 11 Pro Genuine License Key (Lifetime)",
+        "price": 799,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 799,
+    "discount": 0,
+    "total": 799,
+    "paymentMethod": "payu",
+    "paymentStatus": "Paid",
+    "payuTxnId": "PAYU-1793805696914",
+    "orderStatus": "New Order",
+    "adminNotes": ""
+  },
+  {
+    "orderId": "FIX-ORD-82348",
+    "createdAt": "2026-11-04T06:16:54.423Z",
+    "customer": {
+      "name": "Test User",
+      "phone": "9931354354",
+      "email": "test@fixfly.in",
+      "address": "Dadar West",
+      "city": "Mumbai",
+      "pincode": "400028"
+    },
+    "items": [
+      {
+        "id": "sw-win11-pro",
+        "title": "Windows 11 Pro Genuine",
+        "price": 799,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 799,
+    "discount": 0,
+    "total": 799,
+    "paymentMethod": "payu",
+    "paymentStatus": "Paid",
+    "payuTxnId": "PAYU-1793773014423",
+    "orderStatus": "New Order",
+    "adminNotes": ""
+  },
+  {
+    "orderId": "FIX-SW-89420",
+    "createdAt": "2026-11-03T18:24:00.000Z",
+    "customer": {
+      "name": "Rajesh Sharma",
+      "email": "rajesh.sharma.mumbai@gmail.com",
+      "phone": "9820145210",
+      "city": "Thane West",
+      "state": "Maharashtra",
+      "pincode": "400601",
+      "address": "Flat 402, Green Meadows, Ghodbunder Road"
+    },
+    "items": [
+      {
+        "id": "sw-win11-pro",
+        "title": "Microsoft Windows 11 Pro Genuine License Key (Lifetime)",
+        "price": 799,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 799,
+    "discount": 0,
+    "total": 799,
+    "paymentMethod": "payu",
+    "paymentStatus": "Paid",
+    "payuTxnId": "PAYU-TXN-91823741",
+    "orderStatus": "License Key Sent",
+    "adminNotes": "License key emailed and WhatsApp sent on 9820145210. Key: W269N-WFGWX-YVC9B-4J6C9-T83GX"
+  },
+  {
+    "orderId": "FIX-SW-89421",
+    "createdAt": "2026-11-03T20:15:00.000Z",
+    "customer": {
+      "name": "Pooja Kulkarni",
+      "email": "pooja.kulkarni@outlook.com",
+      "phone": "9930412895",
+      "city": "Vashi, Navi Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400703",
+      "address": "Sector 17, Near Inorbit Mall"
+    },
+    "items": [
+      {
+        "id": "sw-office-2021",
+        "title": "Microsoft Office 2021 Professional Plus (Lifetime Genuine)",
+        "price": 999,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 999,
+    "discount": 0,
+    "total": 999,
+    "paymentMethod": "cod",
+    "paymentStatus": "Pending (COD)",
+    "payuTxnId": "N/A",
+    "orderStatus": "Processing",
+    "adminNotes": "Doorstep installation requested for Friday afternoon."
+  }
+]

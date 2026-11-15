@@ -1,0 +1,42 @@
+[
+  {
+    "id": "exp-1",
+    "name": "Vikram Joshi",
+    "specialty": "Expert in Laptop & MacBook",
+    "experience": "8+ Years Exp.",
+    "rating": "4.95",
+    "repairs": "1,420+ Solved",
+    "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+    "badge": "Senior Field Lead"
+  },
+  {
+    "id": "exp-2",
+    "name": "Sameer Sheikh",
+    "specialty": "Expert in iMac & Logic Board",
+    "experience": "6+ Years Exp.",
+    "rating": "4.92",
+    "repairs": "1,180+ Solved",
+    "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    "badge": "Chip-Level Specialist"
+  },
+  {
+    "id": "exp-3",
+    "name": "Amitabh Verma",
+    "specialty": "Expert in Desktop & Gaming PC",
+    "experience": "10+ Years Exp.",
+    "rating": "4.98",
+    "repairs": "2,350+ Solved",
+    "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
+    "badge": "Master Architect"
+  },
+  {
+    "id": "exp-4",
+    "name": "Rohit Kulkarni",
+    "specialty": "Expert in Laptop Screen & Hinges",
+    "experience": "5+ Years Exp.",
+    "rating": "4.90",
+    "repairs": "940+ Solved",
+    "photo": "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80",
+    "badge": "Hardware Specialist"
+  }
+]

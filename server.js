@@ -61,6 +61,9 @@ const server = http.createServer((req, res) => {
   if (urlPath === '/api/all-reviews' || urlPath === '/api/service-reviews') urlPath = '/data/service_reviews.json';
   if (urlPath === '/api/orders') urlPath = '/data/orders.json';
 
+  // Asset redirect
+  if (urlPath.startsWith('/assets/')) urlPath = '/public' + urlPath;
+
   let filePath = path.join(__dirname, urlPath);
 
   // If file doesn't exist, check if it is a clean blog URL like /laptop-repair-...

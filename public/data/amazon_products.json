@@ -1,0 +1,35 @@
+[
+  {
+    "id": "amz-1",
+    "title": "Crucial BX500 500GB 3D NAND SATA 2.5-inch Internal SSD",
+    "price": 2899,
+    "originalPrice": 4500,
+    "rating": 4.5,
+    "image": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600&auto=format&fit=crop&q=80",
+    "asin": "B07YD579WM",
+    "affiliateUrl": "https://www.amazon.in/dp/B07YD579WM?tag=fixfly-21",
+    "tag": "Best Seller SSD"
+  },
+  {
+    "id": "amz-2",
+    "title": "Kingston FURY Impact 16GB 3200MHz DDR4 CL20 Laptop RAM",
+    "price": 3199,
+    "originalPrice": 5200,
+    "rating": 4.8,
+    "image": "https://images.unsplash.com/photo-1562976540-1502c2145186?w=600&auto=format&fit=crop&q=80",
+    "asin": "B097QJ251R",
+    "affiliateUrl": "https://www.amazon.in/dp/B097QJ251R?tag=fixfly-21",
+    "tag": "High Performance RAM"
+  },
+  {
+    "id": "amz-3",
+    "title": "Arctic MX-4 (4g) High Performance Thermal Paste with Spatula",
+    "price": 549,
+    "originalPrice": 999,
+    "rating": 4.7,
+    "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&auto=format&fit=crop&q=80",
+    "asin": "B07L9BDY3T",
+    "affiliateUrl": "https://www.amazon.in/dp/B07L9BDY3T?tag=fixfly-21",
+    "tag": "Cooling Compound"
+  }
+]

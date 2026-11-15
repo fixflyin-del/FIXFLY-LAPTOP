@@ -1,9 +1,24 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
+  "outputDirectory": ".",
+  "cleanUrls": true,
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/api/services", "destination": "/data/services.json" },
+    { "source": "/api/software", "destination": "/data/software_products.json" },
+    { "source": "/api/rates", "destination": "/data/rates.json" },
+    { "source": "/api/experts", "destination": "/data/experts.json" },
+    { "source": "/api/amazon-products", "destination": "/data/amazon_products.json" },
+    { "source": "/api/google-reviews", "destination": "/data/google_reviews.json" },
+    { "source": "/api/software-reviews", "destination": "/data/software_reviews.json" },
+    { "source": "/api/all-reviews", "destination": "/data/service_reviews.json" },
+    { "source": "/api/service-reviews", "destination": "/data/service_reviews.json" },
+    { "source": "/api/orders", "destination": "/data/orders.json" },
+    { "source": "/assets/(.*)", "destination": "/public/assets/$1" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/admin/(.*)", "destination": "/admin.html" },
+    { "source": "/download", "destination": "/download.html" },
+    { "source": "/download-zip", "destination": "/fixfly-netlify-ready.zip" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

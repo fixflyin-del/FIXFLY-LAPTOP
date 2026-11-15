@@ -1,0 +1,65 @@
+[
+  {
+    "id": "gr-1",
+    "author": "Rahul Deshmukh",
+    "locality": "Vashi, Navi Mumbai",
+    "service": "HP Pavilion Thermal Cleaning",
+    "rating": 5,
+    "text": "Fixfly technician arrived at my home in 90 mins! Repasted cooling fans in front of me. Super quiet and fast now.",
+    "date": "Verified Google Review"
+  },
+  {
+    "id": "gr-2",
+    "author": "Vikram Joshi",
+    "locality": "Kothrud, Pune",
+    "service": "Lenovo Legion Dual-Fan Clean",
+    "rating": 5,
+    "text": "Valorant FPS was dropping badly. Tech cleaned dual radial fans with Arctic paste. Temps dropped from 94°C to 72°C!",
+    "date": "Verified Google Review"
+  },
+  {
+    "id": "gr-3",
+    "author": "Pooja Hegde",
+    "locality": "Indiranagar, Bangalore",
+    "service": "MacBook Air M1 Battery Replacement",
+    "rating": 5,
+    "text": "Apple store asked for 7 days. Fixfly technician swapped battery at my desk in 40 mins with 6 months warranty.",
+    "date": "Verified Google Review"
+  },
+  {
+    "id": "gr-4",
+    "author": "Sneha Kulkarni",
+    "locality": "Sion, Mumbai",
+    "service": "Dell Inspiron Power IC & Charging Jack",
+    "rating": 5,
+    "text": "Local shop quoted ₹12k for motherboard replacement. Fixfly fixed charging jack on-site for ₹1,450. Very honest team.",
+    "date": "Verified Google Review"
+  },
+  {
+    "id": "gr-5",
+    "author": "Rajat Sharma",
+    "locality": "Connaught Place, Delhi",
+    "service": "Desktop 600W SMPS Diagnostic",
+    "rating": 5,
+    "text": "Accounting PC was completely dead. Fixfly engineer brought tester & spare PSU. Up and running in 45 minutes.",
+    "date": "Verified Google Review"
+  },
+  {
+    "id": "gr-6",
+    "author": "Farhan Shaikh",
+    "locality": "Kharghar, Navi Mumbai",
+    "service": "Asus TUF Gaming Cleaning",
+    "rating": 5,
+    "text": "Got the Gaming Laptop Deep Cleaning package. Authentic paste, every fin cleaned. Best service in Navi Mumbai.",
+    "date": "Verified Google Review"
+  },
+  {
+    "id": "gr-7",
+    "author": "Ananya Roy",
+    "locality": "Andheri West, Mumbai",
+    "service": "ThinkPad Keyboard & SSD Upgrade",
+    "rating": 5,
+    "text": "Crucial 1TB NVMe cloned and installed seamlessly. Engineer was extremely polite and punctual. 5 stars!",
+    "date": "Verified Google Review"
+  }
+]
