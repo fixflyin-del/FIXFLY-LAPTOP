@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Portal | Fixfly Innovations Pvt. Ltd.</title>
   <meta name="description" content="Internal management portal for Fixfly Innovations Pvt. Ltd.">
@@ -4449,6 +4449,15 @@
         `• *Hotline:* 9931354354%0A` +
         `• *Status:* Same-Day Doorstep Visit Request`;
 
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('form_submission', {
+          form_id: 'quick-dispatch-form',
+          device_type: device,
+          service_name: service,
+          locality: locality
+        });
+      }
+
       window.open(`https://wa.me/919931354354?text=${message}`, '_blank');
     }
 
@@ -4644,6 +4653,14 @@
         `• *City / Area:* ${encodeURIComponent(area)}%0A` +
         `• *Problem:* ${encodeURIComponent(fault)}`;
 
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('form_submission', {
+          form_id: 'custom-booking-modal-form',
+          service_name: serviceName,
+          locality: area
+        });
+      }
+
       closeCustomBookingModal();
       window.open(`https://wa.me/919931354354?text=${message}`, '_blank');
     }
@@ -4696,6 +4713,37 @@
         `• *Mobile:* ${encodeURIComponent(phone)}%0A` +
         `• *City / Area:* ${encodeURIComponent(area)}%0A` +
         `• *Message:* ${encodeURIComponent(message)}`;
+
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('form_submission', {
+          form_id: 'contact-enquiry-form',
+          locality: area
+        });
+      }
+
+      window.open(`https://wa.me/919931354354?text=${whatsappText}`, '_blank');
+    }
+
+    function handleSupportSubmit(e) {
+      e.preventDefault();
+      const nameEl = document.getElementById('supp-name');
+      const phoneEl = document.getElementById('supp-phone');
+      const issueEl = document.getElementById('supp-issue');
+      const name = nameEl ? nameEl.value.trim() : '';
+      const phone = phoneEl ? phoneEl.value.trim() : '';
+      const issue = issueEl ? issueEl.value.trim() : '';
+
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('form_submission', {
+          form_id: 'support-ticket-form',
+          has_issue_summary: Boolean(issue)
+        });
+      }
+
+      const whatsappText = `*Fixfly Quick Support Request*%0A` +
+        `• *Name:* ${encodeURIComponent(name)}%0A` +
+        `• *Mobile:* ${encodeURIComponent(phone)}%0A` +
+        `• *Device & Issue:* ${encodeURIComponent(issue)}`;
 
       window.open(`https://wa.me/919931354354?text=${whatsappText}`, '_blank');
     }
@@ -4838,6 +4886,13 @@
     function buyOnWhatsApp(prodId) {
       const prod = AppState.software.find(p => p.id === prodId);
       const title = prod ? prod.title : 'Software Setup & Troubleshooting Support';
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('whatsapp_click', {
+          source: 'software_setup_whatsapp_cta',
+          product_id: prodId || 'general',
+          product_title: title
+        });
+      }
       const text = `Hi Fixfly Innovations, I want to request technical setup/troubleshooting assistance for *${title}* (I have/will use my own official license). Please share a service quote and available time slot.`;
       const url = `https://wa.me/919931354354?text=${encodeURIComponent(text)}`;
       window.open(url, '_blank');
@@ -5420,6 +5475,8 @@
         }
       });
     });
+
+    
   </script>
 </body>
 </html>

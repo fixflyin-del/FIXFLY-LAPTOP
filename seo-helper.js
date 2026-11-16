@@ -303,6 +303,28 @@ function buildRouteSeo(requestPath) {
   };
 }
 
+const GTM_CONTAINER_ID = 'GTM-MZJM9QHX';
+const GTM_HEAD_SNIPPET = `<script async src="https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>`;
+
+function applyGtmHead(html, robotsValue) {
+  // Strip any existing GTM-MZJM9QHX scripts first to strictly prevent duplicate installation
+  let cleaned = html
+    .replace(/<script[^>]*src=["']https:\/\/www\.googletagmanager\.com\/gtm\.js\?id=GTM-MZJM9QHX["'][^>]*><\/script>\s*/gi, '')
+    .replace(/<script>\s*window\.dataLayer\s*=\s*window\.dataLayer\s*\|\|\s*\[\];\s*function\s+gtag\(\)\{dataLayer\.push\(arguments\);\}\s*gtag\('js',\s*new Date\(\)\);\s*<\/script>\s*/gi, '');
+
+  const isNoIndex = String(robotsValue || '').toLowerCase().includes('noindex');
+  if (isNoIndex) {
+    return cleaned.replace(/\/\*\s*FIXFLY_CONVERSION_READINESS_START\s*\*\/[\s\S]*?\/\*\s*FIXFLY_CONVERSION_READINESS_END\s*\*\//gi, '');
+  }
+
+  return cleaned.replace(/<head([^>]*)>\s*/i, `<head$1>\n${GTM_HEAD_SNIPPET}\n  `);
+}
+
 function injectSsrHead(html, seo) {
   const safeTitle = escapeHtml(seo.title);
   const safeDesc = escapeHtml(seo.description);
@@ -311,7 +333,7 @@ function injectSsrHead(html, seo) {
   const safeRobots = escapeHtml(seo.robots || 'index, follow');
   const safeJsonLd = JSON.stringify(seo.schema || {}).replace(/</g, '\\u003c');
 
-  return html
+  const withSeo = html
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${safeTitle}</title>`)
     .replace(/<meta\s+name="description"\s+content="[^"]*"\s*>/i, `<meta name="description" content="${safeDesc}">`)
     .replace(/<meta\s+name="robots"\s+content="[^"]*"\s*>/i, `<meta name="robots" content="${safeRobots}">`)
@@ -321,9 +343,13 @@ function injectSsrHead(html, seo) {
     .replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*>/i, `<meta property="og:title" content="${safeTitle}">`)
     .replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*>/i, `<meta property="og:description" content="${safeDesc}">`)
     .replace(/<script\s+type="application\/ld\+json"\s+id="dynamic-page-schema">[\s\S]*?<\/script>/i, `<script type="application/ld+json" id="dynamic-page-schema">${safeJsonLd}</script>`);
+
+  return applyGtmHead(withSeo, seo.robots);
 }
 
 module.exports = {
+  GTM_CONTAINER_ID,
+  GTM_HEAD_SNIPPET,
   ROUTE_SEO_META,
   getArticles,
   getSoftwareServices,

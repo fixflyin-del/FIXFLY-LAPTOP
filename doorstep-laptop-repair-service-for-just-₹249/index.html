@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MZJM9QHX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Doorstep Laptop Repair &amp; Diagnostic Inspection Service | Fixfly | Fixfly Innovations Pvt. Ltd.</title>
@@ -4449,6 +4455,15 @@
         `• *Hotline:* 9931354354%0A` +
         `• *Status:* Same-Day Doorstep Visit Request`;
 
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('form_submission', {
+          form_id: 'quick-dispatch-form',
+          device_type: device,
+          service_name: service,
+          locality: locality
+        });
+      }
+
       window.open(`https://wa.me/919931354354?text=${message}`, '_blank');
     }
 
@@ -4644,6 +4659,14 @@
         `• *City / Area:* ${encodeURIComponent(area)}%0A` +
         `• *Problem:* ${encodeURIComponent(fault)}`;
 
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('form_submission', {
+          form_id: 'custom-booking-modal-form',
+          service_name: serviceName,
+          locality: area
+        });
+      }
+
       closeCustomBookingModal();
       window.open(`https://wa.me/919931354354?text=${message}`, '_blank');
     }
@@ -4696,6 +4719,37 @@
         `• *Mobile:* ${encodeURIComponent(phone)}%0A` +
         `• *City / Area:* ${encodeURIComponent(area)}%0A` +
         `• *Message:* ${encodeURIComponent(message)}`;
+
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('form_submission', {
+          form_id: 'contact-enquiry-form',
+          locality: area
+        });
+      }
+
+      window.open(`https://wa.me/919931354354?text=${whatsappText}`, '_blank');
+    }
+
+    function handleSupportSubmit(e) {
+      e.preventDefault();
+      const nameEl = document.getElementById('supp-name');
+      const phoneEl = document.getElementById('supp-phone');
+      const issueEl = document.getElementById('supp-issue');
+      const name = nameEl ? nameEl.value.trim() : '';
+      const phone = phoneEl ? phoneEl.value.trim() : '';
+      const issue = issueEl ? issueEl.value.trim() : '';
+
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('form_submission', {
+          form_id: 'support-ticket-form',
+          has_issue_summary: Boolean(issue)
+        });
+      }
+
+      const whatsappText = `*Fixfly Quick Support Request*%0A` +
+        `• *Name:* ${encodeURIComponent(name)}%0A` +
+        `• *Mobile:* ${encodeURIComponent(phone)}%0A` +
+        `• *Device & Issue:* ${encodeURIComponent(issue)}`;
 
       window.open(`https://wa.me/919931354354?text=${whatsappText}`, '_blank');
     }
@@ -4838,6 +4892,13 @@
     function buyOnWhatsApp(prodId) {
       const prod = AppState.software.find(p => p.id === prodId);
       const title = prod ? prod.title : 'Software Setup & Troubleshooting Support';
+      if (typeof window.fixflyTrackConversionEvent === 'function') {
+        window.fixflyTrackConversionEvent('whatsapp_click', {
+          source: 'software_setup_whatsapp_cta',
+          product_id: prodId || 'general',
+          product_title: title
+        });
+      }
       const text = `Hi Fixfly Innovations, I want to request technical setup/troubleshooting assistance for *${title}* (I have/will use my own official license). Please share a service quote and available time slot.`;
       const url = `https://wa.me/919931354354?text=${encodeURIComponent(text)}`;
       window.open(url, '_blank');
@@ -5420,6 +5481,89 @@
         }
       });
     });
+
+    /* FIXFLY_CONVERSION_READINESS_START */
+    // Google Tag Manager & Google Ads Conversion Tracking Readiness (Non-blocking; no fabricated conversion IDs)
+    (function initFixflyConversionReadiness() {
+      window.FIXFLY_ADS_CONVERSION_CONFIG = window.FIXFLY_ADS_CONVERSION_CONFIG || {
+        gtmContainerId: 'GTM-MZJM9QHX',
+        googleAdsConversionId: null, // Set to 'AW-XXXXXXXXX' after creating conversion action in Google Ads
+        conversionLabels: {
+          phone_call_click: null,
+          whatsapp_click: null,
+          form_submission: null,
+          product_purchase: null
+        }
+      };
+
+      window.fixflyTrackConversionEvent = function(eventName, payload) {
+        try {
+          if (typeof AppState !== 'undefined' && AppState.currentView === 'admin-portal') return;
+          if (typeof document !== 'undefined') {
+            const robotsMeta = document.querySelector('meta[name="robots"]');
+            if (robotsMeta && /noindex/i.test(robotsMeta.getAttribute('content') || '')) return;
+          }
+          window.dataLayer = window.dataLayer || [];
+          const eventData = Object.assign({
+            event: 'fixfly_' + eventName,
+            gtm_container_id: 'GTM-MZJM9QHX',
+            page_path: window.location ? window.location.pathname : '/',
+            page_title: typeof document !== 'undefined' ? document.title : ''
+          }, payload || {});
+          window.dataLayer.push(eventData);
+
+          const cfg = window.FIXFLY_ADS_CONVERSION_CONFIG;
+          const convId = cfg && typeof cfg.googleAdsConversionId === 'string' ? cfg.googleAdsConversionId.trim() : '';
+          const convLabel = cfg && cfg.conversionLabels && typeof cfg.conversionLabels[eventName] === 'string'
+            ? cfg.conversionLabels[eventName].trim()
+            : '';
+
+          if (convId && convId.indexOf('AW-') === 0 && convLabel && typeof window.gtag === 'function') {
+            const convParams = { send_to: convId + '/' + convLabel };
+            if (payload && typeof payload.value === 'number') {
+              convParams.value = payload.value;
+              convParams.currency = payload.currency || 'INR';
+            }
+            if (payload && payload.transaction_id) {
+              convParams.transaction_id = payload.transaction_id;
+            }
+            window.gtag('event', 'conversion', convParams);
+          }
+        } catch (err) {}
+      };
+
+      window.fixflyTrackPurchaseReady = function(orderDetails) {
+        const order = orderDetails || {};
+        window.fixflyTrackConversionEvent('product_purchase', {
+          transaction_id: order.transactionId || '',
+          value: typeof order.value === 'number' ? order.value : undefined,
+          currency: order.currency || 'INR',
+          items: Array.isArray(order.items) ? order.items : []
+        });
+      };
+
+      if (typeof document !== 'undefined') {
+        document.addEventListener('click', function(e) {
+          const anchor = e.target && typeof e.target.closest === 'function' ? e.target.closest('a[href]') : null;
+          if (!anchor) return;
+          const href = anchor.getAttribute('href') || '';
+          const linkText = (anchor.textContent || '').trim().slice(0, 80);
+
+          if (/^tel:/i.test(href)) {
+            window.fixflyTrackConversionEvent('phone_call_click', {
+              phone_number: href.replace(/^tel:/i, ''),
+              link_text: linkText
+            });
+          } else if (/wa\.me\//i.test(href) || /api\.whatsapp\.com/i.test(href)) {
+            window.fixflyTrackConversionEvent('whatsapp_click', {
+              whatsapp_url: href,
+              link_text: linkText
+            });
+          }
+        });
+      }
+    })();
+    /* FIXFLY_CONVERSION_READINESS_END */
   </script>
 </body>
 </html>
