@@ -92,6 +92,14 @@
     .fixfly-marquee-track:hover {
       animation-play-state: paused;
     }
+
+    @keyframes fixflyOfferBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+    .fixfly-offer-blink {
+      animation: fixflyOfferBlink 1.2s ease-in-out infinite;
+    }
   </style>
 
   <script>
@@ -138,7 +146,7 @@
     "description": "Independent third-party doorstep laptop, MacBook, and desktop computer hardware repair, thermal cleaning, and IT support service across Mumbai, Thane, Navi Mumbai, Pune, Bangalore, and New Delhi.",
     "telephone": "+91-9931354354",
     "email": "info@fixfly.in",
-    "priceRange": "₹99 - ₹2500",
+    "priceRange": "₹199 - ₹2500",
     "foundingDate": "2019",
     "slogan": "We Fix – You Fly",
     "address": {
@@ -213,13 +221,13 @@
 
       <!-- RIGHT HEADER ACTIONS: WhatsApp & Direct Call -->
       <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        <a href="https://wa.me/919931354354?text=Hi%20Fixfly,%20I%20want%20to%20book%20a%20doorstep%20service%20or%20software%20setup%20support." target="_blank" rel="noopener" class="bg-[#25D366] hover:bg-[#20bd5a] text-white px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-sm hover:shadow-md transition flex items-center gap-2 whitespace-nowrap">
-          <svg class="w-5.5 h-5.5 sm:w-6 sm:h-6 fill-current flex-shrink-0" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-          <span class="hidden xs:inline">WhatsApp</span>
+        <a href="https://wa.me/919931354354?text=Hi%20Fixfly,%20I%20want%20to%20book%20a%20doorstep%20service%20or%20software%20setup%20support." target="_blank" rel="noopener" aria-label="Chat on WhatsApp" class="bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 whitespace-nowrap">
+          <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current flex-shrink-0" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <span>WhatsApp</span>
         </a>
 
-        <a href="tel:9931354354" class="bg-brandBlue hover:bg-[#0665af] text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl font-bold text-xs shadow-sm hover:shadow-md transition flex items-center gap-1.5 whitespace-nowrap">
-          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.06-.24c1.12.37 2.33.57 3.53.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.2.2 2.41.57 3.53a1 1 0 01-.24 1.06l-2.21 2.2z"/></svg>
+        <a href="tel:9931354354" class="bg-brandBlue hover:bg-[#0665af] text-white px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm shadow-sm hover:shadow-md transition flex items-center gap-1.5 whitespace-nowrap">
+          <svg class="w-4 h-4 fill-current flex-shrink-0" viewBox="0 0 24 24"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.06-.24c1.12.37 2.33.57 3.53.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.2.2 2.41.57 3.53a1 1 0 01-.24 1.06l-2.21 2.2z"/></svg>
           <span class="hidden sm:inline">9931354354</span>
           <span class="sm:hidden">Call</span>
         </a>
@@ -343,18 +351,13 @@
             <!-- Left Column (7 Cols): Sleek Headline & Conversion Triggers -->
             <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
               
-              <!-- Combined Offer + Express Dispatch Pill -->
-              <div class="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-50 via-blue-50 to-emerald-50 border border-amber-200/90 shadow-2xs">
-                <span class="inline-flex items-center gap-1 bg-amber-500 text-slate-950 font-black text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full shadow-2xs">
-                  <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span>
+              <!-- Offer Announcement Pill (Blinking) -->
+              <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-100 border border-amber-300 shadow-sm">
+                <span class="inline-flex items-center gap-1.5 bg-amber-500 text-slate-950 font-black text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full shadow-2xs">
+                  <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
                   OFFER
                 </span>
-                <span id="top-announcement-text" class="font-extrabold text-amber-950 text-xs tracking-tight">DOORSTEP INSPECTION FROM ₹99</span>
-                <span class="text-slate-300 hidden sm:inline">•</span>
-                <span class="text-brandBlue text-xs font-bold flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                  Same-Day Doorstep Dispatch
-                </span>
+                <span id="top-announcement-text" class="font-extrabold text-amber-950 text-xs sm:text-sm tracking-tight fixfly-offer-blink">Free laptop cleaning with every booking</span>
               </div>
 
               <!-- Main Impactful Headline -->
@@ -438,7 +441,7 @@
                   <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Required Service</label>
                     <select id="quick-service" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-slate-800 font-medium focus:ring-2 focus:ring-brandBlue focus:bg-white focus:outline-none">
-                      <option value="Doorstep Inspection & Diagnostic">Doorstep Inspection & Diagnostic (Starts ₹99 / ₹199)</option>
+                      <option value="Doorstep Inspection & Diagnostic">Doorstep Inspection & Diagnostic (Starts ₹199)</option>
                       <option value="Laptop Deep Thermal Cleaning & Repaste">Laptop Deep Thermal Cleaning (₹799)</option>
                       <option value="RAM / SSD / Storage Upgrade">RAM / SSD / Storage Upgrade Support</option>
                       <option value="Gaming Laptop Dual-Fan Overhaul">Gaming Laptop Dual-Fan Overhaul (₹1,050)</option>
@@ -1255,12 +1258,12 @@
           </h1>
 
           <p class="text-slate-300 text-xs sm:text-sm sm:leading-relaxed max-w-2xl font-normal">
-            Trained field engineers arrive at your home or office desk with calibrated diagnostic gear. Diagnostic visits start at ₹99, upfront written quotes are shared before any repair starts, and replacement parts carry up to 6 months limited warranty (T&amp;C apply).
+            Trained field engineers arrive at your home or office desk with calibrated diagnostic gear. Diagnostic visits start at ₹199, upfront written quotes are shared before any repair starts, and replacement parts carry up to 6 months limited warranty (T&amp;C apply).
           </p>
 
           <div class="pt-2 flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-bold">
             <span class="bg-white/10 backdrop-blur px-3 py-1.5 rounded-xl flex items-center gap-1.5 border border-white/15">
-              <span class="text-emerald-400 font-extrabold">✓</span> Diagnostics from ₹99
+              <span class="text-emerald-400 font-extrabold">✓</span> Diagnostics from ₹199
             </span>
             <span class="bg-white/10 backdrop-blur px-3 py-1.5 rounded-xl flex items-center gap-1.5 border border-white/15">
               <span class="text-amber-400 font-extrabold">⚡</span> Same-Day Doorstep Dispatch
@@ -1323,7 +1326,7 @@
           <div class="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">Service Coverage</div>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-slate-200 text-center shadow-xs">
-          <div class="text-3xl font-black text-purple-600">₹99+</div>
+          <div class="text-3xl font-black text-purple-600">₹199+</div>
           <div class="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">Diagnostic Start</div>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-slate-200 text-center shadow-xs">
@@ -1542,7 +1545,7 @@
         <div class="border-t border-slate-100 pt-6">
           <h2 class="text-xl font-extrabold text-brandNavy font-heading">2. Inspection, Diagnostics &amp; Service Pricing</h2>
           <p class="mt-2 text-slate-600">
-            Doorstep diagnostic and inspection visits carry transparent starting charges (from ₹99 for standard laptops, ₹199 for desktops, and ₹299 for MacBooks, unless a promotional offer applies). After conducting an on-site hardware check, our engineer explains the fault and shares a firm upfront quotation for parts and labor. No repair or component replacement proceeds without the customer's prior consent.
+            Doorstep diagnostic and inspection visits carry transparent starting charges (from ₹199 for standard laptops &amp; desktops, and ₹299 for MacBooks, unless a promotional offer applies). After conducting an on-site hardware check, our engineer explains the fault and shares a firm upfront quotation for parts and labor. No repair or component replacement proceeds without the customer's prior consent.
           </p>
         </div>
 
@@ -2102,7 +2105,7 @@
         <div class="space-y-3">
           <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">5 Core Services</h2>
           <ul class="space-y-2 text-xs text-slate-400">
-            <li><a href="#service-laptop" onclick="openServiceDetail('laptop-repair'); return false;" class="hover:text-brandSky transition">Laptop Repair at Home (<span class="svc-rate-laptop-repair">₹99</span>)</a></li>
+            <li><a href="#service-laptop" onclick="openServiceDetail('laptop-repair'); return false;" class="hover:text-brandSky transition">Laptop Repair at Home (<span class="svc-rate-laptop-repair">₹199</span>)</a></li>
             <li><a href="#service-cleaning" onclick="openServiceDetail('laptop-cleaning'); return false;" class="hover:text-brandSky transition">Laptop Deep Cleaning (<span class="svc-rate-laptop-cleaning">₹799</span>)</a></li>
             <li><a href="#service-macbook" onclick="openServiceDetail('macbook-repair'); return false;" class="hover:text-brandSky transition">MacBook Expert at Home (<span class="svc-rate-macbook-repair">₹299</span>)</a></li>
             <li><a href="#service-desktop" onclick="openServiceDetail('desktop-repair'); return false;" class="hover:text-brandSky transition">Desktop Expert at Home (<span class="svc-rate-desktop-repair">₹199</span>)</a></li>
@@ -2283,7 +2286,7 @@
 
     const DefaultRates = {
       services: {
-        'laptop-repair': { title: 'Laptop Repair & Diagnostics', rate: '₹99', badge: 'Doorstep Inspection', rating: 'Customer Feedback', reviewsCount: 'Doorstep Visit' },
+        'laptop-repair': { title: 'Laptop Repair & Diagnostics', rate: '₹199', badge: 'Doorstep Inspection', rating: 'Customer Feedback', reviewsCount: 'Doorstep Visit' },
         'laptop-cleaning': { title: 'Laptop Deep Thermal Cleaning', rate: '₹799', badge: 'Cooling Maintenance', rating: 'Customer Feedback', reviewsCount: 'Doorstep Visit' },
         'macbook-repair': { title: 'MacBook Specialist Care at Home', rate: '₹299', badge: 'MacBook Diagnostics', rating: 'Customer Feedback', reviewsCount: 'Doorstep Visit' },
         'desktop-repair': { title: 'Desktop PC & Workstation Support', rate: '₹199', badge: 'PC & Workstation', rating: 'Customer Feedback', reviewsCount: 'Doorstep Visit' },
@@ -2458,7 +2461,7 @@
     const FixflySanitizer = {
       topOffer: function(txt) {
         const clean = String(txt || '').trim();
-        if (!clean || /free laptop cleaning/i.test(clean)) return 'DOORSTEP INSPECTION FROM ₹99';
+        if (!clean || /^free laptop cleaning$/i.test(clean) || /doorstep inspection.*99/i.test(clean)) return 'Free laptop cleaning with every booking';
         return clean;
       },
       software: function(items) {
@@ -2499,7 +2502,12 @@
           return /fluke|85% of issues|zero data loss|unconditional warranty|150\+\s*companies|2-hour priority|4\.9\s*★|4\.8\s*★|480\+\s*ratings/i.test(blob);
         });
         if (hasStale) return fallback;
-        return items;
+        return items.map(s => {
+          if (s && s.key === 'laptop-repair' && String(s.rate || '').trim() === '₹99') {
+            return Object.assign({}, s, { rate: '₹199', fallbackRate: '₹199' });
+          }
+          return s;
+        });
       },
       experts: function(items) {
         if (!Array.isArray(items) || !items.length) return JSON.parse(JSON.stringify(DefaultExperts));
@@ -2513,8 +2521,12 @@
       rates: function(raw) {
         if (!raw || typeof raw !== 'object') return JSON.parse(JSON.stringify(DefaultRates));
         const r = raw.rates && typeof raw.rates === 'object' ? raw.rates : raw;
-        if (r.services) return r;
-        return Object.assign({}, DefaultRates, r);
+        const out = r.services ? r : Object.assign({}, DefaultRates, r);
+        if (Number(out.laptop) === 99) out.laptop = 199;
+        if (out.services && out.services['laptop-repair'] && out.services['laptop-repair'].rate === '₹99') {
+          out.services['laptop-repair'] = Object.assign({}, out.services['laptop-repair'], { rate: '₹199' });
+        }
+        return out;
       }
     };
 
@@ -2627,7 +2639,7 @@
         } catch (e) {}
       }
 
-      // 3. Service Rates (e.g. ₹99 Laptop Repair)
+      // 3. Service Rates (e.g. ₹199 Laptop Repair)
       const savedRates = localStorage.getItem('fixfly_rates');
       if (savedRates) {
         try {
@@ -3450,8 +3462,8 @@
         category: 'laptop',
         title: 'Laptop Repair & Diagnostics',
         rateKey: 'laptop',
-        rate: '₹99',
-        fallbackRate: '₹99',
+        rate: '₹199',
+        fallbackRate: '₹199',
         badge: 'Doorstep Inspection',
         rating: 'Customer Feedback',
         reviewsCount: 'Doorstep Visit',
@@ -3563,7 +3575,7 @@
     ];
 
     function getServiceCurrentRate(svc) {
-      if (!svc) return '₹99';
+      if (!svc) return '₹199';
       if (svc.rate) {
         return String(svc.rate).startsWith('₹') ? svc.rate : '₹' + svc.rate;
       }
@@ -3580,7 +3592,7 @@
           return AppState.rates.services[svc.key].rate;
         }
       }
-      return '₹99';
+      return '₹199';
     }
 
     let currentServiceFilter = 'all';
