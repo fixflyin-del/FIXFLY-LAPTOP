@@ -5,8 +5,8 @@
     "userName": "Amitabh Sengupta",
     "city": "Mumbai",
     "rating": 5,
-    "date": "2 days ago",
-    "comment": "Screen replaced in 45 mins at home. Original 144Hz panel with 6 months warranty. Very smooth process."
+    "date": "Recent Feedback",
+    "comment": "Display replaced neatly at home using a tested 144Hz panel with limited parts warranty. Smooth and transparent process."
   },
   {
     "id": "sr-2",
@@ -14,8 +14,8 @@
     "userName": "Vikram Joshi",
     "city": "Pune",
     "rating": 5,
-    "date": "3 days ago",
-    "comment": "Thermal throttling solved. Arctic MX-4 applied properly. My laptop runs totally silent now."
+    "date": "Recent Feedback",
+    "comment": "Thermal throttling issue resolved after fan dust removal and thermal paste replacement. Laptop runs quiet now."
   },
   {
     "id": "sr-3",
@@ -23,8 +23,8 @@
     "userName": "Pooja Hegde",
     "city": "Bangalore",
     "rating": 5,
-    "date": "1 week ago",
-    "comment": "MacBook Air trackpad & battery replaced on-site. Engineer was polite and verified everything."
+    "date": "Recent Feedback",
+    "comment": "MacBook Air trackpad & battery serviced on-site. Technician was polite and checked everything carefully."
   },
   {
     "id": "sr-4",
@@ -32,8 +32,8 @@
     "userName": "Rajat Sharma",
     "city": "Delhi",
     "rating": 5,
-    "date": "4 days ago",
-    "comment": "Diagnosed motherboard RAM slot issue quickly. Saved my office work day."
+    "date": "Recent Feedback",
+    "comment": "Diagnosed motherboard RAM slot issue quickly and clearly explained the repair steps."
   },
   {
     "id": "sr-5",
@@ -41,7 +41,7 @@
     "userName": "Farhan Shaikh",
     "city": "Navi Mumbai",
     "rating": 5,
-    "date": "5 days ago",
-    "comment": "Dual fan Asus TUF laptop runs completely cool now. Worth every rupee."
+    "date": "Recent Feedback",
+    "comment": "Dual fan Asus TUF laptop runs much cooler after deep thermal cleaning at home."
   }
 ]

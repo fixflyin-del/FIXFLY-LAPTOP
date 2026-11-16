@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { buildRouteSeo, injectSsrHead } = require('./seo-helper');
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -20,28 +21,20 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
-  let urlPath = req.url.split('?')[0];
-
-  // Clean trailing slash
-  if (urlPath === '/' || urlPath === '') urlPath = '/index.html';
-  if (urlPath === '/admin' || urlPath === '/admin/') urlPath = '/admin.html';
-  if (urlPath === '/download' || urlPath === '/download/') urlPath = '/download.html';
-  if (urlPath === '/download-zip') urlPath = '/fixfly-netlify-ready.zip';
-  if (urlPath === '/download-aab' || urlPath === '/aab') urlPath = '/fixfly-app.aab';
-  if (urlPath === '/download-apk' || urlPath === '/apk') urlPath = '/fixfly-app.apk';
-  if (urlPath === '/download-pem' || urlPath === '/pem' || urlPath === '/certificate') urlPath = '/upload_certificate.pem';
+  const rawUrlPath = (req.url || '/').split('?')[0];
+  let urlPath = rawUrlPath;
 
   if (req.method === 'OPTIONS') {
     res.writeHead(200, {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type'
     });
     res.end();
     return;
   }
 
-  if (req.method === 'POST') {
+  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
     res.writeHead(200, {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
@@ -49,6 +42,15 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({ success: true }));
     return;
   }
+
+  // Clean static route aliases
+  if (urlPath === '/' || urlPath === '') urlPath = '/index.html';
+  if (urlPath === '/admin' || urlPath === '/admin/') urlPath = '/admin.html';
+  if (urlPath === '/download' || urlPath === '/download/') urlPath = '/download.html';
+  if (urlPath === '/download-zip') urlPath = '/fixfly-netlify-ready.zip';
+  if (urlPath === '/download-aab' || urlPath === '/aab') urlPath = '/fixfly-app.aab';
+  if (urlPath === '/download-apk' || urlPath === '/apk') urlPath = '/fixfly-app.apk';
+  if (urlPath === '/download-pem' || urlPath === '/pem' || urlPath === '/certificate') urlPath = '/upload_certificate.pem';
 
   // API redirects
   if (urlPath === '/api/services') urlPath = '/data/services.json';
@@ -64,12 +66,55 @@ const server = http.createServer((req, res) => {
   // Asset redirect
   if (urlPath.startsWith('/assets/')) urlPath = '/public' + urlPath;
 
-  let filePath = path.join(__dirname, urlPath);
+  let decodedUrlPath = urlPath;
+  try {
+    decodedUrlPath = decodeURIComponent(urlPath);
+  } catch (e) {}
 
-  // If file doesn't exist, check if it is a clean blog URL like /laptop-repair-...
+  const safeResolved = path.normalize(decodedUrlPath).replace(/^(\.\.[/\\])+/, '');
+  let filePath = path.join(__dirname, safeResolved);
+
+  let isSpaHtmlFallback = false;
   if (!fs.existsSync(filePath)) {
-    // For SPA, fallback to index.html
-    filePath = path.join(__dirname, 'index.html');
+    const cleanHtmlCandidate = path.join(__dirname, safeResolved.replace(/\/+$/, '') + '.html');
+    if (safeResolved !== '/' && fs.existsSync(cleanHtmlCandidate) && fs.statSync(cleanHtmlCandidate).isFile()) {
+      filePath = cleanHtmlCandidate;
+      isSpaHtmlFallback = !['/admin.html', '/download.html', '/404.html'].includes(path.basename(filePath));
+    } else {
+      filePath = path.join(__dirname, 'index.html');
+      isSpaHtmlFallback = true;
+    }
+  } else if (fs.statSync(filePath).isDirectory()) {
+    const dirIndex = path.join(filePath, 'index.html');
+    if (fs.existsSync(dirIndex) && fs.statSync(dirIndex).isFile()) {
+      filePath = dirIndex;
+    } else {
+      filePath = path.join(__dirname, 'index.html');
+    }
+    isSpaHtmlFallback = true;
+  } else if (path.extname(filePath).toLowerCase() === '.html' && !['admin.html', 'download.html', '404.html'].includes(path.basename(filePath))) {
+    isSpaHtmlFallback = true;
+  }
+
+  if (isSpaHtmlFallback) {
+    fs.readFile(path.join(__dirname, 'index.html'), 'utf8', (err, html) => {
+      if (err) {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error');
+        return;
+      }
+      const seo = buildRouteSeo(rawUrlPath);
+      const rendered = injectSsrHead(html, seo);
+      const buf = Buffer.from(rendered, 'utf8');
+      res.writeHead(200, {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Content-Length': buf.length,
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+      });
+      res.end(buf);
+    });
+    return;
   }
 
   const ext = path.extname(filePath).toLowerCase();
@@ -89,25 +134,17 @@ const server = http.createServer((req, res) => {
       'Cache-Control': 'no-cache, no-store, must-revalidate'
     };
 
-    if (ext === '.zip') {
-      headers['Content-Disposition'] = 'attachment; filename="fixfly-netlify-ready.zip"';
-    }
-    if (ext === '.aab') {
-      headers['Content-Disposition'] = 'attachment; filename="fixfly-app.aab"';
-    }
-    if (ext === '.apk') {
-      headers['Content-Disposition'] = 'attachment; filename="fixfly-app.apk"';
-    }
-    if (ext === '.pem') {
-      headers['Content-Disposition'] = 'attachment; filename="upload_certificate.pem"';
-    }
+    if (ext === '.zip') headers['Content-Disposition'] = 'attachment; filename="fixfly-netlify-ready.zip"';
+    if (ext === '.aab') headers['Content-Disposition'] = 'attachment; filename="fixfly-app.aab"';
+    if (ext === '.apk') headers['Content-Disposition'] = 'attachment; filename="fixfly-app.apk"';
+    if (ext === '.pem') headers['Content-Disposition'] = 'attachment; filename="upload_certificate.pem"';
 
     res.writeHead(200, headers);
     fs.createReadStream(filePath).pipe(res);
   });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Fixfly static web server running on port ${PORT}`);
+  console.log(`Fixfly web server with SSR SEO metadata running on port ${PORT}`);
 });

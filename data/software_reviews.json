@@ -6,7 +6,7 @@
     "city": "Mumbai",
     "rating": 5,
     "date": "2 days ago",
-    "comment": "Updated: 100% Genuine key activated instantly!"
+    "comment": "Clean Windows 11 installation and driver configuration completed neatly during the remote support session."
   },
   {
     "id": "rev-2",
@@ -15,7 +15,7 @@
     "city": "Pune",
     "rating": 5,
     "date": "1 week ago",
-    "comment": "Engineer guided me remotely on AnyDesk to install fresh Windows 11. Very polite and professional service."
+    "comment": "Technician guided me remotely to reinstall Windows 11 with my official license and recover drivers properly."
   },
   {
     "id": "rev-3",
@@ -24,16 +24,16 @@
     "city": "Thane",
     "rating": 5,
     "date": "3 days ago",
-    "comment": "Word and Excel activated smoothly using official Microsoft link. Huge savings compared to retail store price."
+    "comment": "Outlook mail sync and Microsoft 365 setup fixed smoothly with my account. Polite and helpful technician."
   },
   {
     "id": "rev-4",
     "productId": "sw-acrobat-pro",
-    "userName": "Advocate R. K. Nair",
+    "userName": "R. K. Nair",
     "city": "Navi Mumbai",
     "rating": 5,
     "date": "5 days ago",
-    "comment": "As a lawyer I need to edit and sign PDF petitions daily. Working flawlessly with digital signature certificate."
+    "comment": "Configured my PDF digital signature token and scanner workflow cleanly for office use."
   },
   {
     "id": "rev-5",
@@ -42,6 +42,6 @@
     "city": "Bangalore",
     "rating": 5,
     "date": "1 week ago",
-    "comment": "3-year license activated on Quick Heal registration server immediately. Laptop is running much faster now."
+    "comment": "Removed adware slowing down my laptop and set up my existing antivirus subscription cleanly."
   }
 ]

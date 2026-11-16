@@ -1,0 +1,17 @@
+.gradle/
+.build-outputs/
+app/
+gradle/
+*.aab
+*.apk
+*.jks
+*.keystore
+*.base64
+key.properties
+key.properties.example
+build.gradle.kts
+settings.gradle.kts
+gradle.properties
+add_features.py
+add_js_logic.py
+update_index.py

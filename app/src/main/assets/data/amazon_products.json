@@ -1,35 +1,38 @@
 [
   {
-    "id": "amz-1",
-    "title": "Crucial BX500 500GB 3D NAND SATA 2.5-inch Internal SSD",
-    "price": 2899,
-    "originalPrice": 4500,
-    "rating": 4.5,
-    "image": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600&auto=format&fit=crop&q=80",
-    "asin": "B07YD579WM",
-    "affiliateUrl": "https://www.amazon.in/dp/B07YD579WM?tag=fixfly-21",
-    "tag": "Best Seller SSD"
+    "id": "prod-1",
+    "title": "Fixfly Thermal Compound Syringe",
+    "price": "Check on Amazon.in",
+    "badge": "Cooling Supply",
+    "rating": "Amazon Store",
+    "reviewsCount": "Listed on Amazon.in",
+    "availabilityNote": "Live stock, shipping & returns governed by Amazon.in",
+    "image": "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&q=80",
+    "description": "Thermal compound formulated for laptop and desktop CPU/GPU heatsink servicing. Check current price, seller dispatch, and stock directly on the Fixfly Innovations Amazon Store.",
+    "amazonUrl": "https://www.amazon.in/stores/FixflyInnovationsPvtLtd/page/8A60FF0E-808E-4C96-92A7-18C0A1889096?lp_asin=B0GVGRM4Z1&ref_=ast_bln"
   },
   {
-    "id": "amz-2",
-    "title": "Kingston FURY Impact 16GB 3200MHz DDR4 CL20 Laptop RAM",
-    "price": 3199,
-    "originalPrice": 5200,
-    "rating": 4.8,
-    "image": "https://images.unsplash.com/photo-1562976540-1502c2145186?w=600&auto=format&fit=crop&q=80",
-    "asin": "B097QJ251R",
-    "affiliateUrl": "https://www.amazon.in/dp/B097QJ251R?tag=fixfly-21",
-    "tag": "High Performance RAM"
+    "id": "prod-2",
+    "title": "Fixfly Screen Cleaning Kit with Microfiber",
+    "price": "Check on Amazon.in",
+    "badge": "Display Care",
+    "rating": "Amazon Store",
+    "reviewsCount": "Listed on Amazon.in",
+    "availabilityNote": "Live stock, shipping & returns governed by Amazon.in",
+    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80",
+    "description": "Alcohol-free screen cleaning spray with microfiber cloth designed for laptop displays, keyboards, and glass surfaces. View current availability and shipping terms on Amazon.in.",
+    "amazonUrl": "https://www.amazon.in/stores/FixflyInnovationsPvtLtd/page/8A60FF0E-808E-4C96-92A7-18C0A1889096?lp_asin=B0GVGRM4Z1&ref_=ast_bln"
   },
   {
-    "id": "amz-3",
-    "title": "Arctic MX-4 (4g) High Performance Thermal Paste with Spatula",
-    "price": 549,
-    "originalPrice": 999,
-    "rating": 4.7,
-    "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&auto=format&fit=crop&q=80",
-    "asin": "B07L9BDY3T",
-    "affiliateUrl": "https://www.amazon.in/dp/B07L9BDY3T?tag=fixfly-21",
-    "tag": "Cooling Compound"
+    "id": "prod-3",
+    "title": "Cooling Accessories & Thermal Pads",
+    "price": "Check on Amazon.in",
+    "badge": "Cooling Hardware",
+    "rating": "Amazon Store",
+    "reviewsCount": "Listed on Amazon.in",
+    "availabilityNote": "Live stock, shipping & returns governed by Amazon.in",
+    "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80",
+    "description": "Compatible cooling accessories and thermal pads for multi-brand laptops. Visit the Fixfly Innovations Amazon Brand Store for current catalog stock and marketplace policies.",
+    "amazonUrl": "https://www.amazon.in/stores/FixflyInnovationsPvtLtd/page/8A60FF0E-808E-4C96-92A7-18C0A1889096?lp_asin=B0GVGRM4Z1&ref_=ast_bln"
   }
 ]

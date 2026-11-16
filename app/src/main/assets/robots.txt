@@ -2,5 +2,18 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin.html
+Disallow: /admin-portal
+Disallow: /download
+Disallow: /download.html
+Disallow: /api/
+
+User-agent: AdsBot-Google
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /admin-portal
+Disallow: /download
+Disallow: /download.html
+Disallow: /api/
 
 Sitemap: https://fixfly.in/sitemap.xml
