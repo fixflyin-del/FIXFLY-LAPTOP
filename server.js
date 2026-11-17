@@ -1,7 +1,54 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { buildRouteSeo, injectSsrHead } = require('./seo-helper');
+const cloudinaryHelper = require('./cloudinary-config');
+
+function getServerCloudinarySettings() {
+  const baseCfg = (cloudinaryHelper && cloudinaryHelper.config) || {};
+  const cloudName = String(process.env.CLOUDINARY_CLOUD_NAME || baseCfg.cloudName || '').trim();
+  const uploadPreset = String(process.env.CLOUDINARY_UPLOAD_PRESET || baseCfg.uploadPreset || '').trim();
+  const apiKey = String(process.env.CLOUDINARY_API_KEY || '').trim();
+  const apiSecret = String(process.env.CLOUDINARY_API_SECRET || '').trim();
+  const folder = String(process.env.CLOUDINARY_FOLDER || baseCfg.folder || 'fixfly').trim() || 'fixfly';
+  const hasSigned = Boolean(cloudName && apiKey && apiSecret);
+  const hasUnsigned = Boolean(cloudName && uploadPreset);
+  return {
+    cloudName,
+    uploadPreset,
+    apiKey,
+    apiSecret,
+    folder,
+    hasSigned,
+    hasUnsigned
+  };
+}
+
+function readJsonRequestBody(req, callback) {
+  let body = '';
+  let aborted = false;
+  req.on('data', chunk => {
+    body += chunk;
+    if (body.length > 64 * 1024) {
+      aborted = true;
+      callback(new Error('Request payload too large'), null);
+      req.destroy();
+    }
+  });
+  req.on('end', () => {
+    if (aborted) return;
+    if (!body.trim()) return callback(null, {});
+    try {
+      callback(null, JSON.parse(body));
+    } catch (e) {
+      callback(e, null);
+    }
+  });
+  req.on('error', err => {
+    if (!aborted) callback(err, null);
+  });
+}
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -31,6 +78,75 @@ const server = http.createServer((req, res) => {
       'Access-Control-Allow-Headers': 'Content-Type'
     });
     res.end();
+    return;
+  }
+
+  // Cloudinary configuration (public fields only — never returns API secret)
+  if (req.method === 'GET' && urlPath === '/api/cloudinary-config') {
+    const cfg = getServerCloudinarySettings();
+    const payload = {
+      configured: cfg.hasSigned || cfg.hasUnsigned,
+      mode: cfg.hasSigned ? 'signed' : (cfg.hasUnsigned ? 'unsigned' : 'unconfigured'),
+      cloudName: cfg.cloudName,
+      uploadPreset: cfg.hasUnsigned ? cfg.uploadPreset : '',
+      folder: cfg.folder
+    };
+    res.writeHead(200, {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'no-cache, no-store, must-revalidate'
+    });
+    res.end(JSON.stringify(payload));
+    return;
+  }
+
+  // Cloudinary signed upload signature endpoint (requires CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET)
+  if (req.method === 'POST' && urlPath === '/api/cloudinary-sign') {
+    readJsonRequestBody(req, (err, payload) => {
+      if (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ ok: false, error: 'Invalid JSON request body' }));
+        return;
+      }
+      const cfg = getServerCloudinarySettings();
+      if (!cfg.hasSigned) {
+        res.writeHead(503, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({
+          ok: false,
+          error: 'Cloudinary signed upload secrets are not configured on server yet.'
+        }));
+        return;
+      }
+      const timestamp = Math.floor(Date.now() / 1000);
+      const reqFolder = String((payload && payload.folder) || cfg.folder)
+        .replace(/[^a-zA-Z0-9/_-]/g, '') || cfg.folder;
+      const paramsToSign = { folder: reqFolder, timestamp };
+      if (payload && typeof payload.public_id === 'string' && payload.public_id.trim()) {
+        paramsToSign.public_id = payload.public_id.trim().replace(/[^a-zA-Z0-9/_-]/g, '');
+      }
+      const serialized = Object.keys(paramsToSign)
+        .sort()
+        .map(k => `${k}=${paramsToSign[k]}`)
+        .join('&');
+      const signature = crypto
+        .createHash('sha1')
+        .update(serialized + cfg.apiSecret)
+        .digest('hex');
+
+      res.writeHead(200, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+      });
+      res.end(JSON.stringify({
+        ok: true,
+        cloudName: cfg.cloudName,
+        apiKey: cfg.apiKey,
+        timestamp,
+        folder: reqFolder,
+        signature
+      }));
+    });
     return;
   }
 

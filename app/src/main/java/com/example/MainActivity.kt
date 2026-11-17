@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
+import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
@@ -12,8 +13,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -53,6 +57,14 @@ class MainActivity : ComponentActivity() {
 fun FixflyWebViewContainer(modifier: Modifier = Modifier) {
   var webViewInstance by remember { mutableStateOf<WebView?>(null) }
   var canGoBack by remember { mutableStateOf(false) }
+  var pendingFileCallback by remember { mutableStateOf<ValueCallback<Array<Uri>>?>(null) }
+
+  val photoPickerLauncher = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.PickVisualMedia()
+  ) { uri: Uri? ->
+    pendingFileCallback?.onReceiveValue(if (uri != null) arrayOf(uri) else null)
+    pendingFileCallback = null
+  }
 
   BackHandler(enabled = canGoBack) {
     webViewInstance?.let { wv ->
@@ -91,6 +103,25 @@ fun FixflyWebViewContainer(modifier: Modifier = Modifier) {
             callback: android.webkit.GeolocationPermissions.Callback?
           ) {
             callback?.invoke(origin, true, false)
+          }
+
+          override fun onShowFileChooser(
+            webView: WebView?,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: FileChooserParams?
+          ): Boolean {
+            pendingFileCallback?.onReceiveValue(null)
+            pendingFileCallback = filePathCallback
+            return try {
+              photoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+              )
+              true
+            } catch (e: Exception) {
+              pendingFileCallback?.onReceiveValue(null)
+              pendingFileCallback = null
+              false
+            }
           }
         }
 

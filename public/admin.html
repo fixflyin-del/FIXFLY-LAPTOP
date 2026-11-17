@@ -187,10 +187,21 @@
               <label class="block text-xs font-semibold text-slate-700 mb-1">Card Badge Tag</label>
               <input type="text" id="sw-badge" placeholder="Setup Service" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Service Image URL <span class="text-emerald-600 font-bold text-[11px]">(Sample: 800 × 600 px)</span></label>
-              <input type="url" id="sw-image" placeholder="https://images.unsplash.com/... (Sample: 800x600 px)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
-              <p class="text-[10px] text-slate-400 mt-0.5">Recommended pixel size: 800 × 600 px (4:3 aspect ratio).</p>
+            <div class="sm:col-span-2 lg:col-span-1">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Service Image <span class="text-emerald-600 font-bold text-[11px]">(Upload or URL • 800 × 600 px)</span></label>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input type="url" id="sw-image" oninput="updateImagePreview('sw-image')" placeholder="Upload image or paste URL..." class="flex-1 text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+                <input type="file" id="sw-image-file" accept="image/*" class="hidden" onchange="handleCloudinaryFieldUpload(this, 'sw-image', 'fixfly/software')">
+                <button type="button" id="sw-image-upload-btn" onclick="triggerImageUpload('sw-image')" class="min-h-[44px] px-3.5 py-2.5 bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 whitespace-nowrap flex-shrink-0">
+                  <span>☁️ Upload</span>
+                </button>
+              </div>
+              <div id="sw-image-upload-status" class="hidden text-[11px] font-semibold mt-1"></div>
+              <div id="sw-image-preview-wrap" class="hidden mt-2 flex items-center gap-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200">
+                <img id="sw-image-preview-img" src="" alt="Preview" class="w-14 h-10 rounded-lg object-cover border border-slate-200 bg-white flex-shrink-0">
+                <span id="sw-image-preview-meta" class="text-[11px] text-slate-500 truncate flex-1"></span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5">Upload directly to Cloudinary CDN or paste link (800 × 600 px).</p>
             </div>
           </div>
 
@@ -292,8 +303,19 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Profile Photo URL (Direct Web Image Link)</label>
-            <input type="url" id="expert-photo" placeholder="https://images.unsplash.com/photo-..." class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Profile Photo <span class="text-emerald-600 font-bold text-[11px]">(Upload or Direct Image URL)</span></label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="url" id="expert-photo" oninput="updateImagePreview('expert-photo')" placeholder="Upload photo or paste URL..." class="flex-1 text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+              <input type="file" id="expert-photo-file" accept="image/*" class="hidden" onchange="handleCloudinaryFieldUpload(this, 'expert-photo', 'fixfly/experts')">
+              <button type="button" id="expert-photo-upload-btn" onclick="triggerImageUpload('expert-photo')" class="min-h-[44px] px-4 py-2.5 bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 whitespace-nowrap flex-shrink-0">
+                <span>☁️ Upload Photo</span>
+              </button>
+            </div>
+            <div id="expert-photo-upload-status" class="hidden text-[11px] font-semibold mt-1"></div>
+            <div id="expert-photo-preview-wrap" class="hidden mt-2 flex items-center gap-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200">
+              <img id="expert-photo-preview-img" src="" alt="Preview" class="w-12 h-12 rounded-lg object-cover border border-slate-200 bg-white flex-shrink-0">
+              <span id="expert-photo-preview-meta" class="text-[11px] text-slate-500 truncate flex-1"></span>
+            </div>
           </div>
 
           <div>
@@ -372,8 +394,19 @@
             </div>
 
             <div class="sm:col-span-3">
-              <label class="block text-xs font-bold text-slate-700 mb-1">Service Image URL * <span class="text-emerald-600 font-bold text-[11px]">(Sample: 800 × 500 px, 16:10 Ratio)</span></label>
-              <input type="url" id="admin-svc-image" placeholder="https://images.unsplash.com/photo-... (Sample: 800x500 px)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Service Image * <span class="text-emerald-600 font-bold text-[11px]">(Upload or URL • 800 × 500 px, 16:10 Ratio)</span></label>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input type="url" id="admin-svc-image" oninput="updateImagePreview('admin-svc-image')" placeholder="Upload service photo or paste URL..." class="flex-1 text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:bg-white focus:outline-none" required>
+                <input type="file" id="admin-svc-image-file" accept="image/*" class="hidden" onchange="handleCloudinaryFieldUpload(this, 'admin-svc-image', 'fixfly/services')">
+                <button type="button" id="admin-svc-image-upload-btn" onclick="triggerImageUpload('admin-svc-image')" class="min-h-[44px] px-4 py-2.5 bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 whitespace-nowrap flex-shrink-0">
+                  <span>☁️ Upload Service Image</span>
+                </button>
+              </div>
+              <div id="admin-svc-image-upload-status" class="hidden text-[11px] font-semibold mt-1"></div>
+              <div id="admin-svc-image-preview-wrap" class="hidden mt-2 flex items-center gap-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200">
+                <img id="admin-svc-image-preview-img" src="" alt="Preview" class="w-16 h-11 rounded-lg object-cover border border-slate-200 bg-white flex-shrink-0">
+                <span id="admin-svc-image-preview-meta" class="text-[11px] text-slate-500 truncate flex-1"></span>
+              </div>
               <p class="text-[10px] text-slate-400 mt-0.5">Recommended pixel size: 800 × 500 px (Clear hardware component or technician repair photo).</p>
             </div>
 
@@ -458,8 +491,19 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image URL <span class="text-emerald-600 font-bold text-[11px]">(Sample: 600 × 600 px, 1:1 Square)</span></label>
-            <input type="url" id="admin-prod-image-input" placeholder="https://images.unsplash.com/... (Sample: 600x600 px)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image <span class="text-emerald-600 font-bold text-[11px]">(Upload or URL • 600 × 600 px, 1:1 Square)</span></label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="url" id="admin-prod-image-input" oninput="updateImagePreview('admin-prod-image-input')" placeholder="Upload product image or paste URL..." class="flex-1 text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+              <input type="file" id="admin-prod-image-input-file" accept="image/*" class="hidden" onchange="handleCloudinaryFieldUpload(this, 'admin-prod-image-input', 'fixfly/products')">
+              <button type="button" id="admin-prod-image-input-upload-btn" onclick="triggerImageUpload('admin-prod-image-input')" class="min-h-[44px] px-4 py-2.5 bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 whitespace-nowrap flex-shrink-0">
+                <span>☁️ Upload Product Image</span>
+              </button>
+            </div>
+            <div id="admin-prod-image-input-upload-status" class="hidden text-[11px] font-semibold mt-1"></div>
+            <div id="admin-prod-image-input-preview-wrap" class="hidden mt-2 flex items-center gap-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200">
+              <img id="admin-prod-image-input-preview-img" src="" alt="Preview" class="w-12 h-12 rounded-lg object-contain border border-slate-200 bg-white flex-shrink-0">
+              <span id="admin-prod-image-input-preview-meta" class="text-[11px] text-slate-500 truncate flex-1"></span>
+            </div>
             <p class="text-[10px] text-slate-400 mt-0.5">Recommended pixel size: 600 × 600 px (Square product photo on clean background).</p>
           </div>
 
@@ -552,8 +596,19 @@
               <input type="text" id="admin-blog-slug" placeholder="laptop-repair-navi-mumbai" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Featured Image URL <span class="text-emerald-600 font-bold text-[11px]">(Sample: 1200 × 630 px, 16:9 Banner)</span></label>
-              <input type="url" id="admin-blog-image" placeholder="https://images.unsplash.com/... (Sample: 1200x630 px)" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Featured Image <span class="text-emerald-600 font-bold text-[11px]">(Upload or URL • 1200 × 630 px, 16:9 Banner)</span></label>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input type="url" id="admin-blog-image" oninput="updateImagePreview('admin-blog-image')" placeholder="Upload banner image or paste URL..." class="flex-1 text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+                <input type="file" id="admin-blog-image-file" accept="image/*" class="hidden" onchange="handleCloudinaryFieldUpload(this, 'admin-blog-image', 'fixfly/blog')">
+                <button type="button" id="admin-blog-image-upload-btn" onclick="triggerImageUpload('admin-blog-image')" class="min-h-[44px] px-4 py-2.5 bg-brandBlue hover:bg-[#0665af] text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 whitespace-nowrap flex-shrink-0">
+                  <span>☁️ Upload Banner</span>
+                </button>
+              </div>
+              <div id="admin-blog-image-upload-status" class="hidden text-[11px] font-semibold mt-1"></div>
+              <div id="admin-blog-image-preview-wrap" class="hidden mt-2 flex items-center gap-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200">
+                <img id="admin-blog-image-preview-img" src="" alt="Preview" class="w-20 h-11 rounded-lg object-cover border border-slate-200 bg-white flex-shrink-0">
+                <span id="admin-blog-image-preview-meta" class="text-[11px] text-slate-500 truncate flex-1"></span>
+              </div>
               <p class="text-[10px] text-slate-400 mt-0.5">Recommended pixel size: 1200 × 630 px (16:9 aspect ratio, optimal for Google SEO cards and WhatsApp preview).</p>
             </div>
           </div>
@@ -785,12 +840,102 @@
 
   </main>
 
-  <!-- MIGRATED WORDPRESS BLOGS SCRIPT -->
+  <!-- CLOUDINARY & MIGRATED WORDPRESS BLOGS SCRIPTS -->
+  <script src="/cloudinary-config.js" onerror="var s=document.createElement('script');s.src='cloudinary-config.js';document.head.appendChild(s);"></script>
   <script src="/migrated_blogs.js"></script>
   <script>
     // API BASE (Relative path so Netlify static redirects & local development work seamlessly)
     const API_BASE = '';
     const FIXFLY_CLOUD_SYNC_BASE = 'https://kvdb.io/DEtS3yMR6BUsjGzjGvjSuP';
+
+    // --- CLOUDINARY DIRECT UPLOAD HELPERS ---
+    function triggerImageUpload(inputId) {
+      const fileInput = document.getElementById(inputId + '-file');
+      if (fileInput) {
+        fileInput.value = '';
+        fileInput.click();
+      }
+    }
+
+    function updateImagePreview(inputId) {
+      const inputEl = document.getElementById(inputId);
+      const wrapEl = document.getElementById(inputId + '-preview-wrap');
+      const imgEl = document.getElementById(inputId + '-preview-img');
+      const metaEl = document.getElementById(inputId + '-preview-meta');
+      if (!inputEl || !wrapEl || !imgEl) return;
+
+      const rawUrl = (inputEl.value || '').trim();
+      if (!rawUrl) {
+        wrapEl.classList.add('hidden');
+        imgEl.removeAttribute('src');
+        if (metaEl) metaEl.textContent = '';
+        return;
+      }
+
+      const displayUrl = (window.FixflyCloudinary && typeof window.FixflyCloudinary.optimizeUrl === 'function')
+        ? window.FixflyCloudinary.optimizeUrl(rawUrl)
+        : rawUrl;
+      imgEl.src = displayUrl;
+      if (metaEl) {
+        metaEl.textContent = (window.FixflyCloudinary && window.FixflyCloudinary.isCloudinaryUrl(displayUrl))
+          ? 'Cloudinary CDN Image Linked'
+          : 'External Image URL Preview';
+      }
+      wrapEl.classList.remove('hidden');
+    }
+
+    async function handleCloudinaryFieldUpload(fileInput, targetInputId, folderName) {
+      const file = fileInput && fileInput.files && fileInput.files[0];
+      if (!file) return;
+
+      const targetInput = document.getElementById(targetInputId);
+      const statusEl = document.getElementById(targetInputId + '-upload-status');
+      const btnEl = document.getElementById(targetInputId + '-upload-btn');
+      const originalBtnHtml = btnEl ? btnEl.innerHTML : '<span>☁️ Upload</span>';
+
+      const setStatus = (msg, tone) => {
+        if (!statusEl) return;
+        statusEl.textContent = msg;
+        statusEl.className = 'text-[11px] font-semibold mt-1 ' + (
+          tone === 'error' ? 'text-red-600' : tone === 'success' ? 'text-emerald-700' : 'text-brandBlue'
+        );
+        statusEl.classList.remove('hidden');
+      };
+
+      if (!window.FixflyCloudinary || typeof window.FixflyCloudinary.uploadImage !== 'function') {
+        setStatus('Cloudinary uploader module failed to load. Please refresh and try again.', 'error');
+        return;
+      }
+
+      if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.innerHTML = '<span>⏳ Uploading...</span>';
+      }
+      setStatus('Preparing upload to Cloudinary...', 'info');
+
+      try {
+        const result = await window.FixflyCloudinary.uploadImage(file, {
+          folder: folderName || 'fixfly',
+          onProgress: (pct) => {
+            if (btnEl) btnEl.innerHTML = '<span>⏳ ' + pct + '%</span>';
+            setStatus('Uploading image to Cloudinary (' + pct + '%)...', 'info');
+          }
+        });
+        if (targetInput && result && (result.optimizedUrl || result.url)) {
+          targetInput.value = result.optimizedUrl || result.url;
+          updateImagePreview(targetInputId);
+        }
+        setStatus('✓ Uploaded to Cloudinary successfully!', 'success');
+      } catch (err) {
+        setStatus((err && err.message) ? err.message : 'Upload failed.', 'error');
+      } finally {
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.innerHTML = originalBtnHtml;
+        }
+        fileInput.value = '';
+      }
+    }
 
     async function pushToCloudSync(key, data) {
       try {
@@ -1477,6 +1622,7 @@
       document.getElementById('sw-orig-price').value = p.priceDisplay || 'Service Quote via Support';
       document.getElementById('sw-badge').value = p.badge || '';
       document.getElementById('sw-image').value = p.image || '';
+      updateImagePreview('sw-image');
       document.getElementById('sw-bullets').value = (p.bullets || []).join('\n');
       document.getElementById('sw-description').value = p.description || '';
 
@@ -1495,6 +1641,7 @@
       document.getElementById('sw-orig-price').value = 'Service Quote via Support';
       document.getElementById('sw-badge').value = '';
       document.getElementById('sw-image').value = '';
+      updateImagePreview('sw-image');
       document.getElementById('sw-bullets').value = '';
       document.getElementById('sw-description').value = '';
 
@@ -1554,6 +1701,7 @@
       localStorage.setItem('fixfly_experts', JSON.stringify(AdminState.experts));
       renderAdminExperts();
       e.target.reset();
+      updateImagePreview('expert-photo');
 
       pushToCloudSync('experts', AdminState.experts);
 
@@ -1688,6 +1836,7 @@
       document.getElementById('admin-prod-rating-input').value = p.rating || 'Amazon Store';
       document.getElementById('admin-prod-reviews-input').value = p.reviewsCount || 'Listed on Amazon.in';
       document.getElementById('admin-prod-image-input').value = p.image || '';
+      updateImagePreview('admin-prod-image-input');
       document.getElementById('admin-prod-url-input').value = p.amazonUrl || p.affiliateUrl || '';
       document.getElementById('admin-prod-desc-input').value = p.description || '';
 
@@ -1707,6 +1856,7 @@
       document.getElementById('admin-prod-rating-input').value = 'Amazon Store';
       document.getElementById('admin-prod-reviews-input').value = 'Listed on Amazon.in';
       document.getElementById('admin-prod-image-input').value = '';
+      updateImagePreview('admin-prod-image-input');
       document.getElementById('admin-prod-url-input').value = '';
       document.getElementById('admin-prod-desc-input').value = '';
 
@@ -1845,6 +1995,7 @@ To publish permanently to your live Netlify website, click "📥 Download Update
       document.getElementById('admin-blog-slug').value = art.slug || '';
       document.getElementById('admin-blog-cat').value = art.category || 'Laptop Repair';
       document.getElementById('admin-blog-image').value = art.image || '';
+      updateImagePreview('admin-blog-image');
       document.getElementById('admin-blog-excerpt').value = art.excerpt || '';
       document.getElementById('admin-blog-content').value = (art.content || '').replace(/<[^>]*>/g, '\n').trim();
 
@@ -1862,6 +2013,7 @@ To publish permanently to your live Netlify website, click "📥 Download Update
       document.getElementById('admin-blog-title').value = '';
       document.getElementById('admin-blog-slug').value = '';
       document.getElementById('admin-blog-image').value = '';
+      updateImagePreview('admin-blog-image');
       document.getElementById('admin-blog-excerpt').value = '';
       document.getElementById('admin-blog-content').value = '';
       document.getElementById('admin-blog-form-heading').innerText = 'Publish High-Ranking Google SEO Blog Article';
@@ -2435,6 +2587,7 @@ To publish permanently to your live Netlify website, click "📥 Download Update
       document.getElementById('admin-svc-rating').value = svc.rating || 'Feedback';
       document.getElementById('admin-svc-reviews').value = svc.reviewsCount || '';
       document.getElementById('admin-svc-image').value = svc.image || '';
+      updateImagePreview('admin-svc-image');
       document.getElementById('admin-svc-desc').value = svc.description || '';
       document.getElementById('admin-svc-tech').value = svc.techDetails || '';
       document.getElementById('admin-svc-inclusions').value = (Array.isArray(svc.inclusions) ? svc.inclusions : []).join('\n');
@@ -2450,6 +2603,7 @@ To publish permanently to your live Netlify website, click "📥 Download Update
     function cancelServiceEdit() {
       document.getElementById('admin-svc-id').value = '';
       document.getElementById('admin-service-form').reset();
+      updateImagePreview('admin-svc-image');
       document.getElementById('admin-svc-form-heading').innerText = 'Add New Repair Service Package';
       document.getElementById('admin-svc-submit-btn').innerHTML = '<span>💾 Save Service Package</span>';
       document.getElementById('admin-svc-cancel-btn').classList.add('hidden');
