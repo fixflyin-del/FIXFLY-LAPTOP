@@ -319,7 +319,10 @@ function applyGtmHead(html, robotsValue) {
 
   const isNoIndex = String(robotsValue || '').toLowerCase().includes('noindex');
   if (isNoIndex) {
-    return cleaned.replace(/\/\*\s*FIXFLY_CONVERSION_READINESS_START\s*\*\/[\s\S]*?\/\*\s*FIXFLY_CONVERSION_READINESS_END\s*\*\//gi, '');
+    return cleaned
+      .replace(/<script[^>]*src=["']https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-E35CEKDLNJ["'][^>]*><\/script>\s*/gi, '')
+      .replace(/<script>[\s\S]*?gtag\(\s*['"]config['"]\s*,\s*['"]G-E35CEKDLNJ['"]\s*\);[\s\S]*?<\/script>\s*/gi, '')
+      .replace(/\/\*\s*FIXFLY_CONVERSION_READINESS_START\s*\*\/[\s\S]*?\/\*\s*FIXFLY_CONVERSION_READINESS_END\s*\*\//gi, '');
   }
 
   return cleaned.replace(/<head([^>]*)>\s*/i, `<head$1>\n${GTM_HEAD_SNIPPET}\n  `);
@@ -342,6 +345,8 @@ function injectSsrHead(html, seo) {
     .replace(/<meta\s+property="og:url"\s+content="[^"]*"\s*>/i, `<meta property="og:url" content="${safeUrl}">`)
     .replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*>/i, `<meta property="og:title" content="${safeTitle}">`)
     .replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*>/i, `<meta property="og:description" content="${safeDesc}">`)
+    .replace(/<meta\s+name="twitter:title"\s+content="[^"]*"\s*>/i, `<meta name="twitter:title" content="${safeTitle}">`)
+    .replace(/<meta\s+name="twitter:description"\s+content="[^"]*"\s*>/i, `<meta name="twitter:description" content="${safeDesc}">`)
     .replace(/<script\s+type="application\/ld\+json"\s+id="dynamic-page-schema">[\s\S]*?<\/script>/i, `<script type="application/ld+json" id="dynamic-page-schema">${safeJsonLd}</script>`);
 
   return applyGtmHead(withSeo, seo.robots);

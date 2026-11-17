@@ -190,12 +190,17 @@ const server = http.createServer((req, res) => {
   const safeResolved = path.normalize(decodedUrlPath).replace(/^(\.\.[/\\])+/, '');
   let filePath = path.join(__dirname, safeResolved);
 
+  const isDirectStaticHtml = (file) => {
+    const base = path.basename(file);
+    return ['admin.html', 'download.html', '404.html'].includes(base) || /^google[a-f0-9]+\.html$/i.test(base);
+  };
+
   let isSpaHtmlFallback = false;
   if (!fs.existsSync(filePath)) {
     const cleanHtmlCandidate = path.join(__dirname, safeResolved.replace(/\/+$/, '') + '.html');
     if (safeResolved !== '/' && fs.existsSync(cleanHtmlCandidate) && fs.statSync(cleanHtmlCandidate).isFile()) {
       filePath = cleanHtmlCandidate;
-      isSpaHtmlFallback = !['/admin.html', '/download.html', '/404.html'].includes(path.basename(filePath));
+      isSpaHtmlFallback = !isDirectStaticHtml(filePath);
     } else {
       filePath = path.join(__dirname, 'index.html');
       isSpaHtmlFallback = true;
@@ -208,7 +213,7 @@ const server = http.createServer((req, res) => {
       filePath = path.join(__dirname, 'index.html');
     }
     isSpaHtmlFallback = true;
-  } else if (path.extname(filePath).toLowerCase() === '.html' && !['admin.html', 'download.html', '404.html'].includes(path.basename(filePath))) {
+  } else if (path.extname(filePath).toLowerCase() === '.html' && !isDirectStaticHtml(filePath)) {
     isSpaHtmlFallback = true;
   }
 
