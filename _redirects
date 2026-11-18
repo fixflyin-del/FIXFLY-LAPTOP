@@ -11,6 +11,8 @@
 /api/all-reviews        /data/service_reviews.json    200
 /api/service-reviews    /data/service_reviews.json    200
 /api/orders             /data/orders.json             200
+/api/blogs              /data/custom_blogs.json       200
+/api/deleted-blogs      /data/deleted_blogs.json      200
 
 # 2. Assets & Direct routes
 /assets/*               /public/assets/:splat         200

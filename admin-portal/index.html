@@ -2006,8 +2006,8 @@
               <textarea id="admin-blog-content" rows="6" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none font-mono" required></textarea>
             </div>
 
-            <button type="submit" class="bg-brandBlue hover:bg-[#0665af] text-white font-bold text-sm py-3 px-6 rounded-xl shadow transition">
-              🚀 Publish SEO Article
+            <button type="submit" id="portal-blog-submit-btn" class="bg-brandBlue hover:bg-[#0665af] text-white font-bold text-sm py-3 px-6 rounded-xl shadow transition">
+              🚀 Publish SEO Article (Lifetime Auto-Save)
             </button>
           </form>
         </div>
@@ -2286,6 +2286,7 @@
   <!-- CLOUDINARY & MIGRATED WORDPRESS ARTICLES SCRIPTS -->
   <script src="/cloudinary-config.js" onerror="var s=document.createElement('script');s.src='cloudinary-config.js';document.head.appendChild(s);"></script>
   <script src="/migrated_blogs.js"></script>
+  <script src="/blog-store.js"></script>
 
   <!-- VANILLA JAVASCRIPT STATE, ROUTER & LOGIC -->
   <script>
@@ -3001,6 +3002,26 @@
           }
         }
       } catch (e) {}
+
+      // 7. Hydrate Lifetime Saved Blog Articles (IndexedDB + /api/blogs + Cloud Sync)
+      try {
+        if (window.FixflyBlogStore && typeof window.FixflyBlogStore.loadPersistedBlogs === 'function') {
+          const syncedBlogs = await window.FixflyBlogStore.loadPersistedBlogs({ builtinArticles: BuiltinArticles });
+          if (syncedBlogs && Array.isArray(syncedBlogs.articles) && syncedBlogs.articles.length) {
+            AppState.articles = syncedBlogs.articles;
+            renderArticles();
+            renderHomeBlogs();
+
+            if (window.__pendingRequestedBlogSlug) {
+              const target = AppState.articles.find(a => a.slug === window.__pendingRequestedBlogSlug);
+              if (target) {
+                window.__pendingRequestedBlogSlug = null;
+                openPost(target.slug, false);
+              }
+            }
+          }
+        }
+      } catch (e) {}
     }
 
     // Cross-tab storage event for instant 0-second sync when admin & app are in same browser
@@ -3048,6 +3069,12 @@
       } else if (e.key === 'fixfly_top_offer' && e.newValue) {
         const topEl = document.getElementById('top-announcement-text');
         if (topEl) topEl.innerText = FixflySanitizer.topOffer(e.newValue);
+      } else if ((e.key === 'fixfly_custom_blogs' || e.key === 'fixfly_deleted_blog_slugs') && window.FixflyBlogStore) {
+        try {
+          initArticles();
+          renderArticles();
+          renderHomeBlogs();
+        } catch(err){}
       }
     });
 
@@ -3172,6 +3199,10 @@
         if (validViews.includes(pathRaw)) {
           return { type: 'view', view: pathRaw };
         }
+        // Track unknown slug path in case article is hydrating asynchronously from cloud/server
+        if (!pathRaw.includes('.')) {
+          window.__pendingRequestedBlogSlug = cleanSlug;
+        }
       }
 
       // 2. Check hash (e.g. #software/sw-win11-pro or #services or #support)
@@ -3191,6 +3222,9 @@
 
         if (validViews.includes(hashRaw)) {
           return { type: 'view', view: hashRaw };
+        }
+        if (hashRaw.startsWith('blog/')) {
+          window.__pendingRequestedBlogSlug = cleanSlug;
         }
       }
 
@@ -3958,17 +3992,24 @@
     ];
 
     function initArticles() {
-      const localCustom = JSON.parse(localStorage.getItem('fixfly_custom_blogs')) || [];
       const migrated = (typeof window.WP_MIGRATED_ARTICLES !== 'undefined' && Array.isArray(window.WP_MIGRATED_ARTICLES))
         ? window.WP_MIGRATED_ARTICLES
         : [];
-      
-      const map = new Map();
-      localCustom.forEach(a => { if (a && a.slug) map.set(a.slug, a); });
-      migrated.forEach(a => { if (a && a.slug && !map.has(a.slug)) map.set(a.slug, a); });
-      BuiltinArticles.forEach(a => { if (a && a.slug && !map.has(a.slug)) map.set(a.slug, a); });
-
-      AppState.articles = Array.from(map.values());
+      if (window.FixflyBlogStore && typeof window.FixflyBlogStore.mergeArticles === 'function') {
+        AppState.articles = window.FixflyBlogStore.mergeArticles(
+          migrated,
+          window.FixflyBlogStore.readLocalCustomSync(),
+          window.FixflyBlogStore.readLocalDeletedSync(),
+          BuiltinArticles
+        );
+      } else {
+        const localCustom = JSON.parse(localStorage.getItem('fixfly_custom_blogs') || '[]') || [];
+        const map = new Map();
+        localCustom.forEach(a => { if (a && a.slug) map.set(a.slug, a); });
+        migrated.forEach(a => { if (a && a.slug && !map.has(a.slug)) map.set(a.slug, a); });
+        BuiltinArticles.forEach(a => { if (a && a.slug && !map.has(a.slug)) map.set(a.slug, a); });
+        AppState.articles = Array.from(map.values());
+      }
       AppState.filteredArticles = [...AppState.articles];
     }
 
@@ -4514,10 +4555,13 @@
       alert('Rates and prices updated successfully!');
     }
 
-    function handlePublishBlog(e) {
+    async function handlePublishBlog(e) {
       e.preventDefault();
       const title = document.getElementById('admin-blog-title').value.trim();
-      const slug = document.getElementById('admin-blog-slug').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const rawSlug = document.getElementById('admin-blog-slug').value.trim();
+      const slug = (window.FixflyBlogStore && typeof window.FixflyBlogStore.normalizeSlug === 'function')
+        ? window.FixflyBlogStore.normalizeSlug(rawSlug)
+        : rawSlug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       const cat = document.getElementById('admin-blog-cat').value.trim();
       const image = document.getElementById('admin-blog-image').value.trim();
       const excerpt = document.getElementById('admin-blog-excerpt').value.trim();
@@ -4527,21 +4571,57 @@
         slug,
         title,
         category: cat,
-        date: 'Today',
+        date: new Date().toISOString().split('T')[0],
         image,
         excerpt,
-        content: `<h2>${title}</h2><p>${content.replace(/\n/g, '<br>')}</p>`
+        content: content.startsWith('<') ? content : `<h2>${title}</h2><p>${content.replace(/\n/g, '<br>')}</p>`,
+        updatedAt: Date.now(),
+        isCustom: true
       };
 
-      const localCustom = JSON.parse(localStorage.getItem('fixfly_custom_blogs')) || [];
-      localCustom.unshift(newArticle);
-      localStorage.setItem('fixfly_custom_blogs', JSON.stringify(localCustom));
+      const btn = document.getElementById('portal-blog-submit-btn');
+      const prevTxt = btn ? btn.innerText : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = '⏳ Saving Permanently...';
+      }
 
-      AppState.articles.unshift(newArticle);
-      renderArticles();
-      alert('New SEO Blog Article published successfully!');
-      e.target.reset();
-      updateImagePreview('admin-blog-image');
+      try {
+        let savedTo = 'Local Storage';
+        if (window.FixflyBlogStore && typeof window.FixflyBlogStore.saveCustomArticle === 'function') {
+          const res = await window.FixflyBlogStore.saveCustomArticle(newArticle, '');
+          AppState.articles = window.FixflyBlogStore.mergeArticles(
+            window.WP_MIGRATED_ARTICLES,
+            res.customBlogs,
+            res.deletedSlugs,
+            BuiltinArticles
+          );
+          const layers = [];
+          if (res.status.savedServer) layers.push('Server File');
+          if (res.status.savedCloud) layers.push('Cloud Sync');
+          if (res.status.savedIndexedDb) layers.push('IndexedDB');
+          if (res.status.savedLocal) layers.push('Local Storage');
+          savedTo = layers.join(' + ');
+        } else {
+          const localCustom = JSON.parse(localStorage.getItem('fixfly_custom_blogs') || '[]') || [];
+          localCustom.unshift(newArticle);
+          localStorage.setItem('fixfly_custom_blogs', JSON.stringify(localCustom));
+          AppState.articles.unshift(newArticle);
+        }
+
+        renderArticles();
+        renderHomeBlogs();
+        alert(`✅ SEO Blog Article "${title}" saved permanently!\n\nSaved to: ${savedTo}`);
+        e.target.reset();
+        updateImagePreview('admin-blog-image');
+      } catch (err) {
+        alert('Error publishing blog: ' + ((err && err.message) || 'Unknown error'));
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = prevTxt || '🚀 Publish SEO Article (Lifetime Auto-Save)';
+        }
+      }
     }
 
     // AREA VALIDATOR

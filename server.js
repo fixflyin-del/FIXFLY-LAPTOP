@@ -5,6 +5,151 @@ const crypto = require('crypto');
 const { buildRouteSeo, injectSsrHead } = require('./seo-helper');
 const cloudinaryHelper = require('./cloudinary-config');
 
+const CUSTOM_BLOGS_PATH = path.join(__dirname, 'data', 'custom_blogs.json');
+const DELETED_BLOGS_PATH = path.join(__dirname, 'data', 'deleted_blogs.json');
+const MIGRATED_JSON_PATH = path.join(__dirname, 'migrated_blogs.json');
+const MIGRATED_JS_PATH = path.join(__dirname, 'migrated_blogs.js');
+
+function readJsonArraySafe(absPath) {
+  try {
+    if (!fs.existsSync(absPath)) return [];
+    const parsed = JSON.parse(fs.readFileSync(absPath, 'utf8'));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function writeFileAtomic(absPath, content) {
+  fs.mkdirSync(path.dirname(absPath), { recursive: true });
+  const tmp = absPath + '.tmp-' + process.pid;
+  fs.writeFileSync(tmp, content, 'utf8');
+  fs.renameSync(tmp, absPath);
+}
+
+function normalizeServerDeletedList(list) {
+  const map = new Map();
+  (Array.isArray(list) ? list : []).forEach(item => {
+    if (typeof item === 'string' && item.trim()) {
+      const slug = item.trim();
+      if (!map.has(slug)) map.set(slug, { slug, deletedAt: 1 });
+    } else if (item && typeof item === 'object' && item.slug) {
+      const slug = String(item.slug).trim();
+      const ts = Number(item.deletedAt) || 1;
+      const prev = map.get(slug);
+      if (!prev || ts > prev.deletedAt) map.set(slug, { slug, deletedAt: ts });
+    }
+  });
+  return Array.from(map.values());
+}
+
+function sanitizeServerArticle(art) {
+  if (!art || typeof art !== 'object' || !art.slug) return null;
+  const slug = String(art.slug).trim().replace(/^\/+|\/+$/g, '').replace(/^blog\//i, '');
+  if (!slug) return null;
+  return {
+    slug,
+    title: String(art.title || 'Untitled Article').trim(),
+    category: String(art.category || 'Laptop Repair').trim(),
+    date: String(art.date || new Date().toISOString().split('T')[0]).trim(),
+    image: String(art.image || 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1200&q=80').trim(),
+    excerpt: String(art.excerpt || '').trim(),
+    content: String(art.content || '').trim(),
+    updatedAt: Number(art.updatedAt) || Date.now(),
+    isCustom: true
+  };
+}
+
+function appendBlogUrlsToSitemap(slugs) {
+  const today = new Date().toISOString().split('T')[0];
+  ['sitemap.xml', path.join('public', 'sitemap.xml'), path.join('app', 'src', 'main', 'assets', 'sitemap.xml')].forEach(rel => {
+    const abs = path.join(__dirname, rel);
+    if (!fs.existsSync(abs)) return;
+    try {
+      let xml = fs.readFileSync(abs, 'utf8');
+      let changed = false;
+      slugs.forEach(slug => {
+        const loc = `https://fixfly.in/${slug}/`;
+        if (!xml.includes(`<loc>${loc}</loc>`)) {
+          const entry = `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+          xml = xml.replace('</urlset>', entry + '</urlset>');
+          changed = true;
+        }
+      });
+      if (changed) writeFileAtomic(abs, xml);
+    } catch (e) {}
+  });
+}
+
+function persistBlogsToDisk(customBlogs, deletedSlugs, affectedSlugs) {
+  const cleanCustom = [];
+  const seenCustom = new Set();
+  (Array.isArray(customBlogs) ? customBlogs : []).forEach(item => {
+    const clean = sanitizeServerArticle(item);
+    if (clean && !seenCustom.has(clean.slug)) {
+      seenCustom.add(clean.slug);
+      cleanCustom.push(clean);
+    }
+  });
+  const cleanDeleted = normalizeServerDeletedList(deletedSlugs);
+  const deletedMap = new Map(cleanDeleted.map(d => [d.slug, d.deletedAt]));
+
+  writeFileAtomic(CUSTOM_BLOGS_PATH, JSON.stringify(cleanCustom, null, 2) + '\n');
+  writeFileAtomic(DELETED_BLOGS_PATH, JSON.stringify(cleanDeleted, null, 2) + '\n');
+
+  const existingMigrated = readJsonArraySafe(MIGRATED_JSON_PATH);
+  const mergedMap = new Map();
+  cleanCustom.forEach(a => {
+    const delTs = deletedMap.get(a.slug) || 0;
+    if (delTs > (a.updatedAt || 0)) return;
+    mergedMap.set(a.slug, a);
+  });
+  existingMigrated.forEach(a => {
+    if (!a || !a.slug) return;
+    if (deletedMap.has(a.slug) && !mergedMap.has(a.slug)) return;
+    if (!mergedMap.has(a.slug)) mergedMap.set(a.slug, a);
+  });
+
+  const mergedArticles = Array.from(mergedMap.values());
+  const jsonStr = JSON.stringify(mergedArticles, null, 2) + '\n';
+  const jsStr = 'window.WP_MIGRATED_ARTICLES = ' + JSON.stringify(mergedArticles, null, 2) + ';\n';
+
+  writeFileAtomic(MIGRATED_JSON_PATH, jsonStr);
+  writeFileAtomic(MIGRATED_JS_PATH, jsStr);
+  [path.join('public', 'migrated_blogs.js'), path.join('app', 'src', 'main', 'assets', 'migrated_blogs.js')].forEach(rel => {
+    const abs = path.join(__dirname, rel);
+    if (fs.existsSync(path.dirname(abs))) {
+      try { writeFileAtomic(abs, jsStr); } catch (e) {}
+    }
+  });
+
+  // Pre-render static HTML pages & update sitemaps for newly published/edited slugs
+  const toPrerender = Array.isArray(affectedSlugs) && affectedSlugs.length
+    ? affectedSlugs.filter(Boolean)
+    : cleanCustom.map(a => a.slug);
+
+  if (toPrerender.length && fs.existsSync(path.join(__dirname, 'index.html'))) {
+    try {
+      const baseHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+      const renderedSlugs = [];
+      toPrerender.forEach(slug => {
+        if (!mergedMap.has(slug)) return;
+        let decodedDir = slug;
+        try { decodedDir = decodeURIComponent(slug); } catch (e) {}
+        const safeDir = path.normalize(decodedDir).replace(/^(\.\.[/\\])+/, '');
+        if (!safeDir || safeDir === '.' || safeDir.includes('..')) return;
+        const seo = buildRouteSeo('/' + slug + '/');
+        const rendered = injectSsrHead(baseHtml, seo);
+        writeFileAtomic(path.join(__dirname, safeDir, 'index.html'), rendered);
+        renderedSlugs.push(slug);
+      });
+      if (renderedSlugs.length) appendBlogUrlsToSitemap(renderedSlugs);
+    } catch (e) {}
+  }
+
+  return { customBlogs: cleanCustom, deletedSlugs: cleanDeleted, articles: mergedArticles };
+}
+
 function getServerCloudinarySettings() {
   const baseCfg = (cloudinaryHelper && cloudinaryHelper.config) || {};
   const cloudName = String(process.env.CLOUDINARY_CLOUD_NAME || baseCfg.cloudName || '').trim();
@@ -25,12 +170,13 @@ function getServerCloudinarySettings() {
   };
 }
 
-function readJsonRequestBody(req, callback) {
+function readJsonRequestBody(req, callback, maxBytes) {
+  const limit = maxBytes || (5 * 1024 * 1024);
   let body = '';
   let aborted = false;
   req.on('data', chunk => {
     body += chunk;
-    if (body.length > 64 * 1024) {
+    if (body.length > limit) {
       aborted = true;
       callback(new Error('Request payload too large'), null);
       req.destroy();
@@ -147,6 +293,107 @@ const server = http.createServer((req, res) => {
         signature
       }));
     });
+    return;
+  }
+
+  // Lifetime Blog Persistence API (reads/writes data/custom_blogs.json, migrated_blogs.json/.js, static HTML, and sitemap)
+  if (req.method === 'GET' && urlPath === '/api/blogs') {
+    const customBlogs = readJsonArraySafe(CUSTOM_BLOGS_PATH);
+    const deletedSlugs = normalizeServerDeletedList(readJsonArraySafe(DELETED_BLOGS_PATH));
+    const articles = readJsonArraySafe(MIGRATED_JSON_PATH);
+    res.writeHead(200, {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'no-cache, no-store, must-revalidate'
+    });
+    res.end(JSON.stringify({ ok: true, persistedToDisk: true, customBlogs, deletedSlugs, articles }));
+    return;
+  }
+
+  if (req.method === 'POST' && urlPath === '/api/blogs') {
+    readJsonRequestBody(req, (err, payload) => {
+      if (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ ok: false, error: err.message || 'Invalid JSON payload' }));
+        return;
+      }
+      const existingCustom = readJsonArraySafe(CUSTOM_BLOGS_PATH);
+      const existingDeleted = normalizeServerDeletedList(readJsonArraySafe(DELETED_BLOGS_PATH));
+      const customMap = new Map();
+      const deletedMap = new Map();
+
+      existingDeleted.forEach(d => deletedMap.set(d.slug, d.deletedAt));
+      if (Array.isArray(payload && payload.deletedSlugs)) {
+        normalizeServerDeletedList(payload.deletedSlugs).forEach(d => {
+          const prev = deletedMap.get(d.slug) || 0;
+          if (d.deletedAt >= prev) deletedMap.set(d.slug, d.deletedAt);
+        });
+      }
+
+      const mergeIntoCustom = (arr) => {
+        (Array.isArray(arr) ? arr : []).forEach(item => {
+          const clean = sanitizeServerArticle(item);
+          if (!clean) return;
+          const prev = customMap.get(clean.slug);
+          if (!prev || (clean.updatedAt || 0) >= (prev.updatedAt || 0)) {
+            customMap.set(clean.slug, clean);
+          }
+        });
+      };
+
+      mergeIntoCustom(existingCustom);
+      if (Array.isArray(payload && payload.customBlogs)) {
+        mergeIntoCustom(payload.customBlogs);
+      }
+
+      const affectedSlugs = [];
+      if (payload && payload.article) {
+        const clean = sanitizeServerArticle(payload.article);
+        if (clean) {
+          const origSlug = String(payload.origSlug || '').trim();
+          if (origSlug && origSlug !== clean.slug) customMap.delete(origSlug);
+          deletedMap.delete(clean.slug);
+          customMap.set(clean.slug, clean);
+          affectedSlugs.push(clean.slug);
+        }
+      }
+
+      const mergedCustom = Array.from(customMap.values()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+      const mergedDeleted = Array.from(deletedMap.entries()).map(([slug, deletedAt]) => ({ slug, deletedAt }));
+      const result = persistBlogsToDisk(mergedCustom, mergedDeleted, affectedSlugs);
+
+      res.writeHead(200, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+      });
+      res.end(JSON.stringify({
+        ok: true,
+        persistedToDisk: true,
+        customCount: result.customBlogs.length,
+        totalArticles: result.articles.length
+      }));
+    }, 5 * 1024 * 1024);
+    return;
+  }
+
+  if ((req.method === 'POST' && urlPath === '/api/blogs/delete') || (req.method === 'DELETE' && urlPath === '/api/blogs')) {
+    readJsonRequestBody(req, (err, payload) => {
+      const parsedUrl = new URL(req.url || '/api/blogs', 'http://localhost');
+      const targetSlug = String((payload && payload.slug) || parsedUrl.searchParams.get('slug') || '').trim();
+      const existingCustom = readJsonArraySafe(CUSTOM_BLOGS_PATH).filter(a => a && a.slug !== targetSlug);
+      const deletedList = normalizeServerDeletedList(readJsonArraySafe(DELETED_BLOGS_PATH));
+      if (targetSlug) {
+        const filtered = deletedList.filter(d => d.slug !== targetSlug);
+        filtered.push({ slug: targetSlug, deletedAt: Date.now() });
+        const result = persistBlogsToDisk(existingCustom, filtered, []);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ ok: true, persistedToDisk: true, totalArticles: result.articles.length }));
+        return;
+      }
+      res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ ok: false, error: 'Missing slug' }));
+    }, 5 * 1024 * 1024);
     return;
   }
 
