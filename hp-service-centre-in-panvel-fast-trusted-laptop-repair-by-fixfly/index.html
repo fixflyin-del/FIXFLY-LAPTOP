@@ -1980,11 +1980,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-slate-700 mb-1">Article Title</label>
-                <input type="text" id="admin-blog-title" placeholder="e.g. Best MacBook Repair in Pune & Bangalore" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+                <input type="text" id="admin-blog-title" oninput="autoFillPortalBlogSlug(this.value)" placeholder="e.g. Best MacBook Repair in Pune & Bangalore" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
               </div>
               <div>
                 <label class="block text-xs font-semibold text-slate-700 mb-1">URL Slug</label>
-                <input type="text" id="admin-blog-slug" placeholder="e.g. macbook-repair-pune-doorstep" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+                <input type="text" id="admin-blog-slug" oninput="this.dataset.manualEdit='1'" placeholder="e.g. macbook-repair-pune-doorstep" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
               </div>
             </div>
 
@@ -2848,6 +2848,31 @@
 
     // REAL-TIME DATA SYNC FROM CLOUD BACKEND (MULTI-DEVICE INSTANT SYNC)
     async function fetchRealtimeBackendData() {
+      // Kick off Blog Hydration immediately in parallel so custom blogs never wait behind other endpoints
+      const blogsHydrationPromise = (async () => {
+        try {
+          if (window.FixflyBlogStore && typeof window.FixflyBlogStore.loadPersistedBlogs === 'function') {
+            const syncedBlogs = await window.FixflyBlogStore.loadPersistedBlogs({
+              builtinArticles: BuiltinArticles,
+              autoFlushPending: true
+            });
+            if (syncedBlogs && Array.isArray(syncedBlogs.articles) && syncedBlogs.articles.length) {
+              AppState.articles = syncedBlogs.articles;
+              renderArticles();
+              renderHomeBlogs();
+
+              if (window.__pendingRequestedBlogSlug) {
+                const target = AppState.articles.find(a => a.slug === window.__pendingRequestedBlogSlug);
+                if (target) {
+                  window.__pendingRequestedBlogSlug = null;
+                  openPost(target.slug, false);
+                }
+              }
+            }
+          }
+        } catch (e) {}
+      })();
+
       // 1. Fetch Software Catalog from Cloud Sync (or fallback to static API)
       try {
         let softItems = null;
@@ -3017,25 +3042,8 @@
         }
       } catch (e) {}
 
-      // 7. Hydrate Lifetime Saved Blog Articles (IndexedDB + /api/blogs + Cloud Sync)
-      try {
-        if (window.FixflyBlogStore && typeof window.FixflyBlogStore.loadPersistedBlogs === 'function') {
-          const syncedBlogs = await window.FixflyBlogStore.loadPersistedBlogs({ builtinArticles: BuiltinArticles });
-          if (syncedBlogs && Array.isArray(syncedBlogs.articles) && syncedBlogs.articles.length) {
-            AppState.articles = syncedBlogs.articles;
-            renderArticles();
-            renderHomeBlogs();
-
-            if (window.__pendingRequestedBlogSlug) {
-              const target = AppState.articles.find(a => a.slug === window.__pendingRequestedBlogSlug);
-              if (target) {
-                window.__pendingRequestedBlogSlug = null;
-                openPost(target.slug, false);
-              }
-            }
-          }
-        }
-      } catch (e) {}
+      // Wait for parallel blog hydration initiated above
+      await blogsHydrationPromise;
     }
 
     // Cross-tab storage event for instant 0-second sync when admin & app are in same browser
@@ -4120,23 +4128,27 @@
 
       blogGrid.innerHTML = displayed.map(article => {
         const img = optimizeImgUrl(article.image || fallbackImg);
+        const safeAlt = String(article.title || 'Fixfly Repair Guide').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeTitle = String(article.title || 'Untitled').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeCat = String(article.category || 'Repair Guide').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const encodedSlug = encodeURIComponent(article.slug || '');
         return `
           <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between">
             <div>
               <div class="h-48 overflow-hidden relative bg-slate-100">
-                <img src="${img}" alt="${article.title}" onerror="this.onerror=null; this.src='${fallbackImg}';" class="w-full h-full object-cover hover:scale-105 transition duration-500">
-                <span class="absolute top-3 left-3 text-[11px] font-bold text-brandBlue bg-white/95 px-2.5 py-1 rounded-md shadow">${article.category || 'Repair Guide'}</span>
+                <img src="${img}" alt="${safeAlt}" onerror="this.onerror=null; this.src='${fallbackImg}';" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                <span class="absolute top-3 left-3 text-[11px] font-bold text-brandBlue bg-white/95 px-2.5 py-1 rounded-md shadow">${safeCat}</span>
               </div>
               <div class="p-6 space-y-2">
                 <div class="text-[11px] text-slate-400">${article.date || 'Published'}</div>
                 <h3 class="text-base sm:text-lg font-bold text-brandNavy font-heading leading-snug">
-                  <a href="#blog/${article.slug}" onclick="openPost('${article.slug}'); return false;" class="hover:text-brandBlue transition">${article.title}</a>
+                  <a href="#blog/${article.slug}" onclick="openPost(decodeURIComponent('${encodedSlug}')); return false;" class="hover:text-brandBlue transition">${safeTitle}</a>
                 </h3>
                 <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">${(article.excerpt || '').replace(/<[^>]*>/g, '')}</p>
               </div>
             </div>
             <div class="px-6 pb-6 pt-2">
-              <a href="#blog/${article.slug}" onclick="openPost('${article.slug}'); return false;" class="text-xs font-bold text-brandBlue hover:text-[#0665af] flex items-center gap-1 group">
+              <a href="#blog/${article.slug}" onclick="openPost(decodeURIComponent('${encodedSlug}')); return false;" class="text-xs font-bold text-brandBlue hover:text-[#0665af] flex items-center gap-1 group">
                 <span>Read Full Article</span>
                 <span>→</span>
               </a>
@@ -4569,13 +4581,36 @@
       alert('Rates and prices updated successfully!');
     }
 
+    function autoFillPortalBlogSlug(titleVal) {
+      const slugEl = document.getElementById('admin-blog-slug');
+      if (!slugEl || slugEl.dataset.manualEdit === '1') return;
+      if (!String(titleVal || '').trim()) {
+        slugEl.value = '';
+        return;
+      }
+      if (window.FixflyBlogStore && typeof window.FixflyBlogStore.suggestUniqueSlug === 'function') {
+        slugEl.value = window.FixflyBlogStore.suggestUniqueSlug(titleVal, AppState.articles);
+      } else {
+        slugEl.value = String(titleVal).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+    }
+
     async function handlePublishBlog(e) {
       e.preventDefault();
       const title = document.getElementById('admin-blog-title').value.trim();
       const rawSlug = document.getElementById('admin-blog-slug').value.trim();
-      const slug = (window.FixflyBlogStore && typeof window.FixflyBlogStore.normalizeSlug === 'function')
-        ? window.FixflyBlogStore.normalizeSlug(rawSlug)
-        : rawSlug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      let slug = (window.FixflyBlogStore && typeof window.FixflyBlogStore.normalizeSlug === 'function')
+        ? window.FixflyBlogStore.normalizeSlug(rawSlug || title)
+        : (rawSlug || title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+      if (window.FixflyBlogStore && typeof window.FixflyBlogStore.hasArticleSlug === 'function' && window.FixflyBlogStore.hasArticleSlug(slug, AppState.articles)) {
+        const nextUnique = window.FixflyBlogStore.suggestUniqueSlug(slug, AppState.articles);
+        if (!confirm(`⚠️ An article with URL "/${slug}/" already exists!\n\nClick OK to save this as a NEW separate article at "/${nextUnique}/".\nClick Cancel to edit the URL slug manually.`)) {
+          return;
+        }
+        slug = nextUnique;
+      }
+
       const cat = document.getElementById('admin-blog-cat').value.trim();
       const image = document.getElementById('admin-blog-image').value.trim();
       const excerpt = document.getElementById('admin-blog-excerpt').value.trim();
@@ -4586,7 +4621,7 @@
         title,
         category: cat,
         date: new Date().toISOString().split('T')[0],
-        image,
+        image: image || 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1200&q=80',
         excerpt,
         content: content.startsWith('<') ? content : `<h2>${title}</h2><p>${content.replace(/\n/g, '<br>')}</p>`,
         updatedAt: Date.now(),
@@ -4597,11 +4632,13 @@
       const prevTxt = btn ? btn.innerText : '';
       if (btn) {
         btn.disabled = true;
-        btn.innerText = '⏳ Saving Permanently...';
+        btn.innerText = '⏳ Saving & Syncing...';
       }
 
       try {
         let savedTo = 'Local Storage';
+        let cloudOk = false;
+        let serverOk = false;
         if (window.FixflyBlogStore && typeof window.FixflyBlogStore.saveCustomArticle === 'function') {
           const res = await window.FixflyBlogStore.saveCustomArticle(newArticle, '');
           AppState.articles = window.FixflyBlogStore.mergeArticles(
@@ -4610,9 +4647,12 @@
             res.deletedSlugs,
             BuiltinArticles
           );
+          cloudOk = Boolean(res.status.savedCloud);
+          serverOk = Boolean(res.status.savedServer);
           const layers = [];
           if (res.status.savedServer) layers.push('Server File');
           if (res.status.savedCloud) layers.push('Cloud Sync');
+          else if (res.status.savedCloudShard) layers.push('Cloud Shard');
           if (res.status.savedIndexedDb) layers.push('IndexedDB');
           if (res.status.savedLocal) layers.push('Local Storage');
           savedTo = layers.join(' + ');
@@ -4625,8 +4665,14 @@
 
         renderArticles();
         renderHomeBlogs();
-        alert(`✅ SEO Blog Article "${title}" saved permanently!\n\nSaved to: ${savedTo}`);
+        if (cloudOk || serverOk) {
+          alert(`✅ SEO Blog Article "${title}" saved & synced!\n\nSaved to: ${savedTo}\nURL: /${slug}/`);
+        } else {
+          alert(`⚠️ SEO Blog Article "${title}" saved locally (${savedTo}), but Cloud Sync could not complete right now. It will auto-retry when connected.`);
+        }
         e.target.reset();
+        const slugEl = document.getElementById('admin-blog-slug');
+        if (slugEl) delete slugEl.dataset.manualEdit;
         updateImagePreview('admin-blog-image');
       } catch (err) {
         alert('Error publishing blog: ' + ((err && err.message) || 'Unknown error'));
@@ -5016,19 +5062,23 @@
         const defaultImg = 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600&auto=format&fit=crop&q=80';
         const imgSrc = optimizeImgUrl(b.image || defaultImg);
         const excerpt = (b.excerpt || '').replace(/<[^>]*>/g, '').slice(0, 110) + '...';
+        const safeAlt = String(b.title || 'Fixfly Repair Guide').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeTitle = String(b.title || 'Untitled').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeCat = String(b.category || 'Repair Guide').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const encodedSlug = encodeURIComponent(b.slug || '');
 
         return `
           <div class="min-w-[280px] sm:min-w-[340px] max-w-[360px] flex-shrink-0 snap-start bg-slate-50 hover:bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
             <div>
               <div class="h-44 rounded-2xl overflow-hidden mb-4 relative bg-slate-200">
-                <img src="${imgSrc}" onerror="this.onerror=null; this.src='${defaultImg}';" alt="${b.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <img src="${imgSrc}" onerror="this.onerror=null; this.src='${defaultImg}';" alt="${safeAlt}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                 <span class="absolute top-2.5 left-2.5 bg-brandNavy/90 backdrop-blur-md text-brandSky text-[10px] font-extrabold px-2.5 py-1 rounded-lg">
-                  ${b.category || 'Repair Guide'}
+                  ${safeCat}
                 </span>
               </div>
 
               <h3 class="font-extrabold text-brandNavy font-heading text-sm sm:text-base leading-snug line-clamp-2 group-hover:text-brandBlue transition">
-                ${b.title}
+                ${safeTitle}
               </h3>
               <p class="text-slate-500 text-xs mt-2 line-clamp-3 leading-relaxed">
                 ${excerpt}
@@ -5037,7 +5087,7 @@
 
             <div class="pt-4 mt-4 border-t border-slate-200/80 flex items-center justify-between">
               <span class="text-[11px] font-semibold text-slate-400">${b.date || 'Guide'}</span>
-              <button onclick="openPost('${b.slug}', true)" class="text-xs font-bold text-brandBlue hover:text-[#0665af] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <button onclick="openPost(decodeURIComponent('${encodedSlug}'), true)" class="text-xs font-bold text-brandBlue hover:text-[#0665af] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                 <span>Read Guide</span>
                 <span>➔</span>
               </button>

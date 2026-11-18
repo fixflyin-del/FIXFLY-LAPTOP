@@ -14,11 +14,51 @@
     { "source": "/api/all-reviews", "destination": "/data/service_reviews.json" },
     { "source": "/api/service-reviews", "destination": "/data/service_reviews.json" },
     { "source": "/api/orders", "destination": "/data/orders.json" },
+    { "source": "/api/blogs", "destination": "/data/custom_blogs.json" },
+    { "source": "/api/deleted-blogs", "destination": "/data/deleted_blogs.json" },
     { "source": "/assets/(.*)", "destination": "/public/assets/$1" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/admin/(.*)", "destination": "/admin.html" },
     { "source": "/download", "destination": "/download.html" },
     { "source": "/download-zip", "destination": "/fixfly-netlify-ready.zip" },
     { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/blog-store.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/migrated_blogs.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/admin",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/admin.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    }
   ]
 }

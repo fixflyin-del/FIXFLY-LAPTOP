@@ -549,12 +549,15 @@
               <span id="admin-blog-sync-status" class="text-[11px] font-bold bg-emerald-600 text-white px-2.5 py-0.5 rounded-full">Syncing...</span>
             </div>
             <p class="text-xs text-emerald-900 mt-1">
-              Every article you publish or edit is automatically saved permanently (Server disk + Cloud Sync + Browser IndexedDB/Cache) so it never disappears on reload or across devices. If you deploy via static Netlify ZIP later, you can also download <code class="bg-emerald-100 px-1 py-0.5 rounded">migrated_blogs.js</code> for static pre-rendering.
+              Every article you publish or edit is automatically saved permanently (Cloud Shards + Manifest + Browser IndexedDB/Cache + Local Server if enabled) so it never disappears on reload or across devices. You can also download <code class="bg-emerald-100 px-1 py-0.5 rounded">migrated_blogs.js</code> anytime to bundle static pre-rendered copies into your Vercel / GitHub deployment.
             </p>
           </div>
         </div>
-        <div class="flex items-center gap-2 flex-shrink-0 w-full md:w-auto">
-          <button onclick="exportMigratedBlogsJs()" class="w-full md:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow transition flex items-center justify-center gap-1.5">
+        <div class="flex flex-wrap items-center gap-2 flex-shrink-0 w-full md:w-auto">
+          <button type="button" id="admin-blog-retry-sync-btn" onclick="retryAdminBlogCloudSync()" class="w-full md:w-auto bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition flex items-center justify-center gap-1.5">
+            <span>🔄 Sync Cloud Now</span>
+          </button>
+          <button type="button" onclick="exportMigratedBlogsJs()" class="w-full md:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow transition flex items-center justify-center gap-1.5">
             <span>📥 Download migrated_blogs.js</span>
           </button>
         </div>
@@ -577,7 +580,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="sm:col-span-2">
               <label class="block text-xs font-semibold text-slate-700 mb-1">Article Title (SEO H1)</label>
-              <input type="text" id="admin-blog-title" placeholder="e.g. Best Laptop Screen Replacement in Navi Mumbai" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+              <input type="text" id="admin-blog-title" oninput="autoFillAdminBlogSlug(this.value)" placeholder="e.g. Best Laptop Screen Replacement in Navi Mumbai" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
@@ -596,7 +599,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">URL Slug (e.g. laptop-repair-navi-mumbai)</label>
-              <input type="text" id="admin-blog-slug" placeholder="laptop-repair-navi-mumbai" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
+              <input type="text" id="admin-blog-slug" oninput="this.dataset.manualEdit='1'" placeholder="laptop-repair-navi-mumbai" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none" required>
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Featured Image <span class="text-emerald-600 font-bold text-[11px]">(Upload or URL • 1200 × 630 px, 16:9 Banner)</span></label>
@@ -1914,10 +1917,54 @@
           if (synced && Array.isArray(synced.articles)) {
             AdminBlogsList = synced.articles;
             filterAdminBlogs((document.getElementById('admin-blog-search') || {}).value || '');
-            setAdminBlogSyncBadge('✓ Synced (' + synced.customBlogs.length + ' custom • ' + synced.articles.length + ' total)', true);
+            if (synced.cloudSynced) {
+              setAdminBlogSyncBadge('✓ Live Cloud Synced (' + synced.customBlogs.length + ' custom • ' + synced.articles.length + ' total)', true);
+            } else {
+              const pCount = synced.pendingCount || 0;
+              setAdminBlogSyncBadge(pCount ? ('⚠️ ' + pCount + ' Pending Cloud Sync') : 'Local Cache Active (Offline)', false);
+            }
           }
         } catch (err) {
           setAdminBlogSyncBadge('Local Cache Active', false);
+        }
+      }
+    }
+
+    function autoFillAdminBlogSlug(titleVal) {
+      const origSlugEl = document.getElementById('admin-blog-edit-original-slug');
+      const slugEl = document.getElementById('admin-blog-slug');
+      if (!slugEl || (origSlugEl && origSlugEl.value.trim()) || slugEl.dataset.manualEdit === '1') return;
+      if (!String(titleVal || '').trim()) {
+        slugEl.value = '';
+        return;
+      }
+      if (window.FixflyBlogStore && typeof window.FixflyBlogStore.suggestUniqueSlug === 'function') {
+        slugEl.value = window.FixflyBlogStore.suggestUniqueSlug(titleVal, AdminBlogsList);
+      } else {
+        slugEl.value = String(titleVal).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+    }
+
+    async function retryAdminBlogCloudSync() {
+      const btn = document.getElementById('admin-blog-retry-sync-btn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Syncing...</span>';
+      }
+      try {
+        if (window.FixflyBlogStore && typeof window.FixflyBlogStore.syncAllBlogsToCloud === 'function') {
+          const res = await window.FixflyBlogStore.syncAllBlogsToCloud();
+          await initAdminBlogs();
+          if (res.savedCloud) {
+            alert('✅ All ' + res.customCount + ' custom blog articles are 100% synced to the Live Cloud!');
+          } else {
+            alert('⚠️ Cloud sync could not finish right now (pending: ' + (res.pendingCount || 0) + '). Check your internet connection and click Sync Cloud Now again.');
+          }
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>🔄 Sync Cloud Now</span>';
         }
       }
     }
@@ -1987,9 +2034,22 @@
       const origSlug = document.getElementById('admin-blog-edit-original-slug').value.trim();
       const title = document.getElementById('admin-blog-title').value.trim();
       const rawSlug = document.getElementById('admin-blog-slug').value.trim();
-      const slug = (window.FixflyBlogStore && typeof window.FixflyBlogStore.normalizeSlug === 'function')
-        ? window.FixflyBlogStore.normalizeSlug(rawSlug)
-        : rawSlug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      let slug = (window.FixflyBlogStore && typeof window.FixflyBlogStore.normalizeSlug === 'function')
+        ? window.FixflyBlogStore.normalizeSlug(rawSlug || title)
+        : (rawSlug || title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+      // Prevent accidentally overwriting a previously saved article when creating a new post
+      if (!origSlug && window.FixflyBlogStore && typeof window.FixflyBlogStore.hasArticleSlug === 'function' && window.FixflyBlogStore.hasArticleSlug(slug, AdminBlogsList)) {
+        const nextUnique = window.FixflyBlogStore.suggestUniqueSlug(slug, AdminBlogsList);
+        const keepNewUrl = confirm(
+          `⚠️ An article with URL "/${slug}/" already exists!\n\n` +
+          `• Click OK to save this as a NEW separate article at "/${nextUnique}/".\n` +
+          `• Click Cancel if you want to edit the slug manually (or use Edit on the existing article to update it).`
+        );
+        if (!keepNewUrl) return;
+        slug = nextUnique;
+      }
+
       const cat = document.getElementById('admin-blog-cat').value.trim();
       const image = document.getElementById('admin-blog-image').value.trim();
       const excerpt = document.getElementById('admin-blog-excerpt').value.trim();
@@ -2013,22 +2073,32 @@
       const prevBtnHtml = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>⏳ Saving Permanently...</span>';
+        submitBtn.innerHTML = '<span>⏳ Saving & Syncing to Live Cloud...</span>';
       }
 
       try {
         let saveSummary = '';
+        let cloudOk = false;
+        let serverOk = false;
+        let totalCustomCount = 1;
         if (window.FixflyBlogStore && typeof window.FixflyBlogStore.saveCustomArticle === 'function') {
           const res = await window.FixflyBlogStore.saveCustomArticle(articleObj, origSlug);
           AdminBlogsList = res.articles;
+          totalCustomCount = res.customBlogs.length;
           const st = res.status || {};
+          cloudOk = Boolean(st.savedCloud);
+          serverOk = Boolean(st.savedServer);
           const activeLayers = [];
           if (st.savedServer) activeLayers.push('Server File');
           if (st.savedCloud) activeLayers.push('Live Cloud Sync');
+          else if (st.savedCloudShard) activeLayers.push('Cloud Shard (Mirror Retry Queued)');
           if (st.savedIndexedDb) activeLayers.push('IndexedDB');
           if (st.savedLocal) activeLayers.push('Local Storage');
           saveSummary = activeLayers.join(' + ');
-          setAdminBlogSyncBadge('✓ Saved (' + res.customBlogs.length + ' custom)', Boolean(st.savedServer || st.savedCloud));
+          setAdminBlogSyncBadge(
+            cloudOk ? ('✓ Live Cloud Synced (' + totalCustomCount + ' custom)') : ('⚠️ Pending Cloud Sync (' + (st.pendingSyncCount || 1) + ')'),
+            Boolean(serverOk || cloudOk)
+          );
         } else {
           if (origSlug) AdminBlogsList = AdminBlogsList.filter(a => a.slug !== origSlug);
           AdminBlogsList = AdminBlogsList.filter(a => a.slug !== slug);
@@ -2040,12 +2110,11 @@
         cancelBlogEdit();
         filterAdminBlogs((document.getElementById('admin-blog-search') || {}).value || '');
 
-        alert(`✅ Article "${title}" permanently saved!
-
-Saved to: ${saveSummary}
-URL: /${slug}/
-
-Your article will remain saved across refreshes, browser switches, and devices.`);
+        if (cloudOk || serverOk) {
+          alert(`✅ Article "${title}" permanently saved & synced!\n\nSaved to: ${saveSummary}\nTotal Custom Articles Live: ${totalCustomCount}\nURL: /${slug}/\n\nAll your published articles will stay live across refreshes and all devices.`);
+        } else {
+          alert(`⚠️ Article "${title}" was saved safely on this device (${saveSummary}), but Live Cloud Sync could not complete right now.\n\nClick "🔄 Sync Cloud Now" once your connection stabilizes so it appears on fixfly.in for all visitors.`);
+        }
       } catch (err) {
         alert('Error saving article: ' + ((err && err.message) || 'Unknown error'));
       } finally {
@@ -2061,7 +2130,9 @@ Your article will remain saved across refreshes, browser switches, and devices.`
       if (!art) return;
       document.getElementById('admin-blog-edit-original-slug').value = art.slug;
       document.getElementById('admin-blog-title').value = art.title || '';
-      document.getElementById('admin-blog-slug').value = art.slug || '';
+      const slugEl = document.getElementById('admin-blog-slug');
+      slugEl.value = art.slug || '';
+      slugEl.dataset.manualEdit = '1';
       document.getElementById('admin-blog-cat').value = art.category || 'Laptop Repair';
       document.getElementById('admin-blog-image').value = art.image || '';
       updateImagePreview('admin-blog-image');
@@ -2080,7 +2151,9 @@ Your article will remain saved across refreshes, browser switches, and devices.`
     function cancelBlogEdit() {
       document.getElementById('admin-blog-edit-original-slug').value = '';
       document.getElementById('admin-blog-title').value = '';
-      document.getElementById('admin-blog-slug').value = '';
+      const slugEl = document.getElementById('admin-blog-slug');
+      slugEl.value = '';
+      delete slugEl.dataset.manualEdit;
       document.getElementById('admin-blog-image').value = '';
       updateImagePreview('admin-blog-image');
       document.getElementById('admin-blog-excerpt').value = '';
@@ -2120,7 +2193,7 @@ Your article will remain saved across refreshes, browser switches, and devices.`
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      alert('Downloaded "migrated_blogs.js"! Replace this file in your Netlify site folder to make all changes instantly live for every customer!');
+      alert('Downloaded "migrated_blogs.js"! Replace this file in your Vercel / GitHub repository and redeploy to bake all articles directly into static assets too.');
     }
 
     // ==========================================
